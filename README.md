@@ -74,9 +74,8 @@ A multi-user blog system implemented with Spring /MVC+ Hibernate + MySQL + Boots
 - 2017-02-14 改用mmseg4j分词，文章导航固定在右边，项目重构
 - 2017-02-15 个人图像支持裁剪及ajax上传
 - 2017-02-16 文章详情评论插件更新，表情盒子优化
+- 2017-02-17 `正式开源https://github.com/kingschan1204/jblog`
 
-## bugs
-[bug列表](https://github.com/kingschan1204/51so.info/issues) ...
 
 ## 立项功能待开发
 - 专题的概念
