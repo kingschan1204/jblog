@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>资源列表</title>
+<#include "/admin/include/bootstrap.ftl">
+<!--viewer-->
+<link rel="stylesheet" href="${webroot}/www/viewer/viewer.min.css" type="text/css">
+<script type="text/javascript" src="${webroot}/www/viewer/viewer.min.js"></script>  
+<style type="text/css">
+.thumbnail:HOVER {
+	border:solid 1px red;
+}
+.thumbnail{
+	cursor: pointer;
+	overflow: hidden;
+}
+.thumbnail_checked{
+	border:solid 1px #CCFF99;
+	background-color: #CCFFCC;
+}
+
+</style>
+</head>
+<body style="padding: 0 0 0 0;margin: 0 0 0 0;">
+<div class="row" style="padding-left: 20px;"> 
+	<form class="form-inline" method="post" action="blogres_dialog.do"  id="sform">
+		<input type="hidden" name="callback" value="${callback!}">
+		<input type="hidden" name="multiSelect" value="${multiSelect!}">
+		  <div class="form-group">
+		    <input type="text" value="${resname!}" name="resname" class="form-control" id="keyword_txt" placeholder="关键字">
+		  </div>
+		  <div class="btn-group">
+		  <button type="submit" class="btn btn-default" data-toggle="tooltip" title="根据您输入的关键字进行查询" data-placement="bottom">
+		  <span class="glyphicon glyphicon-search"></span>&nbsp;查询</button>
+		  <button type="button" class="btn btn-default" onclick="returnChoose();" data-toggle="tooltip" title="返回选中的资源" data-placement="bottom">
+		  <span class="glyphicon glyphicon-ok"></span>&nbsp;选中</button>
+		  </div>
+	</form>
+</div>
+<div class="row" style="margin-top: 5px;">
+<@BlogRes page="${page!}"  resname="${resname!}"  websiteid="${AdminWebSite.id}"  limit="8">
+ 	<#list blogres_lis as res> 
+		<div class="col-sm-4 col-md-3">
+		      <div class="thumbnail" onclick="filecheck(this);" pk="${res.resKey}" title="${res.resName}">
+		      	<#if res.resType?contains("image")>
+		         	<img  src="http://res.51so.info/${res.resKey}_admin.res.manage"  class="image img-rounded" style="width:350px;height: 210px;"> 
+		         <#else>
+		         	<div style="width:350px;height: 210px;background-image: url('${webroot}/www/skin/pink/img/bg2.jpg');"></div>
+		         </#if>
+		      </div>
+		   </div>
+   </#list>
+</@BlogRes>
+</div>
+    <#assign url="/admin/blogres_dialog.do?resname=${resname!}&callback=${callback!}&multiSelect=${multiSelect!}&">
+    <#include "/admin/include/page.ftl">
+</body>
+<script type="text/javascript">
+$(function () { 
+	$("[data-toggle='tooltip']").tooltip();
+	bootbox.setLocale("zh_CN"); 
+	});
+function allchk(obj){
+	var chk=obj.checked;
+	if(chk){
+		$("input[name='res_chk']").prop("checked",true);
+	}else{
+		$("input[name='res_chk']").prop("checked",false); 
+	}
+}
+function filecheck(obj){
+	if($(obj).hasClass('thumbnail_checked')){
+		$(obj).removeClass("thumbnail_checked");
+	}else{
+		$(obj).addClass("thumbnail_checked");
+	}
+}
+function getCheckItems(){
+	var ids=new Array;
+	$(".thumbnail_checked").each(function(index,dom){
+		ids.push($(dom).attr("pk"));
+	});
+	return ids;
+}
+function returnChoose(){
+	var chks=getCheckItems();
+	if(chks.length==0){bootbox.alert({message:'<strong style=\'color:red;\'>请选择资源!</strong>',size: 'small'});return;}
+	if('${multiSelect}'=='false'&&chks.length>1){bootbox.alert({message:'<strong style=\'color:red;\'>只能选择一条!</strong>',size: 'small'});return;}
+	window.parent.${callback!"callback"}(chks);
+	parent.$.fancybox.close();
+}
+</script>
+</html>

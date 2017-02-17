@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
+	updateCheck="false">
+	<!--
+		name:cache唯一标识 
+		eternal：缓存是否永久有效 
+		maxElementsInMemory：内存中最大缓存对象数
+		overflowToDisk(true,false)：缓存对象达到最大数后，将缓存写到硬盘中
+		diskPersistent：硬盘持久化
+		timeToIdleSeconds：缓存清除时间 (秒)
+		timeToLiveSeconds：缓存存活时间（秒）
+		memoryStoreEvictionPolicy：缓存清空策略
+		1.FIFO：first in first out 先进先出算法，即先放入缓存的先被移除；
+		2.LFU： Less Frequently Used 最久未使用算法，使用时间距离现在最久的那个被移除；
+		3.LRU：Least Recently Used  最近最少使用算法，一定时间段内使用次数（频率）最少的那个被移除；
+	-->
+	<!-- /Users/kingschan/ehcache -->
+	<diskStore path="C:\\Users\\kingschan\\Documents\\ehcache"/>
+	<defaultCache 
+		maxElementsInMemory="1000" 
+		eternal="false"
+		timeToIdleSeconds="120" 
+		timeToLiveSeconds="120" 
+		overflowToDisk="true" 
+	/>
+	
+	<cache name="org.hibernate.cache.internal.StandardQueryCache" maxElementsInMemory="50" eternal="false" timeToIdleSeconds="3600" timeToLiveSeconds="7200" overflowToDisk="true"/>
+	<cache name="org.hibernate.cache.spi.UpdateTimestampsCache" maxElementsInMemory="5000" eternal="true"  overflowToDisk="true"/>
+	<cache name="com.kingschan.blog.po.Article" maxElementsInMemory="1000" eternal="false" timeToIdleSeconds="600" overflowToDisk="true"/>
+	<cache name="com.kingschan.blog.po.Category" maxElementsInMemory="1000" eternal="false" timeToIdleSeconds="600" overflowToDisk="true"/>
+	<cache name="com.kingschan.blog.po.Bookmarks" maxElementsInMemory="1000" eternal="false" timeToIdleSeconds="600" overflowToDisk="true"/>
+	<cache name="com.kingschan.blog.po.BookmarksFolder" maxElementsInMemory="1000" eternal="false" timeToIdleSeconds="600" overflowToDisk="true"/>
+	<cache name="com.kingschan.blog.po.WebSite" maxElementsInMemory="1000" eternal="false" timeToIdleSeconds="600" overflowToDisk="true"/>
+	<cache name="com.kingschan.blog.po.Lable" maxElementsInMemory="1000" eternal="false" timeToIdleSeconds="600" overflowToDisk="true"/>
+	<cache name="com.kingschan.blog.po.BlogRes" maxElementsInMemory="1000" eternal="false" timeToIdleSeconds="600" overflowToDisk="true"/>
+	<cache name="com.kingschan.blog.po.User" maxElementsInMemory="1000" eternal="false" timeToIdleSeconds="600" overflowToDisk="true"/>
+	
+	
+		
+	<cache name="hibernateCache" eternal="false" maxElementsInMemory="1000"
+		overflowToDisk="false" diskPersistent="false" timeToIdleSeconds="3600"
+		timeToLiveSeconds="3600" memoryStoreEvictionPolicy="LFU" />
+		
+		
+	<!-- 登录失败次数记录，保留一天 -->
+	<cache name="userLoginCache" eternal="false" maxElementsInMemory="1000"	overflowToDisk="false" diskPersistent="false" timeToIdleSeconds="86400"	timeToLiveSeconds="86400" memoryStoreEvictionPolicy="LFU" />
+	<!-- 统计月度写日志情况 -->
+	<cache name="MonthArticleInfoCache" eternal="false" maxElementsInMemory="1000"	overflowToDisk="false" diskPersistent="false" timeToIdleSeconds="86400"	timeToLiveSeconds="86400" memoryStoreEvictionPolicy="LFU" />
+	<!-- 找回密码 -->
+	<cache name="findPswCache" eternal="false" maxElementsInMemory="1000" overflowToDisk="false" diskPersistent="false" timeToIdleSeconds="600"	timeToLiveSeconds="600" memoryStoreEvictionPolicy="LFU" />
+	<!-- 邮箱验证 -->
+	<cache name="validateEmailCache" eternal="false" maxElementsInMemory="1000"	overflowToDisk="false" diskPersistent="false" timeToIdleSeconds="600"	timeToLiveSeconds="600" memoryStoreEvictionPolicy="LFU" />
+	<!-- session -->
+	<cache name="SessionCache" eternal="false" maxElementsInMemory="1000"	overflowToDisk="false" diskPersistent="false" timeToIdleSeconds="86400"	timeToLiveSeconds="86400" memoryStoreEvictionPolicy="LFU" />
+</ehcache>
+

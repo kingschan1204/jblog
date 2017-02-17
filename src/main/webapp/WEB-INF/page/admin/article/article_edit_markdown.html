@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MarkDown风格-文章编辑</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="content-type" content="text/html; charset=UTF-8">
+	<#include "/admin/include/bootstrap.ftl">
+    <base href="${blogprefix!}"> 
+    <!-- bootstrap-tokenfield -->
+    <script type="text/javascript" src="${webroot}/www/fancybox/jquery.fancybox.js"></script>
+	<link rel="stylesheet" type="text/css" href="${webroot}/www/fancybox/jquery.fancybox.css" media="screen" />
+	<link href="${webroot}/www/bootstrap/bootstrap-tokenfield/bootstrap-tokenfield.min.css" rel="stylesheet">
+    <script type="text/javascript" src="${webroot}/www/bootstrap/bootstrap-tokenfield/bootstrap-tokenfield.min.js"></script>
+    <!-- fancybox -->
+    <script type="text/javascript" src="${webroot}/www/fancybox/jquery.fancybox.js"></script>
+	<link rel="stylesheet" type="text/css" href="${webroot}/www/fancybox/jquery.fancybox.css" media="screen" />
+	
+	<link rel="stylesheet" href="http://cdn.bootcss.com/highlight.js/8.0/styles/monokai_sublime.min.css">
+	<script src="http://cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>
+	<script src="//cdn.bootcss.com/marked/0.3.6/marked.min.js"></script>
+	<!-- bootstrap markdown -->
+    <link href="//cdn.bootcss.com/bootstrap-markdown/2.10.0/css/bootstrap-markdown.min.css" rel="stylesheet">
+    <script src="//cdn.bootcss.com/bootstrap-markdown/2.10.0/js/bootstrap-markdown.min.js"></script>
+    <script src="${webroot}/www/emojify/js/emojify.min.js"></script>
+    <style type="text/css">
+    .emoji { width: 1.5em; height: 1.5em; display: inline-block; margin-bottom: -.25em; background-size: 1.5em; }
+    </style>
+  </head>
+  <body >
+  <#include "/admin/include/dashboard-start.ftl">
+
+<form class="form-horizontal" method="post" action="${admin_blogprefix}/admin/save_article.do" id="ar_editform">
+	  <div class="form-group">
+	    <div class="col-sm-12">
+	     <input type="hidden" name="id" value="${article.id!}"/>
+	     <input type="hidden" name="articleEditor" value="markdown"/>
+	     <input type="hidden" name="articleCover" id="articleCover" value="${article.articleCover!}" >
+	      <input type="text" class="form-control" name="articleTitle" placeholder="请输入文章标题" value="${article.articleTitle!}" maxlength="100" >
+	    </div>
+	  </div>
+	  <div class="form-group">
+	    <div class="col-sm-12">
+	    
+    	<@Category website_id="${AdminWebSite.id}">
+					  <#list category_lis as category>
+						<label class="radio-inline">
+						  <input type="radio" name="category.id"  value="${category.id}" 
+						  <#if article.category??>
+							<#if category.id==article.category.id>
+								checked="checked"
+							</#if>
+							<#elseif category_has_next==false>
+							checked="checked"
+						</#if> > ${category.categoryName}
+						</label>
+					</#list>
+				</@Category>
+	    </div>
+	  </div>
+	  <div class="form-group">
+	    <div class="col-sm-12">
+	      <textarea class="form-control" rows="3" name="articleSummary" maxlength="400" placeholder="概要">${article.articleSummary!}</textarea>
+	    </div>
+	  </div>
+	 <div class="form-group">
+		 <div class="col-sm-12">
+			 <input type="text" class="form-control" name="articleLableStr" id="lables" placeholder="标签 (最多4个,已逗号分隔)"   />
+	    </div>
+    </div>
+  	<div class="form-group">
+	    <div class="col-sm-12">
+	     	<textarea id="target-editor-twitter" name="articleContent" style="height: 400px;width: 100%;" ><#if article.articleEditor=="markdown">${article.articleContent?html}<#else>${article.articleContent!}</#if></textarea>
+	    </div>
+	</div>
+	<div class="form-group">
+	    <div class="col-sm-4">
+	    	<input type="text" class="form-control" name="articlePassword" maxlength="10" placeholder="查看密码,私密博文下无效" value="${article.articlePassword!}">
+	    </div>
+	</div>
+	<div class="form-group">
+	    <div class="col-sm-5">
+		    <div class="radio">
+			  <label><input type="radio" name="articlePrivate" value="true" checked="checked">私有文章</label>
+			  &nbsp;&nbsp;&nbsp;
+			  <label><input type="radio" name="articlePrivate" value="false" <#if article??&&!article.articlePrivate>checked="checked"</#if> >普通文章</label>
+			  <strong style="color:red;">私有文章仅自己可见</strong>
+			</div>
+	    </div>
+	</div>
+	<div class="form-group">
+	    <div class="col-sm-4">
+		    <div class="radio">
+			  <label><input type="radio" name="articleAllowcomments" value="true" checked="checked">允许评论</label>
+			  &nbsp;&nbsp;&nbsp;
+			  <label><input type="radio" name="articleAllowcomments" value="false" <#if !article.articleAllowcomments>checked="checked"</#if> >禁止评论</label>
+			</div>
+	    </div>
+	</div>
+	<div class="form-group">
+	    <div class="col-sm-4">
+		    <div class="radio">
+			  <label><input type="radio" name="type" value="update" checked="checked">更新(只更新内容)</label>
+			  &nbsp;&nbsp;&nbsp;
+			  <label><input type="radio" name="type" value="release">发布(排在最前)</label>
+			</div>
+	    </div>
+	</div>
+	<button type="button" class="btn btn-default" onclick="openblogRes('lcallBack');">设置封面</button>
+	<button type="submit" class="btn btn-success" >保存</button>
+    <#if article??&&article.id??>
+    	<a href="${admin_blogprefix}/${AdminWebSite.websiteName}/entry/${article.id}.html" target="_blank" class="btn btn-primary" >预览</a>
+    </#if>
+	  </form>
+  <#include "/admin/include/dashboard-end.ftl">
+  </body>
+  <script type="text/javascript">
+  $("#write_article_li").addClass("nav-active");
+  (function(){
+	    // 关闭窗口时弹出确认提示
+	    $(window).bind('beforeunload', function(){
+	        // 只有在标识变量is_confirm不为false时，才弹出确认提示
+	        if(window.is_confirm !== false)
+	            return '您可能有数据没有保存';
+	    })
+	    // mouseleave mouseover事件也可以注册在body、外层容器等元素上
+	    .bind('mouseover mouseleave', function(event){
+	        is_confirm = event.type == 'mouseleave';
+	    });
+	})();
+  var renderer_zai30 = new marked.Renderer();
+  marked.setOptions({
+      renderer: renderer_zai30,
+      gfm: true,
+      tables: true,
+      breaks: true,//回车换成br
+      pedantic: false,
+      sanitize: true,
+      smartLists: true,
+      smartypants: false
+  });
+
+
+ 
+ $('#ar_editform').bootstrapValidator({
+//   live: 'disabled',
+   message: 'This value is not valid',
+   feedbackIcons: {
+       valid: 'glyphicon glyphicon-ok',
+       invalid: 'glyphicon glyphicon-remove',
+       validating: 'glyphicon glyphicon-refresh'
+   },
+   fields: {
+	   articleTitle: {
+           validators: {
+               notEmpty: {
+                   message: '文章标题不能为空!'
+               },
+               stringLength: {
+                   min: 3,
+                   max: 30,
+                   message: '标题长度最小为3最长为30'
+               }
+           }
+       }
+       ,articlePubtime: {
+           validators: {
+               date: {
+                   format: 'YYYY-MM-DD hh:ii:ss',
+                   message: '发布时间不合法'
+               }
+           }
+       }
+   }});
+ function lcallBack(res){
+	$("#articleCover").val(res);
+  }
+ function openblogRes(callfun){
+	  var url='${admin_blogprefix}/admin/blogres_dialog.do?callback='+callfun+'&multiSelect=false';
+	  $.fancybox.open({
+	        href: url,
+	        type: 'iframe',
+	        padding: 10,
+	        scrolling: 'no',
+	        fitToView: true,
+	        width: 1000,
+	        height: 640,
+	        autoSize: false,
+	        closeClick: false,
+	        iframe: {
+	       		 scrolling :'no',
+	       		 preload : true
+	       		 }
+	    });
+ }
+   
+ 
+ 
+ window.onload=function(){
+	 $('#lables').tokenfield({limit:4})
+	  .on('tokenfield:removedtoken', function (e) {
+		  if(e.attrs.value.length==32){
+			  bootbox.confirm({
+				    message: "<b style='color:red;'>是否删除此标签?</b>",
+				    size: 'small',
+				    buttons: {
+				        confirm: {
+				            label: '是',
+				            className: 'btn-success'
+				        },
+				        cancel: {
+				            label: '否',
+				            className: 'btn-danger'
+				        }
+				    },
+				    callback: function (result) {
+				        if(result){
+				        	 $.ajax({
+								   type: "get",
+								   url: "${admin_blogprefix}/admin/del_article_lable.do",
+								   data: {id:e.attrs.value},
+								   success: function(msg){
+									   if(msg=="success"){
+								    		
+									   }else{
+										   alert( msg);
+									   }
+								   }
+								});
+				        }
+				    }
+				});
+		  }
+	});
+	
+ <#if article??&&article.id!=''> $('#lables').tokenfield('setTokens', [<#list article.lables as lable>{ value: '${lable.id}', label: '${lable.lableName}'}<#if lable_has_next>,</#if></#list>]);</#if>
+ };
+ 
+ emojify.setConfig({emojify_tag_type:'div', img_dir: '${webroot}/www/emojify/images/emoji'});
+ var bm_userres={
+		    name: "openres",
+		    data: [{
+		      name: "openresbtn",
+		      toggle: true, 
+		      title: "我的资源",
+		      icon: "glyphicon glyphicon-user",
+		      callback: function(e){
+		    	  if(!blog.islogin()){
+		  			blog.nofify("您还未登录,请先登录!","danger");
+		  			return;
+		  		}
+		      	var url=bloghost+'/admin/blogres_dialog.do?callback=callfun&multiSelect=false';
+		        	  $.fancybox.open({
+		        	        href: url,
+		        	        type: 'iframe',
+		        	        padding: 10,
+		        	        scrolling: 'no',
+		        	        fitToView: true,
+		        	        width: 1000,
+		        	        height: 640,
+		        	        autoSize: false,
+		        	        closeClick: false,
+		        	        iframe: {
+		        	       		 scrolling :'no',
+		        	       		 preload : true
+		        	       		 }
+		        	    });
+		      }
+		    }]
+		};
+		var bm_facebox={
+			    name: "facebox",
+			    data: [{
+			      name: "faceboxbtn",
+			      toggle: true, 
+			      title: "表情",
+			      icon: "glyphicon glyphicon-th-large",
+			      callback: function(e){
+			    	 blog.faceBox('facecallback');
+			      }
+			    }]
+			};
+
+		var bm_codeblack={
+			    name: "codeblack",
+			    data: [{
+			      name: "codeblackbtn",
+			      toggle: true, 
+			      title: "代码块",
+			      icon: "glyphicon glyphicon-stop",
+			      callback: function(e){
+			    	 var txt=e.getContent();
+			    	 txt+="\r```\r system.out.print(\"这里添加代码\"); \r```\r";
+			    	 e.setContent(txt);
+			    	 //funpreview(e);
+			      }
+			    }]
+			};
+
+		$.fn.markdown.messages['cn'] = {
+			    'Bold': "加粗",
+			    'Italic': "斜体",
+			    'Heading': "标题",
+			    'URL/Link': "超链接",
+			    'Image': "图片",
+			    'List': "序列",
+			    'Preview': "预览",
+			    'strong text': "加强",
+			    'emphasized text': "强调的文本",
+			    'heading text': "标题文本",
+			    'enter link description here': "在这里输入链接描述",
+			    'Insert Hyperlink': "插入超链接",
+			    'enter image description here': "在这里输入图像描述",
+			    'Insert Image Hyperlink': "提供Hyperlink形象",
+			    'enter image title here': "在这里输入标题图片",
+			    'list text here': "列表的文本在这里",
+			    'Unordered List':"取消序列",
+			    'Ordered List':"序列",
+			    'Code':"代码",
+			    'Quote':"引用"
+			 };
+
+		$('#target-editor-twitter').markdown({ 
+			language:'cn',
+			additionalButtons: [[bm_userres,bm_facebox,bm_codeblack]],
+			//hiddenButtons:'cmdPreview',
+			footer:'<small id="twitter-counter" class="text-success">3000 个字符</small>',
+			onChange:function(e){
+				funpreview(e);
+			},
+			onFocus: function(e) {
+				funpreview(e);
+			  },
+		   onBlur: function(e) {
+			   funpreview(e);
+		   }
+		});
+
+		function funpreview(e){
+			var content =marked(e.getContent()),
+			content_length = (content.match(/\n/g)||[]).length + content.length
+			if (content_length > 3000) {
+				$('#twitter-counter').removeClass('text-success').addClass('text-danger').html(content_length-3000+' 个字符.')
+			} else {
+				$('#twitter-counter').removeClass('text-danger').addClass('text-success').html(3000-content_length+' 个字符.')
+			}
+			$('pre code').each(function(i, block) {
+			    hljs.highlightBlock(block);
+			  });
+			$('table').each(function(i) {
+			    $(this).addClass("table table-bordered table-hover nth-child table-condensed");
+			  });
+			
+			emojify.run();
+			//var div = document.getElementById('twitter-footer');
+			//div.scrollTop = div.scrollHeight;
+		}
+		function facecallback(key){
+			var content=$("#target-editor-twitter").val();
+			 content+=" "+key;
+			$("#target-editor-twitter").val(content);
+			$("#target-editor-twitter").focus();
+		}
+		function callfun(data){
+			var content=$("#target-editor-twitter").val();
+			 content+="![](http://res.51so.info/"+data+" \"\")";
+			$("#target-editor-twitter").val(content);
+			$("#target-editor-twitter").focus();
+		}
+		$("#target-editor-twitter").focus();
+</script> 
+<script >hljs.initHighlightingOnLoad();</script>  
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>资源列表</title>
+<#include "/admin/include/bootstrap.ftl">
+<!--viewer-->
+<link rel="stylesheet" href="${webroot}/www/viewer/viewer.min.css" type="text/css">
+<script type="text/javascript" src="${webroot}/www/viewer/viewer.min.js"></script>  
+<script src="${webroot}/www/blog/js/pub/blog-alert.js"></script> 
+<style type="text/css">
+.thumbnail:HOVER {
+	border:solid 1px #99CCFF;
+}
+.thumbnail{
+	cursor: pointer;
+	overflow: hidden;
+}
+.thumbnail_checked{
+	border:solid 1px #CCFF99;
+	background-color: #CCFFCC;
+}
+.thumbnail .caption {
+    padding: 9px;
+    color: #333;
+    white-space: nowrap;
+}
+</style>
+</head>
+<body>
+<#include "/admin/include/dashboard-start.ftl">
+<div class="row" style="padding-left: 10px;">
+	<form class="form-inline" method="post" action="blogres_list.do"  id="sform">
+		  <div class="form-group">
+		    <input type="text" value="${resname!}" name="resname" class="form-control" id="keyword_txt" placeholder="关键字">
+		  </div>
+		  <div class="btn-group">
+		  <button type="submit" class="btn btn-default" data-toggle="tooltip" title="根据您输入的关键字进行查询" data-placement="bottom">
+		  <span class="glyphicon glyphicon-search"></span>&nbsp;查询</button>
+		  <button type="button" class="btn btn-default" onclick="fundel();" data-toggle="tooltip" title="删除您选中的资源" data-placement="bottom">
+		  <span class="glyphicon glyphicon-remove"></span>&nbsp;删除</button>
+		  </div>
+	</form>
+</div>
+<div class="row" style="margin-top: 5px;">
+<@BlogRes page="${page!}"  resname="${resname!}"  websiteid="${AdminWebSite.id}"  limit="8">
+ 	<#list blogres_lis as res> 
+		<div class="col-sm-4 col-md-3">
+		      <div class="thumbnail" onclick="filecheck(this);" pk="${res.resKey}">
+		      	<#if res.resType?contains("image")>
+		         	<img  src="http://res.51so.info/${res.resKey}_admin.res.manage"  class="image img-rounded" style="width:350px;height: 210px;"> 
+		         <#else>
+		         	<div style="width:350px;height: 210px;background-image: url('${webroot}/www/skin/pink/img/bg2.jpg');"></div>
+		         </#if>
+		         <div class="caption">
+		            	 <h3><a href="javascript:rename('${res.resName}','${res.id}');"><@SubString value="${res.resName}" limit="10" defval="未命名"></@SubString></a></h3>
+			            <p>${res.resKey}</p>
+			            <p>${res.resDate}&nbsp;${res.resType}</p>
+		         </div>
+		      </div>
+		   </div>
+   </#list>
+</@BlogRes>
+</div>
+    <#assign url="${admin_blogprefix}/admin/blogres_list.do?resname=${resname!}&">
+    <#include "/admin/include/page.ftl">
+   <#include "/admin/include/dashboard-end.ftl">
+    
+</body>
+<script type="text/javascript">
+$("#blog_res_li").addClass("nav-active");
+$('#collapseThree').collapse('show');
+$(function () { 
+	$("[data-toggle='tooltip']").tooltip();
+	bootbox.setLocale("zh_CN"); 
+		$('.image').viewer(); 
+	});
+function allchk(obj){
+	var chk=obj.checked;
+	if(chk){
+		$("input[name='res_chk']").prop("checked",true);
+	}else{
+		$("input[name='res_chk']").prop("checked",false); 
+	}
+}
+function fundel(){
+	var chks=getCheckItems();
+	if(chks.length==0){blogAlert.alert("请选择要删除的资源","red");return;}
+	blogAlert.confirm('你确定要删除选中记录吗？',"blue", function(result){
+		if(result){
+			$('body').showLoading();
+			$.ajax({
+				   type: "post",
+				   url: "${admin_blogprefix}/admin/del_blogres.do",
+				   data: {keys:chks},
+				   dataType:'json',
+				   success: function(data){
+					   $('body').hideLoading();
+					   if('msg' in data){
+						   blog.nofify("成功删除资源："+data.affected+"("+data.msg+")","success"); 
+					   }else if(data.affected!=chks.length){
+						   blog.nofify("选中"+chks.length+"条,成功删除："+data.affected+"条","warning"); 
+					   }else{
+						   blogAlert.notify("选中"+chks.length+"条,成功删除："+data.affected+"条","success");
+						   setTimeout(function(){$("#sform").submit()},1000);
+					   }
+				   }
+				});
+		}
+	});
+}
+function filecheck(obj){
+	if($(obj).hasClass('thumbnail_checked')){
+		$(obj).removeClass("thumbnail_checked");
+	}else{
+		$(obj).addClass("thumbnail_checked");
+	}
+}
+function getCheckItems(){
+	var ids=new Array;
+	$(".thumbnail_checked").each(function(index,dom){
+		ids.push($(dom).attr("pk"));
+	});
+	return ids;
+}
+function rename(name,id){
+	bootbox.prompt({
+	    title: "重命名",
+	    value: name,
+	    callback: function(result) {
+	    	if(null==result)return;
+	    	$('body').showLoading();
+	    	$.ajax({
+				   type: "post",
+				   url: "${admin_blogprefix}/admin/res_rename.do",
+				   data: {id:id,name:result},
+				   //dataType:'json',
+				   success: function(data){
+					   $('body').hideLoading();
+					  if(data=="success"){
+						  blogAlert.notify("操作成功！","success");
+						  setTimeout(function(){$("#sform").submit()},1000);
+					  }else{
+						  bootbox.alert("操作失败！"+data);
+					  }
+				   }
+				});
+	    }
+	}); 
+}
+</script>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE HTML> 
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>评论管理</title>
+<#include "/admin/include/bootstrap.ftl">
+<script src="//cdn.bootcss.com/marked/0.3.6/marked.min.js"></script>
+<link rel="stylesheet" href="http://cdn.bootcss.com/highlight.js/8.0/styles/monokai_sublime.min.css">
+<script src="http://cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>
+<style type="text/css">
+.comments{  
+    border:0;  
+    background-color:transparent;  
+    /*scrollbar-arrow-color:yellow;  
+    scrollbar-base-color:lightsalmon;  
+    overflow: hidden;*/  
+    color: #666464;  
+    height: auto;  
+}  
+.clearfix{list-style: none; border-bottom: 1px #eee solid;padding: 15px 0;}
+.user_img{float:left; margin-right:20px; width:40px; height:40px;}
+.user_img img{width:40px; height:40px; border-radius:50px;-webkit-border-radius:50px;-moz-border-radius:50px;-khtml-border-radius:50px;}
+.cot_con{ float:left; width:580px;}
+.cot_con .info{ padding:0; border:none; background:none;}
+.cot_con .info .user_name{ font-size:14px; font-weight:bold;}
+.time{margin-left: 5px;color: #999;}
+.comment_content{word-wrap: break-word;}
+.someone_img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50px;
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    -khtml-border-radius: 50px;
+}
+</style>
+</head>
+<body>
+<#include "/admin/include/dashboard-start.ftl">
+	<form class="form-inline" method="post" action="article_comments.do"  id="sform">
+	  <div class="form-group">
+	    <label for="keyword_txt">关键字</label>
+	    <input type="text" value="${title!}" name="title" class="form-control" id="keyword_txt" placeholder="关键字">
+	  </div>
+	  <div class="btn-group">
+	  <button type="submit" class="btn btn-default" data-toggle="tooltip" title="根据您输入的关键字进行查询" data-placement="bottom">
+	  <span class="glyphicon glyphicon-search"></span>&nbsp;查询</button>
+	  <button type="button" class="btn btn-default" onclick="fundel();" data-toggle="tooltip" title="删除您选中的文章" data-placement="bottom">
+	  <span class="glyphicon glyphicon-remove"></span>&nbsp;删除</button>
+	  </div>
+</form>
+		<@ArticleComment page="${page!}" limit="5" articleId="${articleId!}" website="${AdminWebSite.id}">
+		<ul id="comments">
+   		<#list article_comment_lis as comment> 
+   			<li class="clearfix"> 
+   			<div class="user_img"><input type="checkbox" name="ar_chk" value="${comment.id}"></div>
+   			  <div class="user_img">
+				<img src="${comment.CUser.userProfileImg}" alt="${comment.CUser.userScreenName!}"/>
+			  </div>
+			
+			  <div class="cot_con">
+			 	<div class="info">
+			      <span class="user_name"><a target="_blank" rel="nofollow" href="${comment.CUser.sinaProfileUrl}">${comment.CUser.userScreenName}</a></span>
+			      <span class="time"><span class="glyphicon glyphicon-time"></span>&nbsp;${comment.CDatetime}</span><br>
+			       <a href="http://${host}/${AdminWebSite.websiteName}/entry/${comment.article.id}.html#comments" target="_blank">${comment.article.articleTitle}</a>
+			       <a href="javascript:reply('${comment.article.id}','<#if comment.CUser??>${comment.CUser.id}</#if>');" title="回复"><span class="glyphicon glyphicon-comment"></span></a>
+			    </div>
+			    <#if comment.CTosomeone??&&comment.CTosomeone.id!="">
+			    	<a href="${comment.CTosomeone.sinaProfileUrl}">@<img src="${comment.CTosomeone.userProfileImg}" alt="${comment.CTosomeone.userScreenName}" class="someone_img"/>${comment.CTosomeone.userScreenName}</a>
+			    </#if>
+			    <div class="comment_content">${comment.CText}</div>
+			  </div>
+			</li>  
+   		</#list>
+   		</ul>
+		</@ArticleComment>
+		
+    <#assign url="${admin_blogprefix}/admin/article_comments.do?">
+    <#include "/admin/include/page.ftl">
+    <#include "/admin/include/dashboard-end.ftl">
+</body>
+<script type="text/javascript">
+$("#blog_comment_li").addClass("nav-active");
+$('#collapseOne').collapse('show');
+$(function () { $("[data-toggle='tooltip']").tooltip(); bootbox.setLocale("zh_CN");  });
+function allchk(obj){
+	var chk=obj.checked;
+	if(chk){
+		$("input[name='ar_chk']").prop("checked",true);
+	}else{
+		$("input[name='ar_chk']").prop("checked",false); 
+	}
+}
+
+
+function reply(aid,userid){
+	var articleid=aid;
+	var someoneid=userid;
+	bootbox.prompt({
+	    title: "回复评论",
+	    inputType: 'textarea',
+	    callback: function (result) {
+	    	if(result){
+	    		$('body').showLoading();
+		    	$.ajax({
+		    		   type: "post",
+		    		   url: "${admin_blogprefix}/font/commentReply.do",
+		    		   data: {article:articleid,text:result,someone:someoneid},
+// 		    		   someone, article, text, model,
+		    		   success: function(msg){
+		    			   $('body').hideLoading();
+		    			   if(msg=='success'){
+		    				   $("#sform").submit();
+		    			   }else{
+		    				   bootbox.alert(msg);
+		    			   }
+		    		     
+		    		   }
+		    		});
+	    	}
+	    }
+	});
+}
+//成功删除
+function fundel(){
+	var chks=$("input[name='ar_chk']:checked");
+	if(chks.length==0){bootbox.alert("请选择要删除的评论！");return;}
+	bootbox.confirm('你确定要删除选中记录吗？', function(result){
+		if(result){
+			$('body').showLoading();
+			var lis=new Array();
+			for(var i=0;i<chks.length;i++){
+				lis.push(chks[i].value);
+			}
+			$.ajax({
+				   type: "post",
+				   url: "${admin_blogprefix}/admin/delArticleComments.do",
+				   data: {ids:lis},
+				   success: function(msg){
+					   $('body').hideLoading();
+					   bootbox.alert(msg);
+					   if(msg.indexOf("成功")!=-1){
+						   $("#sform").submit();
+					   }
+				     
+				   }
+				});
+		}
+	});	
+}
+var renderer_zai30 = new marked.Renderer();
+marked.setOptions({
+    renderer: renderer_zai30,
+    gfm: true,
+    tables: true,
+    breaks: true,//回车换成br
+    pedantic: false,
+    sanitize: true,
+    smartLists: true,
+    smartypants: false
+});
+$('.comment_content').each(function(){
+	$(this).html(marked($(this).text().trim()));
+});
+</script>
+<script >hljs.initHighlightingOnLoad();</script> 
+</html>

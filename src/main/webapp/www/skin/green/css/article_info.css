@@ -1,0 +1,205 @@
+#menu{background-color: white;border-bottom: solid #e7e7e7 1px;font-family: 微软雅黑;}
+#menu li a{color:#333;font-size: 15px;}
+.index-article-list-lable{
+	color: #ec6149!important;
+    padding: 0 8px;
+    font-size: 12px;
+    height: 30px;
+    line-height:26px;
+    white-space: nowrap;
+    border: solid 1px #ec6149;
+    border-radius:4px;
+}
+.index-article-list-lable:HOVER{text-decoration: none;background-color: rgba(236,97,73,.05);}
+.article_content{background-color: white;border-radius:10px;padding: 30px;overflow:hidden;}
+.title{font-size: 34px;font-weight: 700;line-height: 1.3;margin-bottom:20px; font-family: -apple-system,SF UI Display,Arial,PingFang SC,Hiragino Sans GB,Microsoft YaHei,WenQuanYi Micro Hei,sans-serif;}
+.article_content blockquote {
+		    background: #ddd;
+		    border-left: 5px solid #ccc;
+		    padding: 15px 20px;
+		    margin-top: 10px;
+		    border-left: 5px solid #657b83;
+		    background: #f6f6f6;
+		}
+#article-content-div{min-height: 300px;word-wrap: break-word;}
+.clearfix{list-style: none; border-bottom: 1px #eee solid;padding: 15px 0;}
+.comment_content{word-wrap: break-word;color:#333;font-family: 微软雅黑;padding: 5px;}
+.comment_content img{max-height: 220px;max-width: 160px;}
+.comment_type_ul{list-style:none;}
+.comment_type_ul li{float:left;margin-left:6px;}
+.comment_type_ul li span{
+    display: block;
+    margin: 5px 0;
+    padding: 0 10px;
+    border-left-width: 1px;
+    border-left-style: solid;
+    border-color: #d9d9d9;
+    line-height: 10px;
+}
+.comment_type_ul li span a{color: #333; text-decoration: none;}
+.comment_type_ul li span a:hover{color: red; }
+.someone_img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50px;
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    -khtml-border-radius: 50px;
+}
+.user_img{float:left; margin-right:20px; width:60px; height:60px;}
+.user_img img{width:60px; height:60px; border-radius:60px;-webkit-border-radius:60px;-moz-border-radius:60px;-khtml-border-radius:60px;}
+.cot_con{ float:left;width:600px;}
+.cot_con .info{ padding:0; border:none; background:none;}
+.cot_con .info .user_name{ font-size:14px; font-weight:bold;}
+.comment_toolbar{list-style: none;}
+.comment_toolbar li{display: inline;float: right;margin-right:9px;border: none;width: 40px;}
+.comment_toolbar li a {text-decoration: none;color:gray;}
+
+.msgboard_reply_list{
+	list-style: none;
+	background-color: #EEEEEE;
+	padding: 10px;
+	margin-top: 20px;
+}
+.msgboard_reply_list li{
+	border-bottom: solid 1px #d9d9d9;
+	padding-top: 5px;
+	font-family: 微软雅黑;
+}
+.msgboard_reply_list li img{
+	max-width: 90px;
+	max-height: 120px;
+	
+}
+.msg_board_reply_footer{color: #808080;line-height: 16px;padding: 6px;}
+
+.reply_toolbar{list-style: none;}
+.reply_toolbar li{display: inline;float: right;margin-right:9px;border: none;width: 40px;}
+.reply_toolbar li a {text-decoration: none;color:gray;}
+.reply_toolbar li a span{cursor: pointer;}
+.msg_board_reply_footer{color: #808080;line-height: 16px;padding: 6px;}
+.msg_board_readmore{color:#d9534f;font-weight: bold;}
+.msg_board_readmore:hover{color:#d9534f;text-decoration: underline;cursor: pointer;}
+
+.article-nav-box{background-color:white;position: fixed;bottom: 20px;right:10px;width:40px;}
+.article-nav-box h3{font-size: 20px;text-align: center;font-family: 微软雅黑;}
+.article-nav-box h3 span{font-size: 12px;color:blue;cursor: pointer;}
+.article-nav{background-color: white;padding: 10px;max-height: 500px;overflow-y:auto;color: gray;}
+.article-nav ol{padding: 0px;}
+.article-nav ol li{line-height: 25px;font-size: 13px;list-style: none;max-width: 210px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;}
+
+.article-nav-box-footer ul{list-style: none;padding: 0px;margin-top: 10px;border: solid 1px #DDDDDD;}
+.article-nav-box-footer ul li{font-size: 15px;text-align: center;margin-top: 10px;padding: 5px;cursor: pointer;line-height: 20px;font-family: 微软雅黑;}
+.article-nav-box-footer ul li:HOVER {
+	color:red;
+}
+.emoji { width: 1.5em; height: 1.5em; display: inline-block; /*margin-bottom: -.25em;*/ background-size: 1.5em; }
+.pager li a{max-width:220px; text-overflow: ellipsis;overflow: hidden;white-space: nowrap;}
+.similar-articles{font-family: 微软雅黑;font-size: 13px;padding: 0px;list-style: none;}
+.similar-articles li{padding-top: 8px;max-width: 250px;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;}
+.similar-articles a {color: #333;}
+
+
+
+
+
+/**comment from */
+.new-comment {
+    position: relative;
+    margin-left: 48px;
+}
+.avatar {
+    width: 32px;
+    height: 32px;
+    display: block;
+    cursor: pointer;
+}
+.avatar {
+    position: absolute;
+    left: -48px;
+}
+.avatar img {
+    width: 100%;
+    height: 100%;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+}
+.new-comment textarea {
+    padding: 10px 15px;
+    width: 100%;
+    height: 80px;
+    font-size: 13px;
+    border: 1px solid #dcdcdc;
+    border-radius: 4px;
+    background-color: hsla(0,0%,71%,.1);
+    resize: none;
+    display: inline-block;
+    vertical-align: top;
+    outline-style: none;
+}
+.write-function-block {
+    height: 50px;
+}
+.new-comment .hint {
+    float: left;
+    margin: 20px 0 0 20px;
+    font-size: 13px;
+    color: #969696;
+}
+#sinalogin-btn{
+	cursor:pointer;
+	float: right;
+	margin-top: 13px;
+}
+.btn-send {
+    float: right;
+    width: 78px;
+    margin: 10px 0;
+    margin-right:5px;
+    padding: 8px 18px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    color: #fff!important;
+    background-color: #42c02e;
+    cursor: pointer;
+    outline: none;
+    display: block;
+}
+.btn-cancel {
+    float: right;
+    width: 78px;
+    margin: 10px 0;
+    margin-right:5px;
+    padding: 8px 18px;
+    font-size: 16px;
+    border: none;
+    border-radius: 4px;
+    color: #fff!important;
+    background-color: #ce4844;
+    cursor: pointer;
+    outline: none;
+    display: block;
+}
+.new-comment .cancel {
+    float: right;
+    margin: 18px 30px 0 0;
+    font-size: 16px;
+    color: #969696;
+}
+.new-comment .emoji {
+    float: left;
+    margin-top: 14px;
+}
+.emoji-modal-wrap a {cursor: pointer;background-image: url("/www/blog/img/face.png");}
+.emoji i {
+    font-size: 20px;
+    color: #969696;
+}
+.iconfont {
+    font-size: inherit;
+    font-style: normal;
+    font-weight: 400!important;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}

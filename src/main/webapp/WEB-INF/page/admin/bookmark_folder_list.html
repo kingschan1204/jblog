@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>书签包管理</title>
+    <meta name="keywords" content="keyword1,keyword2,keyword3">
+    <meta name="description" content="this is my page">
+    <meta name="content-type" content="text/html; charset=UTF-8">
+	<#include "/admin/include/bootstrap.ftl">
+  </head>
+  <body>
+  <#include "/admin/include/dashboard-start.ftl">
+  <!-- 模态框（Modal） -->
+<div class="modal fade" id="categoryModal" tabindex="-1" role="dialog" aria-labelledby="categoryModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close"  data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="categoryModalLabel">书签包编辑</h4>
+         </div>
+         <div class="modal-body">
+            	<form class="form-horizontal" method="post"  id="bookfolderform">
+					<div class="form-group">
+					    <label  class="col-sm-2 control-label">书签包</label>
+					    <div class="col-sm-8">
+					     	<input id="bookmarkid" type="hidden"/>
+					      <input type="text"  name="bookmarksName" id="bookmarksName" class="form-control"  placeholder="书签包名称">
+					    </div>
+					 </div>
+				</form>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default"  data-dismiss="modal">关闭</button>
+            <button type="button" class="btn btn-primary" onclick="subcategory();"> 提交</button>
+         </div>
+      </div><!-- /.modal-content -->
+</div><!-- /.modal -->
+</div>
+<!-- 模态框（Modal） -->
+<div class="btn-group">
+	<button type="button" class="btn btn-default" onclick="addcategory();"  data-toggle="tooltip" title="新增一个分类" data-placement="bottom">
+	<span class="glyphicon glyphicon-plus"></span>&nbsp;新增</button>
+	<button type="button" class="btn btn-default" onclick="editcategory();"  data-toggle="tooltip" title="保存修改内容" data-placement="bottom">
+	<span class="glyphicon glyphicon-edit"></span>&nbsp;编辑</button>
+	<button type="button" class="btn btn-default" onclick="fundel();" data-toggle="tooltip" title="删除一个分类" data-placement="bottom">
+	<span class="glyphicon glyphicon-remove"></span>&nbsp;删除</button>
+</div>
+<table class="table table-striped table-hover">
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>书签包名</th>
+				<th>备注</th>
+				<th>创建时间</th>
+			</tr>
+		</thead>
+	<@BookMarkFolder page="${page!}"  title="${title!}"  websiteid="${AdminWebSite.id}"   limit="10" >
+   		<#list bookmarkfolder_lis as folder> 
+    		<tr onclick="rowclick(this);">
+    			<td><input type="radio" name="bm_chk" value="${folder.id}"> </td>
+				<td>${folder.bookmarksName}</td>
+				<td>${folder.bookmarksRemark}</td>
+				<td>${folder.bookmarksDatetime}</td>
+			</tr>
+    	</#list>
+    </@BookMarkFolder>
+</table>
+    <#assign url="${admin_blogprefix}/admin/bookmark_folder_list.do?title=${title!}&">
+    <#-- <#include "/admin/include/page.ftl"> -->
+    <#include "/admin/include/dashboard-end.ftl">
+  </body>
+  <script type="text/javascript">
+  $("#bookmark_folder_li").addClass("nav-active");
+  $('#collapseTwo').collapse('show');
+	bootbox.setLocale("zh_CN"); 
+	function addcategory(){
+		$("input[name='categroy_radio']").prop("checked",false);
+		 $('#bookfolderform')[0].reset();
+// 		 $('#bookfolderform').data('bootstrapValidator').validate();
+ 		 $('#bookfolderform').data('bootstrapValidator').resetForm();
+		$('#categoryModal').modal('show');
+	}
+function fundel(){
+	var chks=$("input[name='bm_chk']:checked");
+	if(chks.length==0){
+		bootbox.alert("<font style='color:red;'>请选择要删除的数据!</font>");
+		return;
+		}
+	bootbox.confirm('你确定要删除选中记录吗？', function(result){
+		if(result){
+			$.ajax({
+				   type: "post",
+				   url: "${admin_blogprefix}/admin/del_bookmark_folder.do",
+				   data: {id:chks[0].value},
+				   success: function(msg){
+					    alert(msg);
+					 	window.location.reload();
+				     
+				   }
+				});
+		}
+	});
+}
+
+function rowclick(row){
+	$(row.cells[0]).children(":radio").prop("checked",true);
+	$("#bookmarksName").val($(row.cells[1]).text());
+	$("#bookmarkid").val($(row.cells[0]).children(":radio").val());
+}
+$('#bookfolderform').bootstrapValidator({
+    message: 'This value is not valid',
+    feedbackIcons: {
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        validating: 'glyphicon glyphicon-refresh'
+    },
+    fields: {
+    	bookmarksName: {
+            message: '名称不合规则!',
+            validators: {
+                notEmpty: {
+                    message: '请输入名称！'
+                },regexp: {
+                    regexp: /^(\w|[\u4E00-\u9FA5])*$/,//
+                    message: '只能是数字字母中文或者下划线!'
+                }
+            }
+        }
+    }
+});
+function subcategory(){
+	$('#bookfolderform').data('bootstrapValidator').validate();
+	var result=$('#bookfolderform').data('bootstrapValidator').isValid();
+	   if(result){
+		   $.ajax({
+			   type: "post",
+			   url: "${admin_blogprefix}/admin/save_bookmark_folder.do",
+			   data: {bookmarkid:$('#bookmarkid').val(),
+				   bookmarksName:$("#bookmarksName").val()
+				   },
+			   success: function(data){
+				   if(data=="success"){
+					   location.reload();
+				   }else{
+				   		bootbox.alert(data);
+				   }
+			   }
+			});
+	   }else{
+		   bootbox.alert('请按要求填写表单信息!');
+	   }
+}
+function editcategory(){
+	if($("input[name='bm_chk']:checked").length==0){
+		bootbox.alert("<font style='color:red;'>请选择要编辑的数据!</font>");
+	}else{
+	 	$('#categoryModal').modal('show');
+	}
+}
+</script>
+</html>

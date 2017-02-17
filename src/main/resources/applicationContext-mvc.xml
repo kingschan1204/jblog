@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans default-lazy-init="true"
+       xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd           
+			http://www.springframework.org/schema/mvc 
+			http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd 
+            ">
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                    <property name="supportedMediaTypes">
+                        <list>
+                            <value>text/html;charset=UTF-8</value>
+                        </list>
+                    </property>
+                </bean>
+            </list>
+        </property>
+    </bean>
+    <mvc:annotation-driven/>
+    <context:component-scan base-package="com.kingschan.blog.controller">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+    <mvc:default-servlet-handler/>
+    <bean id="viewResolver"
+          class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+        <property name="cache" value="true"/>
+        <property name="prefix" value=""/>
+        <property name="suffix" value=".html"/>
+        <property name="contentType" value="text/html;charset=UTF-8"></property>
+        <property name="requestContextAttribute" value="request"/>
+        <property name="exposeSpringMacroHelpers" value="true"/>
+        <property name="exposeRequestAttributes" value="true"/>
+        <property name="exposeSessionAttributes" value="true"/>
+        <property name="allowSessionOverride" value="true"/>
+        <property name="order" value="0"/>
+    </bean>
+    <bean id="freemarkerConfig"
+          class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
+        <property name="templateLoaderPath" value="/WEB-INF/page/"/>
+        <property name="freemarkerSettings">
+            <props>
+                <prop key="template_update_delay">0</prop>
+                <prop key="default_encoding">UTF-8</prop>
+                <prop key="number_format">0.##########</prop>
+                <prop key="datetime_format">yyyy-MM-dd HH:mm:ss</prop>
+                <prop key="classic_compatible">true</prop>
+                <prop key="template_exception_handler">ignore</prop>
+            </props>
+        </property>
+        <property name="freemarkerVariables">
+            <map>
+                <entry key="webroot" value="http://${app.host}"></entry>
+                <!-- 服务器域名 -->
+                <entry key="host" value="${app.host}"></entry>
+                <!-- freemarker标签 -->
+                <entry key="Category" value-ref="Category"></entry>
+                <entry key="Article" value-ref="Article"></entry>
+                <entry key="Lable" value-ref="Lable"></entry>
+                <entry key="HotArticle" value-ref="HotArticle"></entry>
+                <entry key="Calendar" value-ref="Calendar"></entry>
+                <entry key="BookMark" value-ref="BookMark"></entry>
+                <entry key="BookMarkFolder" value-ref="BookMarkFolderDirective"></entry>
+                <entry key="SubString" value-ref="SubString"></entry>
+                <entry key="BlogRes" value-ref="BlogRes"></entry>
+                <entry key="WebSite" value-ref="WebSiteDirective"></entry>
+                <entry key="HomeArticle" value-ref="HomeArticle"></entry>
+                <entry key="ArticleComment" value-ref="ArticleComment"></entry>
+                <entry key="CountCategory" value-ref="CountCategory"></entry>
+                <entry key="LableArticleItem" value-ref="LableArticleItem"></entry>
+                <entry key="WebSiteCountInfo" value-ref="WebSiteCountInfo"></entry>
+                <entry key="ArticleTimeLineItems" value-ref="ArticleTimeLineItems"></entry>
+                <entry key="ArticleTimeLineNavigate" value-ref="ArticleTimeLineNavigate"></entry>
+                <entry key="TimeSummary" value-ref="TimeSummary"></entry>
+                <entry key="SimilarArticles" value-ref="SimilarArticles"></entry>
+            </map>
+        </property>
+    </bean>
+    <!-- 支持上传文件 -->
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- 设置上传文件的最大尺寸为10GB -->
+        <property name="maxUploadSize">
+            <value>10737418240</value>
+        </property>
+        <!-- 默认编码 -->
+        <property name="defaultEncoding">
+            <value>UTF-8</value>
+        </property>
+        <!-- 上传文件的临时路径 -->
+        <property name="uploadTempDir">
+            <value>upload/temp/</value>
+        </property>
+    </bean>
+    <!-- 映射静态资源 -->
+    <mvc:resources location="/www/" mapping="/www/**"/>
+
+
+</beans>  
+
+

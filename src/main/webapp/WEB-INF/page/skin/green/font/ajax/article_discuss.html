@@ -1,0 +1,14 @@
+<#if error??>
+error
+<#else>
+<#list rows as reply>
+<li>
+<div><a>${reply.CUser.userScreenName}</a>:&nbsp;回复&nbsp;<a>${reply.CTosomeone.userScreenName}</a>${reply.CText}</div>
+<ul class="reply_toolbar">
+	<li><a onclick="blog.articleCommentSupport('${reply.id}',this);"><span class="glyphicon glyphicon-thumbs-up"  data-toggle="tooltip" data-placement="top" title="点赞"  exists="${reply.existsSupport!}" >(${reply.CSupport})</span></a></li>
+	<li><a href="javascript:replyToSomeone('${root}','${reply.CUser.userName}');">回复</a></li>
+</ul>
+<div class="msg_board_reply_footer">${reply.CDatetime}</div>
+</li>
+</#list>
+</#if>

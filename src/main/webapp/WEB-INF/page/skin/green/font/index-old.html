@@ -1,0 +1,206 @@
+<#compress>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>${website.websiteTitle}<#if category??>-${category}<#elseif tag??>-${tag}<#elseif date??>-${date}</#if></title>
+    <meta name="content-type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="${website.websiteKeyword}">
+    <meta property="wb:webmaster" content="af65d85078309c4c" />
+    <#include "${tpath}include/bootstrap.ftl">
+    <link rel="stylesheet" href="/www/skin/green/css/style.css">
+    <style type="text/css">
+<#if device=="Computer">
+.thumbnail{
+    	width: 360px;
+    	height: 550px;
+    	display: inline-table;
+    	float: left;
+    	margin: 6px;
+    	overflow: hidden;
+    	/**强制换行*/
+    	word-break:break-all; 
+　　        word-wrap:break-word;
+		box-shadow: 0 0 4px rgba(0,0,0,.2);
+    }
+    .thumbnail h3 a {color:#428bca;}
+    .thumbnail img{width: 350px;height: 230px;}
+    .thumbnail:HOVER {
+		border: solid 2px #3dccac;
+		color:black;
+	}
+	<#else>
+	.thumbnail{
+	   overflow: hidden;
+      /**强制换行*/
+      word-break:break-all; 
+　　    word-wrap:break-word;
+	}
+	
+</#if>
+</style>
+  </head>
+  <body ng-app="blogsite" ng-controller="blogBindCtrl">
+    <#include "${tpath}include/index-menu.ftl">
+    <div class="container">
+      <div class="row">
+      		<div class="col-md-9">
+      			<div class="row">
+	      			<@Article page="${page!}" category="${category!}" tag="${tag!}" website_id="${website.id}" date="${date!}" limit="12" fulltext="${keyword!}">
+							<#list article_lis as article>
+						<#if device=="Computer">
+							<!-- start -->
+						<div class="plugthumb animated swing" data-toggle="popover" data-placement="top"  data-html="true" data-trigger="hover" 
+						    title="${article.articleTitle}"
+							data-content="
+							<p>分类 :<code>${article.category.categoryName}</code></p>
+							<p>评论: ${article.articleTotalComment}</p>
+							<p>喜欢: ${article.articleLikes}</p>
+							<p>标签:<#list article.lables as lable><span class='label label-danger'>${lable.lableName}</span> </#list></p>
+							">
+						  <div class="tp">
+						    <a href="${blogprefix}/entry/${article.id}.html" target="_blank">
+ 							    	<img class="lazy" src="<#if article.articleCover!="">http://res.51so.info/${article.articleCover}_green.article.conver<#else>/www/skin/green/img/def-bg.jpg</#if>"  width="260" height="158" alt="" style="display: block;" />
+						    </a>
+						  </div>
+						
+						  <div class="plug-info">
+						    <div class="plug-title">
+						      <a href="${blogprefix}/entry/${article.id}.html" target="_blank" title="${article.articleTitle}"><b>${article.articleTitle}</b></a>
+						    </div>
+						
+						    <div class="plug-description">
+						      <@SubString value="${article.articleSummary}" limit="150"></@SubString>
+						    </div>
+						  </div>
+						
+						  <div class="plug-mesg">
+						    <span class="pull-left"><i class="glyphicon glyphicon-eye-open" ></i> ${article.articleViewcount}</span>
+						    <span class="pull-right"> <i class="glyphicon glyphicon-time" ></i> <@SubString value="${article.articlePubtime}" limit="5"></@SubString></span>
+						  </div>
+						</div>
+								<!-- end -->
+								<#else>
+								<div class="col-md-4">
+			        			<div class="thumbnail animated swing" >
+			        				<#if article.articleCover!="">
+										<img src="http://res.51so.info/${article.articleCover}" alt="...">
+										<#else>
+										<img src="www/skin/green/img/def-bg.jpg" alt="...">
+									</#if>
+							      <div class="caption">
+							        <h3><a href="${blogprefix}/entry/${article.id}.html" target="_blank">${article.articleTitle}</a></h3>
+							        <p><@SubString value="${article.articleSummary}" limit="150"></@SubString></p>
+							        <p>
+							    		<#list article.lables as lable>
+								    		<a href="${blogprefix}/tags/${lable.lableName}" ><span class="label label-default">${lable.lableName}</span></a>
+								    	</#list>
+							    	</p>
+							        <!--  -->
+							        <span class="glyphicon glyphicon-time" aria-hidden="true"></span>&nbsp;<@SubString value="${article.articlePubtime}" limit="5"></@SubString>
+									<span class="glyphicon glyphicon-refresh" aria-hidden="true"></span>&nbsp;${article.articleViewcount}
+						    		<a href="${blogprefix}/category/${article.category.categoryName}" target="_blank">
+						    		<span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>&nbsp;${article.category.categoryName}</a>
+						    		<a href="${blogprefix}/entry/${article.id}.html#comments" target="_blank"><span class="glyphicon glyphicon-comment"></span>
+						    		${article.articleTotalComment}</a>
+							      </div>
+							    </div>
+							   </div>
+						</#if> 
+			    	</#list>
+			    </@Article>
+      			</div>
+				<div class="row"><#include "${tpath}include/page.ftl"></div>
+      		</div>
+      	<div class="col-md-3">
+	      	<div class="row summary_box">
+		      	<div class="row" >
+		      		<div class="col-xs-3"><a href="${blogprefix}/article_timeline">{{blogsite.articles}}</a></div>
+		      		<div class="col-xs-3"><a href="${blogprefix}/article_lis">{{blogsite.categorys}}</a></div>
+		      		<div class="col-xs-3"><a href="${blogprefix}/lable_lis">{{blogsite.lables}}</a></div>
+		      		<div class="col-xs-3"><a>{{blogsite.comments}}</a></div>
+		      	</div>
+		      	<div class="row" style="font-size: 16px;">
+		      		<div class="col-xs-3">文章</div>
+		      		<div class="col-xs-3">分类</div>
+		      		<div class="col-xs-3">标签</div>
+		      		<div class="col-xs-3">评论</div>
+		      	</div>
+	      	</div>
+      		<div class="row summary_box" style="margin-top: 10px;">
+					<form class="navbar-form navbar-left" method="get" action="${blogprefix}/query">
+		             <div class="input-group">
+		             <input type="text" class="form-control" name="q" placeholder="Search" value="${fulltext!}">
+				      <div class="input-group-btn">
+				        <button type="submit" class="btn btn-default" ><span class="glyphicon glyphicon-search"></span></button>
+				      </div><!-- /btn-group -->
+				    </div><!-- /input-group -->
+		          </form>
+	      	</div>
+      				        
+      				         
+      	<div class="row">
+		      <!-- read sort -->
+		      <div class="right-navbox animated swing" id="readSort">
+		      		<@HotArticle website_id="${website.id}" limit="10" >
+			  			<h3>阅读排行</h3>
+			  			<ul>
+				   		<#list article_lis as article> 
+				   			<li>
+				    		<a href="${blogprefix}/entry/${article.id}.html#comments" target="_blank"  title="${article.articleTitle}-(${article.articleViewcount})" >
+				    			${article.articleTitle}
+				    		</a>
+				    		</li>
+				    	</#list> 
+				    	</ul>
+				    </@HotArticle>
+		      </div>
+		      <!-- end read sort -->
+		      
+	      </div>
+	      <div class="row">
+		      <div class="right-navbox animated swing" id="commentSort">
+		      	  <h3>评论排行</h3>
+				  <@Article  website_id="${website.id}"  limit="10" orderby="a.articleTotalComment desc">
+				  		<ul>
+				   		<#list article_lis as article> 
+				   			<li>
+				    		<a href="${blogprefix}/entry/${article.id}.html#comments" target="_blank" title="${article.articleTitle}-(${article.articleTotalComment})" >
+				    			${article.articleTitle}
+				    		</a>
+				    		</li>
+				    	</#list> 
+				    	</ul>
+				    </@Article>
+			 </div>
+	      </div>
+      	<div class="row">
+			 <!-- start -->
+			<div class="right-navbox" style="padding-left:30px;padding-right:30px;">
+			  <h3>热门标签</h3>
+			  <div>
+			   <@Lable website_id="${website.id}" limit="30">
+				   		<#list lable_lis as lable >
+				   			<a href="${blogprefix}/tags/${lable.lableName}" class="index-lable"  title="${lable.lableName}">${lable['lableName']}</a>
+				    	</#list> 
+		    	</@Lable>
+		     </div>
+			 <!-- end -->
+	      </div>
+      </div>
+      <!-- end col-3 -->
+      </div>
+    </div> 
+</div><!-- /container -->
+    <script type="text/javascript">
+  $("#menu_home").addClass("active");
+  $("[data-toggle='tooltip']").tooltip(); bootbox.setLocale("zh_CN"); 
+  $("[data-toggle='popover']").popover();
+  $("#readSort ul li:last").css({"border":"none"});
+  $("#commentSort ul li:last").css({"border":"none"});
+  </script>
+    <#include "${tpath}include/footer.ftl">
+</body>
+</html>
+</#compress>

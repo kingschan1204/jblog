@@ -1,0 +1,312 @@
+<#compress>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>${website.websiteTitle}-${article.articleTitle!}</title>
+    <meta name="keywords" content="<#list article.lables as lable>${lable.lableName}<#if lable_has_next>,</#if></#list>">
+    <meta name="description" content="${article.articleSummary!}">
+    <meta name="content-type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">  
+	<#include "${tpath}include/bootstrap.ftl">
+	<script src="//cdn.bootcss.com/marked/0.3.6/marked.min.js"></script>
+    <link rel="stylesheet" href="${webroot}/www/skin/green/css/article_info.css${version}">
+    <#if article.articleAllowcomments>
+    <!-- github.min.css googlecode.min.css xcode.min.css vs.min.css  foundation.min.css dark.min.css monokai.min.css-->
+	<link rel="stylesheet" href="http://cdn.bootcss.com/highlight.js/8.0/styles/foundation.min.css">
+	</#if>
+	<script src="http://cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>
+	<script src="http://${host}/www/emojify/js/emojify.min.js"></script>
+	<script src="${webroot}/www/blog/js/pub/blog-alert.js"></script> 
+	<script type="text/javascript" src="${webroot}/www/admin/js/blog.js${version}"></script>
+	<link href="${webroot}/www/blog/plugs/zoomify/zoomify.min.css" rel="stylesheet">
+	<script type="text/javascript" src="${webroot}/www/blog/plugs/zoomify/zoomify.min.js"></script>
+	<!-- Core CSS file -->
+	<link rel="stylesheet" href="${webroot}/www/blog/plugs/photoswipe/photoswipe.css"> 
+	<link rel="stylesheet" href="${webroot}/www/blog/plugs/photoswipe/default-skin/default-skin.css"> 
+	<script src="${webroot}/www/blog/plugs/photoswipe/photoswipe.min.js"></script> 
+	<script src="${webroot}/www/blog/plugs/photoswipe/photoswipe-ui-default.min.js"></script>
+	<script src="${webroot}/www/blog/plugs/scrollfix/scrollfix.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="${webroot}/www/bootstrap/bootstrap-popover-x/bootstrap-popover-x.min.css" />	
+	<script src="${webroot}/www/bootstrap/bootstrap-popover-x/bootstrap-popover-x.min.js"></script>  
+	
+	  
+	<#if device=="Computer">
+	<style type="text/css">
+		#article-content-div p{
+			font-family: 微软雅黑;
+			word-break: break-word;
+	    	font-size: 16px;
+	    	<#if article.articleEditor=="markdown">line-height: 1.7;margin: 0 0 25px;</#if>
+    	}
+    	.zoomify-shadow{background: transparent;}
+	</style>
+	</#if>
+  </head>
+  <body ><!-- style="background-color: #DDDDDD;" -->
+  	<#include "${tpath}include/menu.ftl">
+  	<div class="container">
+		<div class="row" style="margin-top: 50px;">
+	    		<div  class="col-lg-9" style="z-index: 100;">
+	    			<div class="article_content">
+		    			<h1 class="title">${article.articleTitle!}</h1>
+		    			<div class="row" style="margin-bottom: 30px;">
+		    				<div style="width: 70px;display: inline;float: left;"><img width="60" height="60" style="width: 60px;height: 60px;" src="${article.user.userProfileImg}<#if website.user.userProfileImg?index_of("res.51so.info")!=-1>_profile.60X60</#if>" class="img-circle" /></div>
+		    				<div style="margin-top: 5px;font-size: 12px;color: #969696;vertical-align: middle;height: 60px;display: table-cell;">
+		    					<strong style="color: black;">${article.user.userName}</strong> ${article.articlePubtime} 阅读 ${article.articleViewcount} 评论 ${article.articleTotalComment} 喜欢 ${article.articleLikes}<br>
+		    					<#list article.lables as lable><a href="${blogprefix}/tags/${lable.lableName}" class="index-article-list-lable">${lable.lableName}</a>&nbsp;</#list>
+		    				</div>
+		    			</div>
+		    			<div id="article-content-div">${article.articleContent!}</div>
+						<div class="row" style="text-align: center;margin-top: 30px;">
+							<button id="btn_like" data-like="${like}" type="button" class="btn btn-default btn-lg" style="border-radius: 20px;"
+								onclick='blog.articleSupport("${article.id!}",this);'
+								data-toggle="tooltip" data-placement="top" title="喜欢">
+							  <span class="glyphicon glyphicon-heart"></span>&nbsp;${article.articleLikes!}
+							</button>
+						</div>
+						<div>
+		    				<nav>
+							  <ul class="pager">
+							    <li style="float: left;"><#if pre??><a href="${blogprefix}/entry/${pre.id}.html" target="_blank"><span class="glyphicon glyphicon-chevron-left"></span>${pre.articleTitle}</a></#if></li>
+							    <li style="float: right;"><#if next??><a href="${blogprefix}/entry/${next.id}.html" target="_blank"><span class="glyphicon glyphicon-chevron-right"></span>${next.articleTitle} </a></#if></li>
+							  </ul>
+							</nav>
+		    			</div>
+						<#if !article.articleAllowcomments>
+					    	<div class="alert alert-danger" role="alert">博主对此文关闭了评论</div>
+					    	<#else>							    
+							    <form class="new-comment" id="commentForm1" method="post" action="${webroot}/font/articleReplay.do">
+							    	<input type="hidden" name="articleId" id="articleId" value="${article.id!}">
+								    <input type="hidden" name=root id="replyroot" value="">		
+								    <a class="avatar">
+								    <#if BLOG_CURRENT_USER>
+							    			 <img src="${BLOG_CURRENT_USER.userProfileImg}<#if BLOG_CURRENT_USER.userProfileImg?index_of("res.51so.info")!=-1>_profile.40X40</#if>" >
+							    		<#else>
+							    			<img src="${webroot}/www/skin/green/img/article-info-default-profile.png" >
+							    		</#if>
+								    </a> 
+								    <textarea placeholder="写下你的评论..." maxlength="200" name="content" id="discussTxt" ></textarea> 
+								    <div class="write-function-block">
+									    <div class="emoji-modal-wrap">
+									    	<a class="emoji" title="表情"  data-toggle="popover-x" data-target="#myPopover1b" data-placement="top"></a> <!---->
+									    </div> 
+									    
+									    <div class="hint">支持<code>@用户名</code>回复</div>
+									    <#if BLOG_CURRENT_USER>
+							    			 <a class="btn btn-send" onclick="reply();">发送</a>
+									     	<a class="btn btn-cancel" onclick="discussCancel();">取消</a> 
+							    		<#else>
+							    			<img id="sinalogin-btn" src="${webroot}/www/admin/img/sina-loginbtn_03.png" onclick="window.location='/sinawblogin.do'" />
+							    		</#if>
+								     </div>
+							   </form>
+							   <!-- start -->
+				                <!-- PopoverX content -->
+				                <div id="myPopover1b" class="popover popover-default">
+				                    <div class="arrow"></div>
+				                    <h3 class="popover-title"><span class="close pull-right" data-dismiss="popover-x">&times;</span> &nbsp; </h3>
+				                    <div class="popover-content">
+				                         :bowtie:            :smile:            :laughing:            :blush:            :smiley:            :relaxed:            :smirk:            :heart_eyes:            :kissing_heart:           :kissing_closed_eyes:            :flushed:            :relieved:            :satisfied:            :grin:            :wink:            :stuck_out_tongue_winking_eye:            :stuck_out_tongue_closed_eyes:            :grinning:            :kissing:            :kissing_smiling_eyes:            :stuck_out_tongue:            :sleeping:            :worried:            :frowning:            :anguished:            :open_mouth:            :grimacing:            :confused:            :hushed:            :expressionless:            :unamused:            :sweat_smile:            :sweat:            :weary:            :pensive:            :disappointed:           :confounded:            :fearful:            :cold_sweat:            :persevere:            :cry:            :sob:            :joy:            :astonished:            :scream:            :neckbeard:            :tired_face:            :angry:            :rage:            :triumph:            :sleepy:            :yum:            :mask:            :sunglasses:            :dizzy_face:            :imp:            :smiling_imp:            :neutral_face:            :no_mouth:            :innocent:            :alien:            :yellow_heart:            :blue_heart:            :purple_heart:            :heart:            :green_heart:            :broken_heart:            :heartbeat:            :heartpulse:            :two_hearts:            :revolving_hearts:            :cupid:            :sparkling_heart:            :sparkles:            :star:            :star2:            :dizzy:            :boom:            :collision:            :anger:            :exclamation:            :question:            :grey_exclamation:            :grey_question:            :zzz:            :dash:            :sweat_drops:            :notes:            :musical_note:            :fire:            :hankey:            :poop:            :shit:            :+1:            :thumbsup:            :-1:            :thumbsdown:            :ok_hand:            :punch:            :facepunch:            :fist:            :v:            :wave:            :hand:            :open_hands:            :point_up:            :point_down:            :point_left:            :point_right:            :raised_hands:            :pray:            :point_up_2:            :clap:           :muscle:            :metal:            :walking:            :runner:            :running:            :couple:            :family:            :two_men_holding_hands:            :two_women_holding_hands:            :dancer:            :dancers:            :ok_woman:            :no_good:            :information_desk_person:            :raised_hand:            :bride_with_veil:            :person_with_pouting_face:            :person_frowning:            :bow:            :couplekiss:            :couple_with_heart:            :massage:            :haircut:            :nail_care:            :boy:            :girl:            :woman:            :man:            :baby:            :older_woman:            :older_man:            :person_with_blond_hair:            :man_with_gua_pi_mao:            :man_with_turban:            :construction_worker:            :cop:            :angel:            :princess:            :smiley_cat:            :smile_cat:            :heart_eyes_cat:            :kissing_cat:            :smirk_cat:            :scream_cat:            :crying_cat_face:            :joy_cat:            :pouting_cat:            :japanese_ogre:            :japanese_goblin:            :see_no_evil:            :hear_no_evil:            :speak_no_evil:            :guardsman:            :skull:            :feet:            :lips:            :kiss:            :droplet:            :ear:            :eyes:            :nose:            :tongue:            :love_letter:            :bust_in_silhouette:            :busts_in_silhouette:            :speech_balloon:            :thought_balloon:           
+				                    </div>
+				                    
+				                </div>
+							   <!-- end -->
+							  <div id="discussPreview"></div>   
+					    </#if>
+		    			<!-- comment -->
+		    			<div class="row" style="padding: 30px;" id="commentDiv">
+					    		<p id="commentForm"><b>共${page.total}条评论</b></p>	
+					    		<#if (page.total>0)>
+					    		<div class="row">
+					    		<ul class="comment_type_ul">
+					    			<li><span><a id="ctl_default" data-toggle="tooltip" data-placement="top" title="全部评论" href="${blogprefix}/entry/${article.id}.html?model=default#commentDiv">全部</a></span></li>
+					    			<li><span><a id="ctl_hot" data-toggle="tooltip" data-placement="top" title="热门评论(点赞多的)" href="${blogprefix}/entry/${article.id}.html?model=hot#commentDiv">热门</a></span></li>
+					    			<li><span><a id="ctl_aboutme" data-toggle="tooltip" data-placement="top" title="@我的or我@的" href="${blogprefix}/entry/${article.id}.html?model=aboutme#commentDiv">与我有关</a></span></li>
+					    		</ul>
+					    		</div>
+					    		</#if>
+					    		<ul id="comments">
+					    		<#list article_comment_lis as comment> 
+					    			<li class="clearfix" id="${comment.id}"> 
+					    			  <div class="user_img">
+					    			  		<a target="_blank" rel="nofollow" href="${comment.CUser.extendUserUrl}">
+											<img src="${comment.CUser.userProfileImg}<#if comment.CUser.userProfileImg?index_of("res.51so.info")!=-1>_profile.60X60</#if>" alt="${comment.CUser.userScreenName}" data-toggle="tooltip" data-placement="top" title="${comment.CUser.userScreenName}"/>
+											</a>
+									  </div>
+									  <div class="cot_con">
+									 	<div class="info">
+									      <span class="user_name"><a target="_blank" rel="nofollow" href="${comment.CUser.extendUserUrl}">${comment.CUser.userScreenName}</a></span>
+									      <span class="time"><span class="glyphicon glyphicon-time"></span>&nbsp;${comment.CDatetime}</span>
+									    </div>
+									    <#if comment.CTosomeone??&&comment.CTosomeone.id!="">
+									    	<a href="${comment.CTosomeone.extendUserUrl}" target="_blank">@<img src="${comment.CTosomeone.userProfileImg}<#if comment.CTosomeone.userProfileImg?index_of("res.51so.info")!=-1>_profile.40X40</#if>" alt="${comment.CTosomeone.userScreenName}" class="someone_img"/>${comment.CTosomeone.userScreenName}</a>
+									    </#if>
+									    <div class="comment_content">${comment.CText}</div>
+									    	<ul class="comment_toolbar">
+									    		<li><a onclick="blog.articleCommentSupport('${comment.id}',this);"><span class="glyphicon glyphicon-thumbs-up"  data-toggle="tooltip" data-placement="top" title="点赞"  exists="${comment.existsSupport!}"  >(${comment.CSupport})</span></a></li>
+											   <#if article.articleAllowcomments&&comment.CUser??&&BLOG_CURRENT_USER??&&comment.CUser.id!="">
+										  			<li><a href="javascript:replyToSomeone('${comment.id}','${comment.CUser.userName}');">回复</a></li>
+											   </#if>
+											   <#if BLOG_CURRENT_USER??&&BLOG_CURRENT_USER.id==comment.CUser.id>
+												  <li><a onclick="javascript:blog.delArticleComment('${comment.id}');">删除</a></li>
+											   </#if>
+											   </ul>
+									    <!-- replys -->
+									    <#if (comment.CReplyTotal>0)>
+										    <div class="row">
+										     <ul class="msgboard_reply_list">
+													  <#list page.map[comment.id] as reply>
+								    					<li>
+								    						<div><a>${reply.CUser.userScreenName}</a>:
+								    						<#if reply.CTosomeone??&&reply.CTosomeone.id !=comment.CUser.id>
+								    							&nbsp;回复&nbsp;<a>${reply.CTosomeone.userScreenName}</a>
+								    						</#if>
+								    						${reply.CText}</div>
+								    						<ul class="reply_toolbar">
+									    						<li><a  onclick="blog.articleCommentSupport('${reply.id}',this);"><span class="glyphicon glyphicon-thumbs-up"  data-toggle="tooltip" data-placement="top" title="点赞"  exists="${reply.existsSupport!}"  >(${reply.CSupport})</span></a></li>
+									    						<li><a href="javascript:replyToSomeone('${comment.id}','${reply.CUser.userName}');">回复</a></li>
+								    						</ul>
+								    						<div class="msg_board_reply_footer">${reply.CDatetime}</div>
+								    					 </li>
+								    				   </#list>
+										  	</ul>
+										  	<a class="msg_board_readmore" page="1" onclick="loadReply('${comment.id}',${comment.CReplyTotal},this);">共${comment.CReplyTotal}条回复<span class="glyphicon glyphicon-chevron-down"></span> </a>
+										  	</div>
+										  </#if>
+									    <!-- replys -->
+									  </div>
+									</li>  
+					    		</#list>
+					    		</ul>
+					    	
+					    </div>
+				    	<!-- end comment #comments-->
+				    	<#assign url="${blogprefix}/entry/${article.id!}.html?model=${model!}&">
+				    	<#assign sufix="#commentDiv">
+				    	<#include "${tpath}include/page.ftl">
+	    			</div>
+	    		</div>
+	    		<!-- right -->
+	    		<div class="col-lg-3" id="right-nav">
+	    		<#if (nav_title?size>1)>
+	    			<h3><strong>文章导航</strong></h3>
+	    			<div class="article-nav">
+						<ol>
+							<#list nav_title as a>
+							 <li>${a}</li>
+							</#list>
+						</ol>
+					</div>
+					</#if>
+					<@SimilarArticles limit="12" website="${website.id}" keyword="${article.articleLableStr!} ${article.articleTitle!}">
+							<#if (SimilarArticles?size>1)>
+				    			<div >
+									<div>
+										<h3><strong>相似文章</strong></h3>
+										<ul class="similar-articles">
+											<#list SimilarArticles as row>
+												<#if row.id!=article.id>
+													<li><i class="glyphicon glyphicon-file"></i> <a href="${blogprefix}/entry/${row.id}.html" target="_blank">${row.articleTitle}</a></li>
+												</#if>
+											</#list>
+										</ul>
+									</div>
+								</div>
+		    				</#if>
+						</@SimilarArticles>
+						<div>
+						<!--百度分享-->
+						<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a><a href="#" class="bds_print" data-cmd="print" title="分享到打印"></a></div>
+						<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+						</div>
+	    		</div>
+	    		<!-- right -->
+	    		<div class="article-nav-box">
+					<div class="article-nav-box-footer">
+						<ul>
+							<li onclick="$('body,html').animate({scrollTop:0},500);"><span class="glyphicon glyphicon-chevron-up"></span>&nbsp;顶部</li>
+							<li onclick="javascript:$('body,html').animate({scrollTop:$('#btn_like').offset().top + 'px'},500);"><span class="glyphicon glyphicon-comment"></span>&nbsp;留言</a></li>
+							<li style="border: none;margin-bottom: 0px;" onclick='blog.articleSupport("${article.id!}",null);'><span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;点赞</li>
+						</ul>
+					</div>
+				</div>
+    </div>
+	</div>
+	<!-- Root element of PhotoSwipe. Must have class pswp. -->
+	<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
+
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
+
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+  </body>
+<script type="text/javascript">	$("#ctl_${model!}").css("color","red");</script>
+<script  src="http://${host}/www/skin/green/js/article_info.js${version}"></script>
+</html>
+<script >
+hljs.initHighlightingOnLoad();
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?40d474c12b419648c4b4004d802a8254";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+NProgress.done();
+</script> 
+</#compress>

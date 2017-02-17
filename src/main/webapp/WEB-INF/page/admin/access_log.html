@@ -1,0 +1,142 @@
+<!DOCTYPE HTML> 
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>访客记录</title>
+<#include "/admin/include/bootstrap.ftl">
+</head>
+<body>
+<#include "/admin/include/dashboard-start.ftl">
+	
+	<!--start Modal -->
+<div class="modal fade" id="queryModal" tabindex="-1" role="dialog"  aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <h4 class="modal-title" >查询</h4>
+         </div>
+         <div class="modal-body" >
+            	<form class="form-horizontal" method="post" action="accessLog.do"  id="qfrom" style="padding: 10px;">
+				  <div class="form-group">
+				    <label>URL:</label>
+				    <input type="text" value="${url!}" name="url" class="form-control"  placeholder="URL">
+				  </div>
+				  <div class="form-group">
+				    <label>IP:</label>
+				    <input type="text" value="${ip!}" name="ip" class="form-control"  placeholder="IP">
+				  </div>
+				  <div class="form-group">
+				    <label>浏览器:</label>
+				    <input type="text" value="${agentname!}" name="agentname" class="form-control"  placeholder="浏览器">
+				  </div>
+				  <div class="form-group">
+				    <label>系统:</label>
+				    <input type="text" value="${os!}" name="os" class="form-control"  placeholder="操作系统">
+				  </div>
+				  <div class="form-group">
+				    <label>设备:</label>
+				    <input type="text" value="${device!}" name="device" class="form-control"  placeholder="设备">
+				  </div>
+				  <div class="form-group">
+				    <label>开始:</label>
+				    <input type="text" value="${datetime1!}" name="datetime1" class="form_datetime"  placeholder="开始时间">
+				  </div>
+				  <div class="form-group">
+				    <label>结束:</label>
+				    <input type="text" value="${datetime2!}" name="datetime2" class="form_datetime"  placeholder="结束时间">
+				  </div>
+			</form>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-primary" onclick="$('#qfrom').submit();"> 提交</button>
+            <button type="button" class="btn btn-default"  data-dismiss="modal">关闭</button>
+         </div>
+      </div><!-- /.modal-content -->
+</div><!-- /.modal -->
+</div><!-- end Modal -->
+	
+	
+	<div class="btn-group">
+	  <button type="button" class="btn btn-default" data-toggle="modal" data-target="#queryModal" >
+	  <span class="glyphicon glyphicon-search"></span>&nbsp;查询</button>
+	  <button type="button" onclick="parserFun();" class="btn btn-default" data-toggle="tooltip" title="解析" data-placement="bottom">
+	  <span class="glyphicon glyphicon glyphicon-refresh"></span>&nbsp;解析</button>
+	 </div>	
+		<table class="table table-striped table-hover table-condensed">
+			<thead>
+			<tr>
+				<th></th>
+				<th>方法</th>
+				<th>IP</th>
+				<th>响应时间(ms)</th>
+				<th>浏览器</th>
+				<th>版本</th>
+				<th>系统</th>
+				<th>设备</th>
+				<th>时间</th>
+			</tr>
+			</thead>
+		   		<#list log_lis as row> 
+		    		<tr >
+						<td><a href="${webroot}/${AdminWebSite.websiteName}${row['req_url']}" target="_blank"><@SubString value="${row['req_url']}" limit="30"></@SubString></a></td>
+						<td>${row['req_method']}</td>
+						<td>${row['req_ip']}</td>
+						<td>${row['req_run_time']}</td>
+						<td>${row['agent_browser_name']}</td>
+						<td>${row['agent_browser_version']}</td>
+						<td>${row['agent_os']}</td>						
+						<td>${row['agent_device']}</td>
+						<td>${row['req_datetime']}</td>
+					</tr>
+		    	</#list>
+		</table>
+    <#assign url="${admin_blogprefix}/admin/report/accessLog.do?url=${url!}&ip=${ip!}&datetime1=${datetime1!}&datetime2=${datetime2!}&agentname=${agentname!}&os=${os!}&device=${device!}&">
+    <#include "/admin/include/page.ftl">
+    <#include "/admin/include/dashboard-end.ftl">
+</body>
+<script type="text/javascript">
+$("#blog_access_log_li").addClass("nav-active");
+$('#collapseFour').collapse('show');
+$(function () { $("[data-toggle='tooltip']").tooltip(); bootbox.setLocale("zh_CN");  });
+$('.form_datetime').datetimepicker({
+    language: 'zh-CN',
+     todayBtn: true,
+     autoclose: true,
+    format:"yyyy-mm-dd hh:ii:ss"
+});
+function parserFun(){
+	bootbox.confirm({
+	    message: "<b style='color:red;'>是否解析新访问记录?</b>",
+	    size: 'small',
+	    buttons: {
+	        confirm: {
+	            label: '是',
+	            className: 'btn-success'
+	        },
+	        cancel: {
+	            label: '否',
+	            className: 'btn-danger'
+	        }
+	    },
+	    callback: function (result) {
+	        if(result){
+	        	$('body').showLoading();
+	        	$.ajax({
+	     		   type: "post",
+	     		   url: "${admin_blogprefix}/admin/report/analysisRequestAgent.do",
+	     		   success: function(msg){
+	     			   $('body').hideLoading();
+	     			   if(msg=="success"){
+	     				   blog.nofify("解析成功!","success");
+	     			   }else{
+	     				   bootbox.alert(msg);
+	     			   }
+	     		     
+	     		   }
+	     		});
+	        }
+	    }
+	})
+}
+</script>
+</html>

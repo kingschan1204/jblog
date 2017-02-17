@@ -1,0 +1,42 @@
+#carousel-index{margin-top: 50px;}
+.index-banner{ background: url(/www/home/img/banner-mac.jpg) no-repeat center center;height: 500px;padding-top: 100px;background-size:100%;}
+.index-banner p {color:white;font-family: 微软雅黑;}
+.index-banner h1{color:#6f5499;font-family: 微软雅黑;}
+.navbar-nav li a{color:white;}
+.navbar-nav li a:hover, .navbar-nav .active {
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.2);
+    filter: Alpha(opacity=20) \9;
+    background: #fff \9;
+}
+.navbar-header{float: left;padding-left: 30px;}
+.navbar-brand {
+    display: inline-block;
+    color:white;
+    font-weight:bold;
+    font-family: 微软雅黑;
+   /*  background-image: url(/www/home/img/logo.png);
+    background-repeat: no-repeat; */
+}
+
+
+.blog-list-left{text-align: center;}
+.blog-list-left a{display:block;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;width: 110px;}
+.blog-list-left img{margin-bottom: 10px;}
+
+.blog-list-right{border-left: solid 1px #e7ecef;}
+.blog-list-title{margin-left: 20px;}
+.blog-list-content{color: #888;font-family: 微软雅黑;margin-left: 20px;font-size: 15px;}
+.blog-list-footer{color: #888;margin-left: 20px;margin-top: 10px;font-family: 微软雅黑;}
+
+.site-footer{background-color: #161b1f; padding: 45px 0;color:white;}
+.footer-links, .footer-socials {padding-left: 0;list-style: none;}
+.footer-socials {text-align: right;}
+#scroll-up{
+    width: 36px;
+    height: 65px;
+    background: url('/www/home/img/040.png');
+    display: block;
+    outline: 0;
+    text-decoration: none;
+}

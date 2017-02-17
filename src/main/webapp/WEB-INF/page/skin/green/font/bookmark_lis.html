@@ -1,0 +1,63 @@
+<#compress>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>${website.websiteTitle}-书签</title>
+    <meta name="content-type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="${website.websiteKeyword}">
+    <meta property="wb:webmaster" content="af65d85078309c4c" />
+    <#include "${tpath}include/bootstrap.ftl">
+    <link rel="stylesheet" href="/www/skin/green/css/index.css">
+  </head>
+  <body>
+     <#include "${tpath}include/index-menu.ftl">
+    <div class="container" >
+    <div class="row" style="margin-top: 6px;">
+    	<div  class="col-md-8" style="padding-top: 10px;background-color: white;" id="article_lis_div">
+    		<@BookMark  website_id="${website.id}"  limit="30" folder="${folderId!}" page="${page!}"  disablepage="" orderby=" b.bookmarksDatetime desc">
+						<#list bookmark_lis as book>
+							<div class="article_li">
+								<span class="glyphicon glyphicon-bookmark"></span>&nbsp;
+								<a href="${book.bookmarksHref}" target="_blank" data-toggle="tooltip" data-placement="top" title="${book.bookmarksHref}">
+								<#if device!="Computer"><@SubString value="${book.bookmarksName}" limit="10" overflow="..."></@SubString><#else>${book.bookmarksName}</#if>
+								</a>
+								<div class="article_li_date"><span class="glyphicon glyphicon-time" aria-hidden="true"></span>&nbsp;<@SubString value="${book.bookmarksDatetime}" limit="5"></@SubString></div>
+							</div>   		
+				    	</#list>
+			    </@BookMark>
+			<#assign url="${blogprefix}/bookmark_lis?folderId=${folderId!}&">
+	    	<#assign sufix="#article_lis_div">
+   			<#include "${tpath}include/page.ftl">
+    	</div>
+    	
+    	<div  class="col-md-3" >	
+    			<div class="list-group CategoryDiv" >
+					 	<@BookMarkFolder page="${page!}"  title="${title!}"  websiteid="${website.id}"   limit="10" >
+					   		<#list bookmarkfolder_lis as folder> 
+					   			<a class="list-group-item" href="${blogprefix}/bookmark_lis?folderId=${folder.id}"><span class="glyphicon glyphicon-th"></span> ${folder.bookmarksName}</a>
+					    	</#list>
+					    </@BookMarkFolder>
+				</div>
+    	</div>
+   	</div>
+   	<!-- end row -->
+   	<script type="text/javascript">
+	/* <![CDATA[ */
+	$(function () { $("[data-toggle='tooltip']").tooltip(); });
+	/* ]]> */
+	</script>
+  </div>
+  <!-- end container div -->
+  <#include "${tpath}include/footer.ftl">
+  </body>
+  <script type="text/javascript">
+  $("#menu_bookmark_lis").addClass("active");
+  var clength=$('.article_li').length;
+  if(clength<10){
+	  $("#article_lis_div").css("height","700px");
+  }
+  </script>
+</html>
+</#compress>

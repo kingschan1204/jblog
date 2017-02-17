@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>书签管理</title>
+    <meta name="keywords" content="keyword1,keyword2,keyword3">
+    <meta name="description" content="this is my page">
+    <meta name="content-type" content="text/html; charset=UTF-8">
+	<#include "/admin/include/bootstrap.ftl">
+	<#include "/admin/include/fancybox.ftl">
+  </head>
+  <body>
+  <#include "/admin/include/dashboard-start.ftl">
+  <form class="form-inline" method="post" action="bookmark_list.do"  id="sform">
+	  <div class="form-group">
+	    <label for="keyword_txt">名称</label>
+	    <input type="text" value="${title!}" name="title" class="form-control" id="keyword_txt" placeholder="关键字">
+	  </div>
+	  <div class="form-group">
+	    <label for="ar_type_sel">类型</label>
+	    <select class="form-control" name="folder">
+	    		<option value=""></option>
+				  <@BookMarkFolder websiteid="${AdminWebSite.id}">
+					  <#list bookmarkfolder_lis as bookfolder>
+						<option value="${bookfolder.id}" 
+							<#if folder==bookfolder.id>
+								selected="selected"
+							</#if>
+						>${bookfolder.bookmarksName}</option>
+					</#list>
+				</@BookMarkFolder> 
+		</select>
+	  </div>
+	  <div class="btn-group">
+	  <button type="submit" class="btn btn-default" ><span class="glyphicon glyphicon-search"></span>&nbsp;查询</button>
+	  <button type="button" class="btn btn-default" onclick="addfun('${admin_blogprefix}/admin/bookmark_edit.do');"><span class="glyphicon glyphicon-plus"></span>&nbsp;新增</button>
+	  <button type="button" class="btn btn-default" onclick="fundel();"><span class="glyphicon glyphicon-remove"></span>&nbsp;删除</button>
+	  </div>
+</form>
+		<table class="table table-striped table-hover">
+			<thead>
+			<tr>
+				<th><input type="checkbox" id="ar_chk_op" onclick="allchk(this);" ></th>
+				<th>名称</th>
+				<th>地址</th>
+				<th>排序</th>
+				<th>类型</th>
+				<th>创建时间</th>
+			</tr>
+			</thead>
+	<@BookMark page="${page!}"  title="${title!}"  website_id="${AdminWebSite.id}" folder="${folder!}"  limit="15" orderby=" b.bookmarksDatetime desc">
+   		<#list bookmark_lis as book> 
+    		<tr>
+    			<td><input type="checkbox" name="bm_chk" value="${book.id}"> </td>
+				<td><a href="javascript:addfun('${admin_blogprefix}/admin/bookmark_edit.do?id=${book.id!}');">
+				<span class="glyphicon glyphicon-tag"></span> ${book.bookmarksName}</a></td>
+				<td><a href="${book.bookmarksHref}" target="_blank">${book.bookmarksHref}</a></td>
+				<td>${book.bookmarksOrder}</td>
+				<td>${book.bookmarksFolder.bookmarksName}</td>
+				<td>${book.bookmarksDatetime}</td>
+			</tr>
+    	</#list>
+    </@BookMark>
+		</table>
+    <#assign url="${admin_blogprefix}/admin/bookmark_list.do?title=${title!}&folder=${folder!}&">
+    <#include "/admin/include/page.ftl">
+    <#include "/admin/include/dashboard-end.ftl">
+  </body>
+  <script type="text/javascript">
+  $("#bookmark_li").addClass("nav-active");
+  $('#collapseTwo').collapse('show');
+	bootbox.setLocale("zh_CN"); 
+function allchk(obj){
+	var chk=obj.checked;
+	if(chk){
+		$("input[name='bm_chk']").prop("checked",true);
+	}else{
+		$("input[name='bm_chk']").prop("checked",false); 
+	}
+}
+function fundel(){
+	var chks=$("input[name='bm_chk']:checked");
+	if(chks.length==0){bootbox.alert("请选择要删除的书签");return;}
+	bootbox.confirm('你确定要删除选中记录吗？', function(result){
+		if(result){
+			var lis=new Array();
+			for(var i=0;i<chks.length;i++){
+				lis.push(chks[i].value);
+			}
+			$.ajax({
+				   type: "post",
+				   url: "${admin_blogprefix}/admin/del_bookmark.do",
+				   data: {ids:lis},
+				   success: function(msg){
+					   alert(msg );
+					   if(msg.indexOf("成功")!=-1){
+						   $("#sform").submit();
+					   }
+				     
+				   }
+				});
+		}
+	});
+}
+function addfun(url){
+	 $.fancybox.open({
+         href: url,
+         type: 'iframe',
+         padding: 10,
+         scrolling: 'no',
+         fitToView: true,
+         width: 600,
+         height: 500,
+         autoSize: false,
+         closeClick: false,
+         transitionIn:'none',
+         transitionOut:'none',
+       	 iframe: {
+       		 scrolling :'no',
+       		 preload : true
+       		 }
+     });
+}
+</script>
+</html>

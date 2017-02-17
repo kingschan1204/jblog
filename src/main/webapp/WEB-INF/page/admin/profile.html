@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<base href="${webroot}/" />
+<title>个人资料</title>
+<#include "/admin/include/bootstrap.ftl">
+<script src="${webroot}/www/blog/plugs/cropbox/cropbox-min.js"></script>
+<script src="${webroot}/www/blog/js/pub/blog-alert.js"></script>  
+<style type="text/css">
+.imageBox
+{
+    position: relative;
+    height: 400px;
+    width: 400px;
+    border:1px solid #aaa;
+    background: #fff;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    cursor:move;
+}
+
+.imageBox .thumbBox
+{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200px;
+    height: 200px;
+    margin-top: -100px;
+    margin-left: -100px;
+    box-sizing: border-box;
+    border: 1px solid rgb(102, 102, 102);
+    box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.5);
+    background: none repeat scroll 0% 0% transparent;
+}
+
+.imageBox .spinner
+{
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    text-align: center;
+    line-height: 400px;
+    background: rgba(0,0,0,0.7);
+}
+</style>
+</head>
+<body>
+<#include "/admin/include/dashboard-start.ftl">
+<form id="userinfoForm" class="form-horizontal" method="post" action="http://${host}/admin/savePorfile.do">
+<div class="form-group">
+    <label  class="col-sm-1 control-label"></label>
+    <div class="col-sm-3" >
+      <div>
+		    <div class="imageBox">
+		        <div class="thumbBox"></div>
+		        <div class="spinner" style="display: none">Loading...</div>
+		    </div>
+		    <div class="action">
+		        <input type="file" id="file" style="float:left; width: 250px">
+		        <input type="button" id="btnCrop" value="确定" style="float: right">
+		        <input type="button" id="btnZoomIn" value="+" style="float: right">
+		        <input type="button" id="btnZoomOut" value="-" style="float: right">
+		    </div>
+		    <div class="cropped">
+		
+		    </div>
+		</div>
+    </div>
+  </div>
+  <div class="form-group">
+    <label  class="col-sm-1 control-label">用户名</label>
+    <div class="col-sm-3">
+    	<input type="text" class="form-control" name="" value="${u.userName!}" readonly>
+    </div>
+  </div>
+  <div class="form-group">
+    <label  class="col-sm-1 control-label">昵称</label>
+    <div class="col-sm-3">
+    	<input type="text" class="form-control"  value="${u.userScreenName!}" name="userScreenName">
+    </div>
+  </div>
+  <div class="form-group">
+    <label  class="col-sm-1 control-label">注册时间</label>
+    <div class="col-sm-3">
+      <input type="text" class="form-control"  value="${u.userDatetime!}" readonly>
+    </div>
+  </div>
+  <div class="form-group">
+    <label  class="col-sm-1 control-label">上次登录</label>
+    <div class="col-sm-3">
+      <input type="text" class="form-control"  value="${u.userLastlogin!}" readonly>
+    </div>
+  </div>  
+  <div class="form-group">
+    <label  class="col-sm-1 control-label">E-mail</label>
+    <div class="col-sm-3">
+      <div class="input-group">
+			<input type="text" class="form-control" name="userEmail" id="userEmail" value="${u.userEmail!}">
+			<div class="input-group-btn">
+				<button type="button" class="btn btn-default" onclick="sendmail();" id="btn_sendmail"><span class="glyphicon glyphicon-envelope"></span>&nbsp;验证</button>
+			</div><!-- /btn-group -->
+		</div><!-- /input-group -->
+    </div>
+  </div>
+  <div class="form-group">
+    <label  class="col-sm-1 control-label">邮箱验证</label>
+    <div class="col-sm-3">
+      <#if u.userEmailActivate><i class="glyphicon glyphicon-ok"></i>
+      <script type="text/javascript">$('#userEmail').attr("readonly","true");$('#btn_sendmail').attr("disabled","disabled");</script>
+      <#else><i class="glyphicon glyphicon-remove"></i></#if>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-1 col-sm-10">
+      <button type="submit" class="btn btn-success">保存</button>
+    </div>
+  </div>
+</form>
+<#if msg=="success">
+		<script type="text/javascript">blogAlert.notify("个人信息更新成功!","success");</script>
+		<#elseif msg!="">
+		<script type="text/javascript"> blogAlert.alert('${msg}',"red");</script>
+	</#if>
+<#include "/admin/include/dashboard-end.ftl">
+</body>
+<script type="text/javascript">
+$("#bolg_profile_li").addClass("nav-active");
+$('#collapseThree').collapse('show');
+$('#userinfoForm').bootstrapValidator({
+  message: 'This value is not valid',
+  feedbackIcons: {
+      valid: 'glyphicon glyphicon-ok',
+      invalid: 'glyphicon glyphicon-remove',
+      validating: 'glyphicon glyphicon-refresh'
+  },
+  fields: {
+	  userScreenName: {
+          validators: {
+              notEmpty: {
+                  message: '不能为空!'
+              },
+              regexp: {
+                  regexp: /^(\w|[\u4E00-\u9FA5])*$/,//
+                  message: '只能是数字字母中文或者下划线!'
+              },
+              stringLength: {
+                  min: 1,
+                  max: 20,
+                  message: '标题长度最小为1最长为15'
+              }
+          }
+      },
+      userEmail: {
+          validators: {
+              notEmpty: {
+                  message: '不能为空!'
+              },
+              emailAddress: {
+                  message: '这不是一个有效的email地址'
+              }
+          }
+      }
+      
+  }});
+ 
+ function sendmail(){
+	 bootbox.confirm('是否发送验证邮件？', function(result){
+			if(result){
+				$('body').showLoading();
+				$.ajax({
+					   type: "get",
+					   url: "${admin_blogprefix}/admin/sendValidateEmail.do",
+					   data: {email:$("#userEmail").val()},
+					   success: function(msg){
+						   $('body').hideLoading();
+						   bootbox.alert(msg);
+					     
+					   }
+					});
+			}
+			
+		});	
+ }
+</script>
+<script type="text/javascript">
+    window.onload = function() {
+        var options =
+        {
+            imageBox: '.imageBox',
+            thumbBox: '.thumbBox',
+            spinner: '.spinner',
+            imgSrc: '${u.userProfileImg!}'
+        }
+        var cropper = new cropbox(options);
+        document.querySelector('#file').addEventListener('change', function(){
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                options.imgSrc = e.target.result;
+                cropper = new cropbox(options);
+            }
+            reader.readAsDataURL(this.files[0]);
+            this.files = [];
+        })
+        document.querySelector('#btnCrop').addEventListener('click', function(){
+        	var path=$("#file").val();
+        	var reg = /\.jpg|png$/; 
+        	if(!path){
+        		blogAlert.notify("请选择要上传的图片!","danger");
+        		return;
+        	}else if(!path.match(reg)){
+        		blogAlert.notify("文件只能是jpg或者png!","danger");
+        		return;
+        	}
+            var img = cropper.getDataURL();
+			blogAlert.confirm("是否上传图像？","blue", function(result){
+				if(result){
+					blogAlert.showLoading("正在处理请稍后...");
+		            $.ajax({
+						   type: "post",
+						   url: "${admin_blogprefix}/admin/upload-profile.do",
+						   data: {base64:img},
+						   success: function(msg){
+							   blogAlert.closeLoading();
+							   if(msg=="error"){
+								   blogAlert.alert("图像更新失败!","red");
+								   return;
+							   }
+							   $("#file").val("");
+							   blogAlert.notify("图像更新成功!","success");
+						     
+						   }
+						});
+				}
+				
+			});	
+           // document.querySelector('.cropped').innerHTML += '<img src="'+img+'">';
+        })
+        document.querySelector('#btnZoomIn').addEventListener('click', function(){
+            cropper.zoomIn();
+        })
+        document.querySelector('#btnZoomOut').addEventListener('click', function(){
+            cropper.zoomOut();
+        })
+    };
+</script>
+</html>

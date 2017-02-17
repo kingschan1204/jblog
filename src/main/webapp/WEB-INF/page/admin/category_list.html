@@ -1,0 +1,214 @@
+<!DOCTYPE HTML> 
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>类型列表</title>
+<#include "/admin/include/bootstrap.ftl">
+</head>
+<body>
+<#include "/admin/include/dashboard-start.ftl">
+ <!-- 模态框（Modal） -->
+<div class="modal fade" id="categoryModal" tabindex="-1" role="dialog" aria-labelledby="categoryModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+            <button type="button" class="close"  data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="categoryModalLabel">类型编辑</h4>
+         </div>
+         <div class="modal-body">
+            	<form class="form-horizontal" method="post"  id="categoryform">
+					<div class="form-group">
+					    <label  class="col-sm-2 control-label">名称</label>
+					    <div class="col-sm-8">
+					     <input id="categoryid" type="hidden"/>
+					      <input type="text"  name="categoryName" id="categoryName" class="form-control"  placeholder="名称">
+					    </div>
+					 </div>
+					 <div class="form-group">
+					    <label  class="col-sm-2 control-label">排序</label>
+					    <div class="col-sm-8">
+					      <input type="text"  name="categoryPosition" id="categoryPosition" class="form-control"  placeholder="排序">
+					    </div>
+					 </div>
+					<div class="form-group">
+					    <label  class="col-sm-2 control-label">备注</label>
+					    <div class="col-sm-8">
+					      <input type="text"  name="categoryRemark" id="categoryRemark" class="form-control"  placeholder="备注">
+					    </div>
+					 </div>
+				</form>
+         </div>
+         <div class="modal-footer">
+            <button type="button" class="btn btn-default"  data-dismiss="modal">关闭</button>
+            <button type="button" class="btn btn-primary" onclick="subcategory();"> 提交</button>
+         </div>
+      </div><!-- /.modal-content -->
+</div><!-- /.modal -->
+</div>
+<!-- 模态框（Modal） -->
+ <div class="btn-group">
+	<button type="button" class="btn btn-default" onclick="addcategory();"  data-toggle="tooltip" title="新增一个分类" data-placement="bottom">
+	<span class="glyphicon glyphicon-plus"></span>&nbsp;新增</button>
+	<button type="button" class="btn btn-default" onclick="editcategory();"  data-toggle="tooltip" title="保存修改内容" data-placement="bottom">
+	<span class="glyphicon glyphicon-edit"></span>&nbsp;编辑</button>
+	<button type="button" class="btn btn-default" onclick="fundel();" data-toggle="tooltip" title="删除一个分类" data-placement="bottom">
+	<span class="glyphicon glyphicon-remove"></span>&nbsp;删除</button>
+</div>
+<table class="table table-striped table-hover table-condensed">
+			<thead>
+				<tr>
+					<th> </th>
+					<th>类型</th>
+					<th>备注</th>
+					<th>排序</th>
+					<th>创建时间</th>
+				</tr>
+			</thead>
+	<@Category website_id="${AdminWebSite.id}"   title="${title!}"  >
+   		<#list category_lis as category> 
+    		<tr onclick="rowclick(this);">
+    			<td><input type="radio" name="categroy_radio" value="${category.id}"> </td>
+				<td> ${category.categoryName}</td>
+				<td>${category.categoryRemark} </td>
+				<td>${category.categoryPosition}</td>
+				<td>${category.categoryDatetime}</td>
+			</tr>
+    	</#list>
+    </@Category>
+</table>
+    <#include "/admin/include/dashboard-end.ftl">
+</body>
+<script type="text/javascript">
+$("#category_li").addClass("nav-active");
+$('#collapseOne').collapse('show');
+$(function () { $("[data-toggle='tooltip']").tooltip(); });
+function fundel(){
+	var chks=$("input[name='categroy_radio']:checked");
+	if(chks.length==0){alert("请选择要删除的类型");return;}
+	bootbox.confirm('你确定要删除选中记录吗？', function(result){
+		if(result){
+			var lis=new Array();
+			for(var i=0;i<chks.length;i++){
+				lis.push(chks[i].value);
+			}
+			$.ajax({
+				   type: "post",
+				   url: "${admin_blogprefix}/admin/category_del.do",
+				   data: {ids:lis},
+				   dataType:'json',
+				   success: function(data){
+					   if(data.success){
+						   location.reload();
+					   }else{
+					   		bootbox.alert(data.msg);
+					   }
+				     
+				   }
+				});
+		}
+	});
+}
+function rowclick(row){
+	$(row.cells[0]).children(":radio").prop("checked",true);
+	$("#categoryName").val($(row.cells[1]).text().trim());
+	$("#categoryRemark").val($(row.cells[2]).text().trim());
+	$("#categoryPosition").val($(row.cells[3]).text().trim());
+	$("#categoryid").val($(row.cells[0]).children(":radio").val().trim());
+}
+$('#categoryform').bootstrapValidator({
+    message: 'This value is not valid',
+    feedbackIcons: {
+        valid: 'glyphicon glyphicon-ok',
+        invalid: 'glyphicon glyphicon-remove',
+        validating: 'glyphicon glyphicon-refresh'
+    },
+    fields: {
+    	categoryName: {
+            message: '名称不合规则!',
+            validators: {
+                notEmpty: {
+                    message: '请输入名称！'
+                },regexp: {
+                    regexp: /^(\w|[\u4E00-\u9FA5])*$/,//
+                    message: '只能是数字字母中文或者下划线!'
+                }
+                /* ,remote: {
+                    message: '名称已被占用!',
+                    url: "${admin_blogprefix}/admin/category_validate_name.do",
+                    data: {
+                    	name:$('#categoryName').val()
+                    }
+                } */
+            }
+        },
+        categoryPosition: {
+            message: '不合规则!',
+            validators: {
+                notEmpty: {
+                    message: '请输入排序号！'
+                },regexp: {
+                    regexp: /^[0-9]*$/,
+                    message: '只能是数字'
+                }
+            }
+        },
+        categoryRemark: {
+            message: '不合规则!',
+            validators: {
+                notEmpty: {
+                    message: '请输入备注！'
+                },
+                regexp: {
+                    regexp: /^(\w|[\u4E00-\u9FA5]|[\u3002|\uff1f|\uff01|\uff0c|\u3001|\uff1b|\uff1a|\u201c|\u201d|\u2018|\u2019|\uff08|\uff09|\u300a|\u300b|\u3008|\u3009|\u3010|\u3011|\u300e|\u300f|\u300c|\u300d|\ufe43|\ufe44|\u3014|\u3015|\u2026|\u2014|\uff5e|\ufe4f|\uffe5])*$/,
+                    message: '只能是数字,字母,中文,中文标点符号或者下划线!'
+                }
+            }
+        }
+    
+    }
+});
+function addcategory(){
+	$("input[name='categroy_radio']").prop("checked",false);
+	 $('#categoryform')[0].reset();
+	 $('#categoryform').data('bootstrapValidator').resetForm();
+	$('#categoryModal').modal('show');
+}
+function editcategory(){
+	if($("input[name='categroy_radio']:checked").length==0){
+		bootbox.alert("请选择要编辑的类型!");
+	}else{
+	 	$('#categoryModal').modal('show');
+	}
+}
+function subcategory(){
+	$('#categoryform').data('bootstrapValidator').validate();
+	var result=$('#categoryform').data('bootstrapValidator').isValid(); 
+	   if(result){
+		   $.ajax({
+			   type: "post",
+			   url: "${admin_blogprefix}/admin/category_save.do",
+			   data: {id:$('#categoryid').val(),
+				   categoryName:$("#categoryName").val(),
+				   categoryRemark:$("#categoryRemark").val(),
+				   categoryPosition:$("#categoryPosition").val()
+				   },
+			   dataType:'json',
+			   success: function(data){
+				   if(data.success){
+					   location.reload();
+					   /* $('#categoryModal').modal('hide');
+					   bootbox.alert("<b style='color:blue;'>操作成功!</b>");
+					   $('#categoryform')[0].reset();
+					   $('#categoryform').data('bootstrapValidator').resetForm(); */
+
+				   }else{
+				   		bootbox.alert(data.msg);
+				   }
+			   }
+			});
+	   }else{
+		   bootbox.alert('请按要求填写表单信息!');
+	   }
+}
+</script>
+</html>

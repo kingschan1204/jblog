@@ -1,0 +1,183 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>日志列表</title> <#include "/admin/include/bootstrap.ftl">
+<script src="${webroot}/www/echarts/echarts.min.js"></script>
+<!-- <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts-all-3.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script> -->
+</head>
+<body>
+	<#include "/admin/include/dashboard-start.ftl">
+	<div class="row">
+		<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+		<div id="main" style="height:400px;padding-right: 60px;"></div>
+	</div>
+	<div class="row">
+		<div id="main1" style="height:400px;padding: 60px;"></div>
+	</div>
+	<!-- ECharts单文件引入 -->
+	<script type="text/javascript">
+		var dom = document.getElementById("main");
+		var myChart = echarts.init(dom);
+		 var rows=[];
+          $.ajax({
+			   type: "GET",
+			   url: "${admin_blogprefix}/admin/report/dayOfArticleQuantity.do",
+			   data: {limit:60},
+			   dataType:'json',
+			   success: function(result){
+				   rows=result;
+				   var days=new Array();
+				   var quantitys=new Array();
+			          for(var i=0;i<rows.length;i++){
+			        	  days.push(rows[i].days);
+			        	  quantitys.push(rows[i].total);
+			          }
+		       // 指定图表的配置项和数据
+		      var option = {
+						    tooltip: {
+						        trigger: 'axis',
+						        position: function (pt) {
+						            return [pt[0], '10%'];
+						        }
+						    },
+						    title: {
+						        left: 'center',
+						        text: '最近写作情况一览',
+						    },
+						    legend: {
+						        top: 'bottom',
+						        data:['意向']
+						    },
+						    toolbox: {
+						        feature: {
+						            dataZoom: {
+						                yAxisIndex: 'none'
+						            },
+						            restore: {},
+						            saveAsImage: {}
+						        }
+						    },
+						    xAxis: {
+						        type: 'category',
+						        boundaryGap: false,
+						        data: days
+						    },
+						    yAxis: {
+						        type: 'value',
+						        boundaryGap: [0, '100%']
+						    },
+						     dataZoom: [{
+						        type: 'inside',
+						        start: 0,
+						        end: 30
+						    } , {
+						        start: 0,
+						        end: 10,
+						        handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+						        handleSize: '80%',
+						        handleStyle: {
+						            color: '#fff',
+						            shadowBlur: 3,
+						            shadowColor: 'rgba(0, 0, 0, 0.6)',
+						            shadowOffsetX: 2,
+						            shadowOffsetY: 2
+						        }
+						    }],
+						    series: [
+						        {
+						            name:'篇数',
+						            type:'line',
+						            smooth:true,
+						            symbol: 'none',
+						            sampling: 'average',
+						            itemStyle: {
+						                normal: {
+						                    color: 'rgb(255, 70, 131)'
+						                }
+						            },
+						            areaStyle: {
+						                normal: {
+						                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+						                        offset: 0,
+						                        color: 'rgb(255, 158, 68)'
+						                    }, {
+						                        offset: 1,
+						                        color: 'rgb(255, 70, 131)'
+						                    }])
+						                }
+						            },
+						            data: quantitys
+						        }
+						    ]
+						};
+			        myChart.setOption(option);
+			        myChart.hideLoading();
+			        
+			   }
+			});
+	</script>
+	<script type="text/javascript">
+	var dom1 = document.getElementById("main1");
+	var myChart1 = echarts.init(dom1);
+	var rows=[
+<@CountCategory website_id="${AdminWebSite.id}">
+<#list category_lis as category>
+		{value:${category.total},name:'${category.categoryName}'} <#if category_has_next>,</#if>
+	</#list>
+</@CountCategory>  
+	         ];
+	var names=new Array();
+	var values=new Array();
+    for(var i=0;i<rows.length;i++){
+  	  names.push(rows[i].name);
+  	  values.push(rows[i].value);
+    }
+	var option1 = {
+	 title : {
+	        text: '日志分类',
+	        subtext: '类型占比情况一览',
+	        x:'center'
+	    },
+	    tooltip: {
+	        trigger: 'item',
+	        formatter: "{a} <br/>{b}: {c} ({d}%)"
+	    },
+	    legend: {
+	        orient: 'vertical',
+	        x: 'left',
+	        data:names
+	    },
+	    series : [
+	              {
+	                  name: '访问来源',
+	                  type: 'pie',
+	                  radius : '55%',
+	                  center: ['50%', '60%'],
+	                  data:rows,
+	                  itemStyle: {
+	                      emphasis: {
+	                          shadowBlur: 10,
+	                          shadowOffsetX: 0,
+	                          shadowColor: 'rgba(0, 0, 0, 0.5)'
+	                      }
+	                  }
+	              }
+	          ]
+	   
+	};
+	myChart1.setOption(option1);
+    myChart1.hideLoading();
+	</script>
+	<#include "/admin/include/dashboard-end.ftl">
+</body>
+<script type="text/javascript">
+$("#blog_main_li").addClass("nav-active");
+$(function () { $("[data-toggle='tooltip']").tooltip(); bootbox.setLocale("zh_CN");  });
+</script>
+</html>

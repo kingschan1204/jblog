@@ -1,0 +1,75 @@
+<#compress>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>${website.websiteTitle}-博文时间归档轴</title>
+    <meta name="content-type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="${website.websiteKeyword}">
+    <meta property="wb:webmaster" content="af65d85078309c4c" />
+    <#include "${tpath}include/bootstrap.ftl">
+    <link rel="stylesheet" href="/www/skin/green/css/index.css">
+  </head>
+  <body>
+     <#include "${tpath}include/index-menu.ftl">
+    <div class="container" >
+    <div class="row">
+    	<div  class="col-md-9">
+    	<@ArticleTimeLineItems page="${page!}"  website_id="${website.id}"  limit="60" date="${date!}">
+    			<#list article_items?keys as key> 
+					<div class="index-article-list" style="margin-right: 0px;">
+						<h3 class="lable_title">${key}</h3>
+						<#list article_items[key] as row>
+							<div class="lable_article_li">
+								<a href="${blogprefix}/entry/${row['id']}.html" target="_blank">${row['article_title']}</a>
+							</div>
+						</#list>
+					</div>
+		    	</#list>
+    	</@ArticleTimeLineItems>
+   		<#assign url="${blogprefix}/article_timeline?">
+		<#include "${tpath}include/page.ftl">
+    	</div>
+    	<div class="col-md-3" >
+    	
+    	<div class="row">
+		      <!-- read sort -->
+		      <div class="right-navbox" style="margin-top: 0px;">
+		      		<@HotArticle website_id="${website.id}" limit="10" >
+			  			<h3>博文归档</h3>
+			  			<ul>
+			  			<@ArticleTimeLineNavigate website_id="${website.id}" >
+					    	  <#list article_timeline_nav as category>
+					    		<li><a  href="${blogprefix}/article_timeline?date=${category['months']}">
+					    		<span class="glyphicon glyphicon-time"></span> ${category['months']}
+					    			<span style="float: right;font-size: 12px;" >(${category['total']})</span> 
+					    			</a></li>
+					    	</#list>
+					    </@ArticleTimeLineNavigate>
+				    	</ul>
+				    </@HotArticle>
+		      </div>
+		      <!-- end read sort -->
+	      </div>
+    	</div>
+   	</div>
+   	<!-- end row -->
+   	<script type="text/javascript">
+	/* <![CDATA[ */
+	$(function () { $("[data-toggle='tooltip']").tooltip(); });
+	/* ]]> */
+	</script>
+  </div>
+  <!-- end container div -->
+  <#include "${tpath}include/footer.ftl">
+  </body>
+  <script type="text/javascript">
+  $("#menu_article_timeline").addClass("active");
+  var clength=$('.lable_article_li').length;
+  if(clength<10){
+	  $("#article_lis_div").css("height","700px");
+  }
+  </script>
+</html>
+</#compress>

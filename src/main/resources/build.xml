@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="gbk"?>
+
+<project name="worder" default="default" basedir="..">
+
+	<property name="dir.src" value="src" />
+	<property name="dir.webRoot" value="WebRoot" />
+	<property name="dir.classes" value="WEB/WEB-INF/classes"/>
+	<property name="dir.dist" value="dist" />
+	<property name="dir.building" value="${dir.dist}/building"/>
+	<property name="war.name" value="worder" />
+
+	<!-- 本地开发打包  -->
+	<target name="default" >
+		<delete dir="${dir.building}"/>
+		<mkdir dir="${dir.building}"/>
+		<mkdir dir="${dir.dist}" />
+		<copy todir="${dir.building}">
+			<fileset dir="WEB">
+				<include name="**/*.*" />
+				<exclude name="CVS" />
+				<exclude name=".svn" />
+			</fileset>
+		</copy>
+		<copy file="${dir.classes}/conf/properties/hana.jdbc.properties"
+			  tofile="${dir.building}/WEB-INF/classes/conf/properties/hana.jdbc.properties"
+			  overwrite="true" />
+		<copy file="${dir.classes}/conf/properties/sap.jco.properties"
+			  tofile="${dir.building}/WEB-INF/classes/conf/properties/sap.jco.properties"
+			  overwrite="true" />
+		<tstamp />
+		<delete dir="${dir.building}/logs" />
+		<!-- 整个web应用打包 -->
+		<jar destfile="${dir.dist}/${war.name}_local_${DSTAMP}.war" basedir="${dir.building}">
+			<exclude name="**/.*" />
+			<exclude name="CVS" />
+			<exclude name=".svn" />
+		</jar>
+		
+		<!--删除build目录-->
+		<delete dir="${dir.building}" />
+	</target>
+	
+	<!-- 测试机打包  -->
+	<target name="worder-test">
+		<delete dir="${dir.building}"/>
+		<mkdir dir="${dir.building}"/>
+		<mkdir dir="${dir.dist}" />
+		<copy todir="${dir.building}">
+			<fileset dir="WEB">
+				<include name="**/*.*" />
+				<exclude name="CVS" />
+				<exclude name=".svn" />
+			</fileset>
+		</copy>
+		<copy file="${dir.classes}/conf/properties/test/hana.jdbc.properties"
+			  tofile="${dir.building}/WEB-INF/classes/conf/properties/hana.jdbc.properties"
+			  overwrite="true" />
+		<copy file="${dir.classes}/conf/properties/test/sap.jco.properties"
+			  tofile="${dir.building}/WEB-INF/classes/conf/properties/sap.jco.properties"
+			  overwrite="true" />
+		<copy file="${dir.classes}/conf/properties/test/log4j.properties"
+					  tofile="${dir.building}/WEB-INF/classes/log4j.properties"
+					  overwrite="true" />
+		<tstamp />
+		<delete dir="${dir.building}/logs" />
+		<!-- 整个web应用打包 -->
+		<jar destfile="${dir.dist}/${war.name}_test_${DSTAMP}.war" basedir="${dir.building}">
+			<exclude name="**/.*" />
+			<exclude name="CVS" />
+			<exclude name=".svn" />
+		</jar>
+		
+		<!--删除build目录-->
+		<delete dir="${dir.building}" />
+	</target>
+
+	<!-- 生产机打包  -->
+	<target name="worder-pro">
+		<delete dir="${dir.building}"/>
+		<mkdir dir="${dir.building}"/>
+		<mkdir dir="${dir.dist}" />
+		<copy todir="${dir.building}">
+			<fileset dir="WEB">
+				<include name="**/*.*" />
+				<exclude name="CVS" />
+				<exclude name=".svn" />
+			</fileset>
+		</copy>
+		<copy file="${dir.classes}/conf/properties/pro/hana.jdbc.properties"
+			  tofile="${dir.building}/WEB-INF/classes/conf/properties/hana.jdbc.properties"
+			  overwrite="true" />
+		<copy file="${dir.classes}/conf/properties/pro/sap.jco.properties"
+			  tofile="${dir.building}/WEB-INF/classes/conf/properties/sap.jco.properties"
+			  overwrite="true" />
+		<copy file="${dir.classes}/conf/properties/pro/log4j.properties"
+					  tofile="${dir.building}/WEB-INF/classes/log4j.properties"
+					  overwrite="true" />
+		<tstamp />
+		<delete dir="${dir.building}/logs" />
+		<!-- 整个web应用打包 -->
+		<jar destfile="${dir.dist}/${war.name}_pro_${DSTAMP}.war" basedir="${dir.building}">
+			<exclude name="**/.*" />
+			<exclude name="CVS" />
+			<exclude name=".svn" />
+		</jar>
+		
+		<!--删除build目录-->
+		<delete dir="${dir.building}" />
+	</target>
+	
+
+
+</project>

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>找回密码</title>
+    <meta name="content-type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <p>点击如下链接找回相应的帐号密码:(链接10分钟后失效!)</p>
+    <ul>
+    	<#list users as u>
+    	<li>${u.userName}<a href="http://51so.info/admin/findpass.do?u=${u.id}&key=${random}">重设密码</a></li>
+    	</#list>
+    </ul>
+  </body>
+</html>

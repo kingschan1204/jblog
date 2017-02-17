@@ -1,0 +1,394 @@
+<!DOCTYPE HTML> 
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>日志列表</title>
+<#include "/admin/include/bootstrap.ftl">
+<script src="http://echarts.baidu.com/dist/echarts.min.js"></script>
+<<!-- script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/echarts-all-3.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>
+<script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script> -->
+<script src="${webroot}/www/echarts/theme/infographic.js"></script>
+<link href="${webroot}/www/admin/css/dashboard.css" rel="stylesheet">
+</head>
+<body>
+<#include "/admin/include/dashboard-start.ftl">
+<ul class="nav nav-tabs" role="tablist" id="myTab">
+  <li role="presentation" class="active"><a href="#home" role="tab" data-toggle="tab">流量</a></li>
+  <li role="presentation"><a href="#profile" report="blogArticle" role="tab" data-toggle="tab">内容</a></li>
+</ul>
+
+<div class="tab-content">
+  <div role="tabpanel" class="tab-pane active" id="home">
+  	<div class="tab-pane fade in active" id="home">
+		<!-- start 访问情况报表 -->
+		<div class="row">
+		<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+		<div id="main" style="height:400px"></div>
+	</div>
+	<div class="row">
+		<div class="col-md-6">
+			<div id="blogAccessSum" style="width: 600px;height:400px;"></div>
+		</div>
+		<div class="col-md-6">
+			<div id="blogAgent" style="width: 600px;height:400px;margin-top: 20px;"></div>
+		</div>
+	</div>
+	<!-- 访问情况报表 -->
+	</div>
+  </div>
+  <div role="tabpanel" class="tab-pane" id="profile">
+  		<div class="row">
+			<div id="blogArticleQuantity" init="false" style="height:400px;"></div>
+		</div>
+  		<div class="row">
+			<div id="blogArticle" init="false" style="height:400px;margin-top: 20px;"></div>
+		</div>
+  </div>
+</div>
+
+
+
+
+	
+	
+	
+	<!-- ECharts单文件引入 -->
+	<script type="text/javascript">
+	$('#collapseFour').collapse('show');
+		// 路径配置
+		var echarts;
+		var myChart ;
+		// 使用// 使用柱状图就加载bar模块，按需加载
+			// 基于准备好的dom，初始化echarts图表
+			 myChart = echarts.init(document.getElementById('main'),'infographic');
+			/*  myChart.on('click', function (params) {
+				 if(params.seriesIndex==0){
+					 console.info(params.name+"|"+params.value);
+				 }
+			}); */
+			 var rows=[];
+	          $.ajax({
+				   type: "GET",
+				   url: "${admin_blogprefix}/admin/report/dayHttpReq.do",
+				   data: {limit:60},
+				   dataType:'json',
+				   success: function(result){
+					   rows=result;
+					   var title=new Array();
+				       var quantity=new Array();
+				       var ip=new Array();
+				          for(var i=0;i<rows.length;i++){
+				        	  title.push(rows[i].days);
+				        	  quantity.push(rows[i].total);
+				        	  ip.push(rows[i].ip);
+				          }
+			       // 指定图表的配置项和数据
+				        var option = {
+				            title: {
+				                text: '网站日报'
+				            },
+				            tooltip: {},
+				            legend: {
+				                data:['PV','IP']
+				            },
+				            xAxis: {
+				                data:title
+				            },
+				            yAxis: {},
+				            series: [{
+				                name: 'PV',
+				                type: 'bar',
+				                data:quantity
+				            },
+				            {
+				                name: 'IP',
+				                type: 'bar',
+				                data:ip
+				            }
+				            ]
+				        };
+				        // 使用刚指定的配置项和数据显示图表。
+				        myChart.setOption(option);
+				        myChart.hideLoading();
+// 				        myChart.setTheme('infographic');
+				   }
+				});
+	          
+	          
+			 var blogAccessSumCharts = echarts.init(document.getElementById('blogAccessSum'),'infographic');			 
+			// 指定图表的配置项和数据
+	          $.ajax({
+				   type: "GET",
+				   url: "${admin_blogprefix}/admin/report/sumBlogAccess.do",
+				   dataType:'json',
+				   success: function(result){
+				          var option = {
+								    title : {
+								        text: '网站访问占比',
+								        subtext: '只统计博客站点请求',
+								        x:'center'
+								    },
+								    tooltip : {
+								        trigger: 'item',
+								        formatter: "{a} <br/>{b} : {c} ({d}%)"
+								    },
+								    series : [
+								        {
+								            name: '访问来源',
+								            type: 'pie',
+								            radius : '55%',
+								            center: ['50%', '60%'],
+								            data:result,
+								            itemStyle: {
+								                emphasis: {
+								                    shadowBlur: 10,
+								                    shadowOffsetX: 0,
+								                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+								                }
+								            }
+								        }
+								    ]
+								};
+					        // 使用刚指定的配置项和数据显示图表。
+					        blogAccessSumCharts.setOption(option);
+					        blogAccessSumCharts.hideLoading();  
+				   }
+				});
+		
+		
+		
+			 var blogAgentCharts = echarts.init(document.getElementById('blogAgent'),'infographic');		 
+			// 指定图表的配置项和数据
+	          $.ajax({
+				   type: "GET",
+				   url: "${admin_blogprefix}/admin/report/blogAgent.do",
+				   dataType:'json',
+				   success: function(result){
+				          var option = {
+								    title : {
+								        text: '网站代理工具占比',
+								        subtext: 'use-agent',
+								        x:'center'
+								    },
+								    tooltip : {
+								        trigger: 'item',
+								        formatter: "{a} <br/>{b} : {c} ({d}%)"
+								    },
+								    series : [
+								        {
+								            name: '访问来源',
+								            type: 'pie',
+								            radius : '55%',
+								            center: ['50%', '60%'],
+								            data:result,
+								            itemStyle: {
+								                emphasis: {
+								                    shadowBlur: 10,
+								                    shadowOffsetX: 0,
+								                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+								                }
+								            }
+								        }
+								    ]
+								};
+					        // 使用刚指定的配置项和数据显示图表。
+					        blogAgentCharts.setOption(option);
+					        blogAgentCharts.hideLoading();  
+				   }
+				});
+		
+		function articlePercentFun(){
+			var initstatu=$("#blogArticle").attr("init");
+			console.info(initstatu);
+			if(initstatu=="true")return;
+			//日志占比
+				 var blogArticlePercentCharts = echarts.init(document.getElementById('blogArticle'));			 
+				// 指定图表的配置项和数据
+		          $.ajax({
+					   type: "GET",
+					   url: "${admin_blogprefix}/admin/report/articlePercent.do",
+					   dataType:'json',
+					   success: function(result){
+				            var names=new Array();
+					      	var values=new Array();
+					          for(var i=0;i<result.length;i++){
+					        	  names.push(result[i].name);
+					        	  values.push(result[i].value);
+					          }
+					          
+					          var option1 = {
+					        			 title : {
+					        			        text: '网站日志发表情况占比',
+					        			        subtext: '占比情况一览',
+					        			        x:'center'
+					        			    },
+					        			    tooltip: {
+					        			        trigger: 'item',
+					        			        formatter: "{a} <br/>{b}: {c} ({d}%)"
+					        			    },
+					        			    legend: {
+					        			        orient: 'vertical',
+					        			        x: 'left',
+					        			        data:names
+					        			    },
+					        			    series : [
+					        			              {
+					        			                  name: '各博客日志发表数比重',
+					        			                  type: 'pie',
+					        			                  radius : '55%',
+					        			                  center: ['50%', '60%'],
+					        			                  data:result,
+					        			                  itemStyle: {
+					        			                      emphasis: {
+					        			                          shadowBlur: 10,
+					        			                          shadowOffsetX: 0,
+					        			                          shadowColor: 'rgba(0, 0, 0, 0.5)'
+					        			                      }
+					        			                  }
+					        			              }
+					        			          ]
+					        			   
+					        			};
+						        // 使用刚指定的配置项和数据显示图表。
+						        blogArticlePercentCharts.setOption(option1);
+						        blogArticlePercentCharts.hideLoading();  
+						        $("#blogArticle").attr("init",true)
+					   }
+					});
+			
+		}
+		
+		
+		
+		
+		function articleGlobleLine(){
+			var initstatu=$("#blogArticleQuantity").attr("init");
+			console.info(initstatu);
+			if(initstatu=="true")return;
+			var dom = document.getElementById("blogArticleQuantity");
+			var myChart = echarts.init(dom);
+			 var rows=[];
+	          $.ajax({
+				   type: "GET",
+				   url: "${admin_blogprefix}/admin/report/dayOfArticleQuantity.do?model=globle",
+				   data: {limit:0},
+				   dataType:'json',
+				   success: function(result){
+					   rows=result;
+					   var days=new Array();
+					   var quantitys=new Array();
+				          for(var i=0;i<rows.length;i++){
+				        	  days.push(rows[i].days);
+				        	  quantitys.push(rows[i].total);
+				          }
+			       // 指定图表的配置项和数据
+			      var option = {
+							    tooltip: {
+							        trigger: 'axis',
+							        position: function (pt) {
+							            return [pt[0], '10%'];
+							        }
+							    },
+							    title: {
+							        left: 'center',
+							        text: '所有博客日志更新汇总图',
+							    },
+							    legend: {
+							        top: 'bottom',
+							        data:['意向']
+							    },
+							    toolbox: {
+							        feature: {
+							            dataZoom: {
+							                yAxisIndex: 'none'
+							            },
+							            restore: {},
+							            saveAsImage: {}
+							        }
+							    },
+							    xAxis: {
+							        type: 'category',
+							        boundaryGap: false,
+							        data: days
+							    },
+							    yAxis: {
+							        type: 'value',
+							        boundaryGap: [0, '100%']
+							    },
+							     dataZoom: [{
+							        type: 'inside',
+							        start: 0,
+							        end: 30
+							    } , {
+							        start: 0,
+							        end: 10,
+							        handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
+							        handleSize: '80%',
+							        handleStyle: {
+							            color: '#fff',
+							            shadowBlur: 3,
+							            shadowColor: 'rgba(0, 0, 0, 0.6)',
+							            shadowOffsetX: 2,
+							            shadowOffsetY: 2
+							        }
+							    }],
+							    series: [
+							        {
+							            name:'篇数',
+							            type:'line',
+							            smooth:true,
+							            symbol: 'none',
+							            sampling: 'average',
+							            itemStyle: {
+							                normal: {
+							                    color: 'rgb(255, 70, 131)'
+							                }
+							            },
+							            areaStyle: {
+							                normal: {
+							                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+							                        offset: 0,
+							                        color: 'rgb(255, 158, 68)'
+							                    }, {
+							                        offset: 1,
+							                        color: 'rgb(255, 70, 131)'
+							                    }])
+							                }
+							            },
+							            data: quantitys
+							        }
+							    ]
+							};
+				        myChart.setOption(option);
+				        myChart.hideLoading();
+				        $("#blogArticleQuantity").attr("init",true);
+				   }
+				});
+		}
+		
+		
+		
+		$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+			 var current=$(e.target).attr("report"); // newly activated tab
+// 			 console.info(e.relatedTarget); // previous active tab
+			if(current=="blogArticle"){
+			 	articlePercentFun();
+			 	articleGlobleLine();
+			}
+		})
+			
+	</script>
+	
+		
+    
+<#include "/admin/include/dashboard-end.ftl">
+</body>
+<script type="text/javascript">
+$("#blog_report_li").addClass("nav-active");
+$(function () { $("[data-toggle='tooltip']").tooltip(); bootbox.setLocale("zh_CN");  });
+</script>
+</html>

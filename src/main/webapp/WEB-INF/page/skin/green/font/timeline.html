@@ -1,0 +1,101 @@
+<#compress>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>${website.websiteTitle}-时间轴(动态)</title>
+    <meta name="content-type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="${website.websiteKeyword}">
+    <meta property="wb:webmaster" content="af65d85078309c4c" />
+    <#include "${tpath}include/bootstrap.ftl">
+    <link rel="stylesheet" href="/www/skin/green/css/index.css">
+    <link rel="stylesheet" type="text/css" href="/www/skin/green/timeline/css/default.css" />
+	<link rel="stylesheet" type="text/css" href="/www/skin/green/timeline/css/component.css" />
+	<script src="/www/skin/green/timeline/js/modernizr.custom.js"></script>
+	<link rel="stylesheet" href="http://cdn.bootcss.com/highlight.js/8.0/styles/monokai_sublime.min.css">
+	<script src="http://cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>
+	<script src="http://${host}/www/emojify/js/emojify.min.js"></script>
+  </head>
+  <body>
+     <#include "${tpath}include/index-menu.ftl">
+    <div class="container">
+    <div class="row" style="margin-top: 6px;">
+    	<div class="col-md-12" style="padding-top: 10px;" >
+    	
+    	<!-- #6f5499 -->
+    	<ul class="cbp_tmtimeline">
+			<#list page.data as row>
+	   			<li>
+		   			<time class="cbp_tmtime" datetime="${row.time}"><span>${row.date}</span> <span>${row.time}</span></time>
+					<div class="cbp_tmlabel">${row.content}</div>
+	   			</li>
+	   		</#list>
+		</ul>
+    	
+    	
+    		<#assign url="${blogprefix}/blog-timeline?">
+			<#include "${tpath}include/page.ftl">
+    	</div>
+   	</div>
+   	<!-- end row -->
+  </div>
+  <!-- end container div -->
+  <#include "${tpath}include/footer.ftl">
+  </body>
+  <script type="text/javascript">
+  $("#menu_article_lis").addClass("active");
+  var clength=$('#article_lis_div').attr("height");
+  if(clength<10){
+	  $("#article_lis_div").css("height","700px");
+  }
+  $('.cbp_tmlabel pre').each(function(i, block) {
+	    hljs.highlightBlock(block);
+	  });
+  emojify.setConfig({emojify_tag_type:'div', img_dir: '${webroot}/www/emojify/images/emoji'});
+  emojify.run();
+  $(function () {
+  $(".atlink").each(function(){
+		$(this).attr({
+			"data-toggle":"popover" ,
+			"data-placement":"top",
+			"data-html":"true",
+			"data-trigger":"click",
+			"data-title":$(this).text()
+		});
+		$(this).on('shown.bs.popover', function () {
+			if($(this).attr("load")=="true"){return;}
+			var u=$(this).text().replace("@","");
+			var tip =this;
+			$.ajax({
+				   type: "post",
+				   url: "${blogprefix}/pub/uinfo_card.do",
+				   data: {username:u},
+				   dataType:"json",
+				   success: function(result){
+					 if("url" in result){
+					 var html="<img src='"+result.img+(result.img.indexOf("res.51so.info")!=-1?"_profile.50X50":"")+"' width='50' height='50' />";
+					 if(result.tagline){ html+="<p>"+result.tagline+"</p>";}					
+					 html+="<p>用户级别："+(result.lv.trim()=="admin"?"<code>博主</code>":"游客")+"</p>";
+					 html+="<p>上次登录："+result.lastlogin+"</p>";
+					 html+="<p>开通时间："+result.datetime+"</p>";
+					 html+="<p><a href='"+result.url+"' target='_blank'>"+result.url+"</a></p>";
+					 }else{
+						 result.sname="用户不存在";
+						 html="<code>用户不存在<code>";
+					 }
+					 $(tip).attr({
+							"data-original-title":result.sname,
+							"data-content":html,
+							"load":true
+						});
+					 $(tip).popover('show');
+				   }
+				});
+		});
+	});
+  $("[data-toggle='popover']").popover(); 
+  });
+  </script>
+</html>
+</#compress>

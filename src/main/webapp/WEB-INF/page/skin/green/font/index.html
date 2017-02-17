@@ -1,0 +1,153 @@
+<#compress>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>${website.websiteTitle}<#if category??>-${category}<#elseif tag??>-${tag}<#elseif date??>-${date}</#if></title>
+    <meta name="content-type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="${website.websiteKeyword}">
+    <meta property="wb:webmaster" content="af65d85078309c4c" />
+    <#include "${tpath}include/bootstrap.ftl">
+    <link rel="stylesheet" href="/www/skin/green/css/index.css">
+  </head>
+  <body>
+    <#include "${tpath}include/index-menu.ftl">
+    <div class="container">
+      <div class="row">
+      		<div class="col-md-9">
+      			<div class="row">
+	      			<@Article page="${page!}" category="${category!}" tag="${tag!}" website_id="${website.id}" date="${date!}" limit="12" fulltext="${keyword!}" orderby="a.articleUpdatetime desc" model="font">
+						<#list article_lis as article>
+							<div class="index-article-list">
+								<h3><a href="${blogprefix}/entry/${article.id}.html" target="_blank">${article.articleTitle}</a></h3>
+								<div class="index-article-list-text">${article.articleSummary}</div>
+								<div>
+									<#list article.lables as lable>
+								    		<a href="${blogprefix}/tags/${lable.lableName}" class="index-article-list-lable">${lable.lableName}</a>
+								    </#list>
+								</div>
+								<div class="index-article-list-footer">
+									<span class="glyphicon glyphicon-th-large"></span><a href="${blogprefix}/category/${article.category.categoryName}" target="_blank">${article.category.categoryName}</a> 
+									<span class="glyphicon glyphicon-time"></span><@TimeSummary time="${article.articlePubtime}"></@TimeSummary>
+									<span class="glyphicon glyphicon-comment"></span>${article.articleTotalComment}
+									<span class="glyphicon glyphicon-refresh"></span>${article.articleViewcount}
+									<span class="glyphicon glyphicon-thumbs-up"></span>${article.articleLikes}
+								</div>
+							</div>
+			    		</#list>
+			    </@Article>
+      			</div>
+				<div class="row"><#include "${tpath}include/page.ftl"></div>
+      		</div>
+      	<div class="col-md-3">
+	      	<div class="row summary_box">
+		      	<div class="row" >
+		      		<@WebSiteCountInfo siteid="${website.id}">
+		      		<div class="col-xs-3"><a href="${blogprefix}/article_timeline">${WebSiteCountInfoVo.articleTotal}</a></div>
+		      		<div class="col-xs-3"><a href="${blogprefix}/article_lis">${WebSiteCountInfoVo.categoryTotal}</a></div>
+		      		<div class="col-xs-3"><a href="${blogprefix}/lable_lis">${WebSiteCountInfoVo.lableTotal}</a></div>
+		      		<div class="col-xs-3"><a>${WebSiteCountInfoVo.commentTotal}</a></div>
+		      		</@WebSiteCountInfo>
+		      	</div>
+		      	<div class="row" style="font-size: 16px;">
+		      		<div class="col-xs-3">文章</div>
+		      		<div class="col-xs-3">分类</div>
+		      		<div class="col-xs-3">标签</div>
+		      		<div class="col-xs-3">评论</div>
+		      	</div>
+	      	</div>
+      		<div class="row summary_box" style="margin-top: 10px;">
+					<form class="navbar-form navbar-left" method="get" action="${blogprefix}/query">
+		             <div class="input-group">
+		             <input type="text" class="form-control" name="q" placeholder="Search" value="${fulltext!}">
+				      <div class="input-group-btn">
+				        <button type="submit" class="btn btn-default" ><span class="glyphicon glyphicon-search"></span></button>
+				      </div><!-- /btn-group -->
+				    </div><!-- /input-group -->
+		          </form>
+	      	</div>
+	      	
+      	<div class="row">
+		      <div class="right-navbox" id="pushSort">
+		      	  <h3>【推荐】</h3>
+				  <@Article  website_id="${website.id}"  limit="10" orderby="a.articleSort desc">
+				  		<ul>
+				   		<#list article_lis as article> 
+				   			<li>
+				    		<a href="${blogprefix}/entry/${article.id}.html#comments" target="_blank" title="${article.articleTitle}-(${article.articleTotalComment})" >
+				    			${article.articleTitle}
+				    		</a>
+				    		</li>
+				    	</#list> 
+				    	</ul>
+				    </@Article>
+			 </div>
+	      </div>			        
+      				         
+      	<div class="row">
+		      <!-- read sort -->
+		      <div class="right-navbox" id="readSort">
+		      		<@HotArticle website_id="${website.id}" limit="10" >
+			  			<h3>阅读排行</h3>
+			  			<ul>
+				   		<#list article_lis as article> 
+				   			<li>
+				    		<a href="${blogprefix}/entry/${article.id}.html#comments" target="_blank"  title="${article.articleTitle}-(${article.articleViewcount})" >
+				    			${article.articleTitle}
+				    		</a>
+				    		</li>
+				    	</#list> 
+				    	</ul>
+				    </@HotArticle>
+		      </div>
+		      <!-- end read sort -->
+	      </div>
+	      <div class="row">
+		      <div class="right-navbox" id="commentSort">
+		      	  <h3>评论排行</h3>
+				  <@Article  website_id="${website.id}"  limit="10" orderby="a.articleTotalComment desc">
+				  		<ul>
+				   		<#list article_lis as article> 
+				   			<li>
+				    		<a href="${blogprefix}/entry/${article.id}.html#comments" target="_blank" title="${article.articleTitle}-(${article.articleTotalComment})" >
+				    			${article.articleTitle}
+				    		</a>
+				    		</li>
+				    	</#list> 
+				    	</ul>
+				    </@Article>
+			 </div>
+	      </div>
+      	<div class="row">
+			 <!-- start -->
+			<div class="right-navbox" style="padding-left:30px;padding-right:30px;">
+			  <h3>热门标签</h3>
+			  <div>
+			   <@Lable website_id="${website.id}" limit="40">
+			   			<ol class="index-lable">
+			   				<#list lable_lis as lable >
+				   				<li><a href="${blogprefix}/tags/${lable.lableName}"  title="${lable.lableName}">${lable['lableName']}</a></li>
+				    		</#list> 
+			   			</ol>
+		    	</@Lable>
+		     </div>
+			 <!-- end -->
+	      </div>
+      </div>
+      <!-- end col-3 -->
+      </div>
+    </div> 
+</div><!-- /container -->
+    <script type="text/javascript">
+  $("#menu_home").addClass("active");
+  $("[data-toggle='tooltip']").tooltip(); bootbox.setLocale("zh_CN"); 
+  $("[data-toggle='popover']").popover();
+  $("#readSort ul li:last").css({"border":"none"});
+  $("#commentSort ul li:last").css({"border":"none"});
+  $("#pushSort ul li:last").css({"border":"none"});
+  </script>
+    <#include "${tpath}include/footer.ftl">
+</body>
+</html>
+</#compress>

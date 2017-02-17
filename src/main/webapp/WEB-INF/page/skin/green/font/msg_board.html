@@ -1,0 +1,216 @@
+<#compress>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>${website.websiteTitle}-留言板</title>
+    <meta name="content-type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="${website.websiteKeyword}">
+    <meta property="wb:webmaster" content="af65d85078309c4c" />
+    <#include "${tpath}include/bootstrap.ftl">
+    <link rel="stylesheet" href="/www/skin/green/css/index.css">
+    <script src="http://cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>
+     <!-- github.min.css googlecode.min.css xcode.min.css vs.min.css  foundation.min.css dark.min.css monokai.min.css-->
+	<link rel="stylesheet" href="http://cdn.bootcss.com/highlight.js/8.0/styles/dark.min.css">
+	 <!-- bootstrap markdown -->
+    <link href="//cdn.bootcss.com/bootstrap-markdown/2.10.0/css/bootstrap-markdown.min.css" rel="stylesheet">
+    <script src="//cdn.bootcss.com/bootstrap-markdown/2.10.0/js/bootstrap-markdown.min.js"></script>    
+    <script src="//cdn.bootcss.com/marked/0.3.6/marked.min.js"></script>
+    <script src="http://${host}/www/emojify/js/emojify.min.js"></script>
+    <script src="${webroot}/www/blog/js/pub/blog-alert.js"></script> 
+	<script type="text/javascript" src="${webroot}/www/admin/js/blog.js"></script>
+	<link rel="stylesheet" type="text/css" href="${webroot}/www/fancybox/jquery.fancybox.css" media="screen" />	
+    <script type="text/javascript" src="${webroot}/www/fancybox/jquery.fancybox.js"></script>
+	<link href="${webroot}/www/blog/plugs/zoomify/zoomify.min.css" rel="stylesheet">
+  	<script type="text/javascript" src="${webroot}/www/blog/plugs/zoomify/zoomify.min.js"></script>
+    <style type="text/css">
+    #twitter-footer{overflow: hidden;}
+    pre {
+		    display: block;
+		    padding: 0px;
+		    margin: 0 0 10px;
+		    font-size: 13px;
+		    line-height: 1.42857143;
+		    color: #333;
+		    word-break: break-all;
+		    word-wrap: break-word;
+		    background-color: transparent;
+		    border: none; 
+		    border-radius: 4px;
+		}
+    </style>
+  </head>
+  <body>
+     <#include "${tpath}include/index-menu.ftl">
+    <div class="container">
+    <div class="row" >
+    	<div class="col-md-8" style="background-color: white;margin-right: 10px;box-shadow: 0 0 0 0, 0 6px 12px rgba(34,34,34,0.1);" >
+    	<#if msg??><p class="alert alert-danger">${msg!}</p></#if>
+    	<h3>欢迎你给我们留言！</h3>
+    	<form id="commentForm" method="post" action="${webroot}/font//addMsgBoard.do">
+    		<input type="hidden" id="root"  name="root" value="">
+    		<input type="hidden" id="at" name="at" value="">
+		    	 <div class="form-group">
+				  	<textarea id="target-editor-twitter" name="content"></textarea>
+				  </div>
+				  
+				 <#if BLOG_CURRENT_USER>
+	    			<button type="button" class="btn btn-success" style="float: right;" onclick="submitform();">留言</button>
+	    		<#else>
+	    			<div style="float: right;">
+	    			<img src="${webroot}/www/admin/img/sina-loginbtn_03.png" onclick="window.location='sinawblogin.do'" style="cursor:pointer;"/>
+	    			</div>
+	    		</#if>
+		    </form>
+		    <div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a><a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a></div>
+			<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+		    <p ><b>共${page.total}条评论</b></p>	
+    		<ul id="msgboardlist">
+	    		<#list page.data as row>
+	    		<li class="clearfix" > 
+	    			  <div class="user_img">
+	    			  		<img src="${row.msgSendUser.userProfileImg}<#if row.msgSendUser.userProfileImg?index_of("res.51so.info")!=-1>_profile.60X60</#if>" alt="${row.msgSendUser.userScreenName}"/>
+					  </div>
+					  <div class="cot_con">
+					 	<div class="info">
+					      <span class="user_name"><a>${row.msgSendUser.userScreenName}</a></span>
+					      <span class="time"><span class="glyphicon glyphicon-time"></span>&nbsp;${row.msgDatetime}</span>
+					    </div>
+					    <div class="comment_content"><#if row.msgAt.id!=website.user.id><a>@${row.msgAt.userScreenName}</a></#if> ${row.msgText}</div>
+					    <div class="row msgboard_root_footer"> 
+					    	<#--<span class="glyphicon glyphicon-thumbs-up"  data-toggle="tooltip" data-placement="top" title="点赞" onclick="" exists="">(${row.msgLike})</span>-->
+					    	<a href="javascript:replay('${row.id}','${row.msgSendUser.id}');">回复</a>
+					    </div>
+					    <#if (row.msgCount>0)>
+					    <div class="row">
+					     <ul class="msgboard_reply_list">
+								  <#list page.map[row.id] as reply>
+			    					<li>
+			    						<div><a>${reply.msgSendUser.userScreenName}</a>:
+			    						<#if reply.msgAt.id !=row.msgSendUser.id>
+			    							&nbsp;回复&nbsp;<a>${reply.msgAt.userScreenName}</a>
+			    						</#if>
+			    						${reply.msgText}</div>
+			    						<div class="msg_board_reply_footer">${reply.msgDatetime}
+			    						&nbsp;
+			    						<a href="javascript:replay('${row.id}','${reply.msgSendUser.id}');">回复</a>
+			    						</div>
+			    					 </li>
+			    				   </#list>
+					  	</ul>
+					  	<a class="msg_board_readmore" page="1" onclick="loadReply('${row.id}',${row.msgCount},this);">共${row.msgCount}条回复<span class="glyphicon glyphicon-chevron-down"></span> </a>
+					  	</div>
+					  	</#if>
+					  </div>
+				</li> 
+	    		</#list>
+    		</ul>
+    		<#assign url="${blogprefix}/blog-msgboard?">
+	    	<#assign sufix="#article_lis_div">
+   			<#include "${tpath}include/page.ftl">
+    	</div>
+    	<div  class="col-md-3" >
+				<div class="row">
+		      <div class="right-navbox" style="margin-top: 0px;">
+		      	  <h3>评论排行</h3>
+				  <@Article  website_id="${website.id}"  limit="20" orderby="a.articleTotalComment desc">
+				  		<ul>
+				   		<#list article_lis as article> 
+				   			<li>
+				    		<a href="${blogprefix}/entry/${article.id}.html#comments" target="_blank" title="${article.articleTitle}-(${article.articleTotalComment})" >
+				    			${article.articleTitle}
+				    		</a>
+				    		</li>
+				    	</#list> 
+				    	</ul>
+				    </@Article>
+			 </div>
+	      </div>
+    	</div>
+   	</div>
+   	<!-- end row -->
+  </div>
+  <!-- end container div -->
+  <#include "${tpath}include/footer.ftl">
+  <script  src="http://${host}/www/skin/green/js/markdown-editor.js"></script>
+  </body>
+  <script type="text/javascript">
+  $("#menu_article_lis").addClass("active");
+  function replay(root,at){
+	  $("#root").val(root);
+	  $("#at").val(at);
+	  $('html, body').animate({scrollTop:0}, 'slow');
+	  $("#target-editor-twitter").focus();
+  }
+//set code light
+	$('.comment_content pre').each(function(i, block) {
+	    hljs.highlightBlock(block);
+	  });
+	  
+	$(".emoji").click(function() {
+		blogAlert.alert(this.alt,"red");
+		});
+	function submitform(){
+		if(!blog.islogin()){
+			blogAlert.notify("你还未登录!","danger");
+			return;
+		}
+		var content=$("#target-editor-twitter").val().trim();
+		if(content.length<3){
+			blogAlert.notify("至少输入3个字符","danger");
+			return;
+		}else if(content.length>200){
+			blogAlert.notify("最多不能超200个字符","danger");
+			return;
+		}
+		$("#commentForm").submit();
+	}
+	function loadReply(id,max,obj){
+		var page=parseInt($(obj).attr("page"));
+		if(max<=10||page*10>=max){
+			blogAlert.notify("没有更多了!","danger");
+			return;
+		}
+		//    
+		var next=page+1;
+		blogAlert.showLoading("正在加载请稍后...");
+		$.ajax({
+			   type: "post",
+			   url: bloghost+"/pub/loadMsgBoardReply.do",
+			   data: {page:next,id:id},
+			   dataType:"json",
+			   success: function(result){
+				   blogAlert.closeLoading();
+				   if(result=="error"){
+					   blogAlert.notify("服务端口出错!","danger");
+					   return;
+				   }
+				   $(obj).attr("page",next);
+				   for(var i=0;i<result.length;i++){
+					   var html="<li>";
+					   html+="<div><a>"+result[i].cuser+"</a>&nbsp;:回复&nbsp;<a>"+result[i].atuser+"</a>"+result[i].text+"</div>";
+					   html+="<div class=\"msg_board_reply_footer\">"+result[i].date+"&nbsp;<a href=\"javascript:replay('"+id+"','"+result[i].cuserId+"');\">回复</a></div>";
+					   html+="</li>";
+					   $(obj).parent().find("ul").append(html)
+				   }
+			   }
+			});
+	}
+	 emojify.run();
+	//set img
+	$('.msgboard_reply_list li img').each(function(){
+		if(!$(this).hasClass("emoji")){
+			$(this).attr({"title":"点我放大图片"});
+			$(this).click(function(){$(this).zoomify('zoom');}); 
+		}
+	});
+	$('.comment_content img').each(function(){
+		if(!$(this).hasClass("emoji")){
+			$(this).attr({"title":"点我放大图片"});
+			$(this).click(function(){$(this).zoomify('zoom');}); 
+		}
+	});
+  </script>
+</html>
+</#compress>

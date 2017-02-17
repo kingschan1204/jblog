@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<body>
+	<!-- 每日pv和ip统计 -->
+	<sql id="dayReport" >
+		<![CDATA[
+			SELECT a.days, a.total, b.ip FROM ( SELECT DATE_FORMAT(req_datetime, '%Y-%m-%d') days, count(*) total FROM blog_request_log GROUP BY days ORDER BY days DESC ) a LEFT JOIN ( SELECT days, count(*) ip FROM ( SELECT DATE_FORMAT(req_datetime, '%Y-%m-%d') days, req_ip FROM blog_request_log GROUP BY days, req_ip ) x GROUP BY days ) b ON a.days = b.days
+		]]>
+	</sql>
+	
+	<!-- 博客访问占比情况 -->
+	<sql id="sumBlogAccess" >
+		<![CDATA[
+			SELECT  count(*) value, max(b.website_title) name FROM blog_request_log a INNER JOIN blog_website b ON a.req_blog = b.website_name GROUP BY req_blog
+		]]>
+	</sql>
+	<!-- 博客代理类型 -->
+	<sql id="blogAgent" >
+		<![CDATA[
+			SELECT b.agent_browser_name name, count(*) value FROM blog_request_log a inner JOIN base_agent b ON a.req_agent = b.agent_key GROUP BY b.agent_browser_name
+		]]>
+	</sql>
+	
+	<!-- 日志发表日统计 -->
+	<sql id="dayOfArticleQuantity" >
+		<![CDATA[
+				select DATE_FORMAT(article_pubtime,'%Y-%m-%d') days,count(*) total from blog_article <#if websiteid??> where websiteid=? </#if> GROUP BY days order by days desc
+		]]>
+	</sql>
+	
+	<!-- 网站访问情况 -->
+	<sql id="accessLog" >
+		<![CDATA[
+				select a.req_url,a.req_method,a.req_ip,a.req_run_time,b.agent_browser_name,b.agent_browser_version,b.agent_os,b.agent_device,a.req_datetime,a.req_blog from blog_request_log a
+				left join base_agent b on a.req_agent=b.agent_key 
+		]]>
+	</sql>
+	<!-- 网站日志发表占比情况 -->
+	<sql id="articlePercent" >
+		<![CDATA[
+				select max(b.website_title) name,count(*) value from blog_article a 
+				left join blog_website b on a.websiteid=b.id
+				group by a.websiteid 
+		]]>
+	</sql>
+	<!-- 网站信息汇总-->
+	<sql id="siteInfo" >
+		<![CDATA[
+			select 
+				u.user_screen_name userName,
+				DATE_FORMAT(site.website_datetime,'%Y.%m.%d') as createDateTime,
+				DATE_FORMAT(u.user_lastlogin,'%Y.%m.%d') as lastLoginDateTime,
+				article.total as articleTotal,
+				category.ctotal as categoryTotal,
+				lable.ltotal as lableTotal,
+				comments.comtotal as commentTotal
+			from blog_website site 
+				left join blog_user u on u.id=site.webiste_creator
+				left join( select websiteid,count(*) total from blog_article where websiteid=:siteid group by websiteid ) article on article.websiteid=site.id
+				left join (select count(*) ctotal,category_websiteid from blog_category where category_websiteid=:siteid group by category_websiteid)category on category.category_websiteid=site.id
+				left join (select count(*) ltotal,websiteid from (select websiteid,lable_name from blog_label where websiteid=:siteid group by lable_name) x group by websiteid ) lable on lable.websiteid=site.id
+				LEFT JOIN (select count(*) comtotal,c_website_id from blog_article_comment where c_isdel='√' and c_website_id=:siteid group by c_website_id ) comments on comments.c_website_id=site.id
+			where site.id=:siteid
+		]]>
+	</sql>
+	<!-- 网站主页访问数-->
+	<sql id="blog_home_http" >
+		<![CDATA[
+			select count(*) total from blog_request_log a
+			left join base_agent b on a.req_agent=b.agent_key
+			 where req_blog='kingschan' and req_ip <> '127.0.0.1' 
+			and( b.agent_device='Computer' or b.agent_device='Mobile' or b.agent_device='Tablet')
+		]]>
+	</sql>
+	<!-- 
+	当日pv详情
+	select a.req_agent,a.req_ip,a.req_blog,b.agent_name,b.agent_terminal from blog_request_log a
+	left join base_agent b on a.req_agent=b.agent_key
+	 where  DATE_FORMAT(req_datetime,'%Y-%m-%d')='2016-10-09'
+	
+	
+	查pv情况
+	select b.agent_key,count(*) total from blog_request_log a
+	left join base_agent b on a.req_agent=b.agent_key
+	 where  DATE_FORMAT(req_datetime,'%Y-%m-%d')='2016-11-26' GROUP BY b.agent_key
+	order by total desc
+	 -->
+	 <!-- 效正评论条数 -->
+	 <sql id="resetCommentTotal">
+	 	<![CDATA[
+	 	UPDATE blog_article a
+		inner join (select c_article_id,count(*) total from blog_article_comment where c_isdel='√' group by c_article_id) b on a.id=b.c_article_id
+		set a.article_total_comment=b.total
+	 	]]>
+	 </sql>
+	 <!-- 用户小卡片 -->
+	 <sql id="user_info_card">
+	 	<![CDATA[
+		 	SELECT
+				user_profile_img img,
+				DATE_FORMAT(user_lastlogin, '%Y.%m.%d') lastlogin,
+				user_level lv,
+				user_screen_name sname,
+				vu.url url,
+				site.website_tagline tagline,
+				DATE_FORMAT(
+					site.website_datetime,
+					'%Y.%m.%d'
+				) datetime
+			FROM
+				blog_user
+			LEFT JOIN blog_website site ON site.webiste_creator = blog_user.id
+      		LEFT JOIN view_users_url vu on vu.id=blog_user.id
+			WHERE user_name = ?
+	 	]]>
+	 </sql>
+	 <!-- 博客访问情况 -->
+	 <sql id="user_info_card">
+	 	<![CDATA[
+		 	select req_blog,count(*) from blog_request_log a
+			left join base_agent b on a.req_agent=b.agent_key
+			where  b.agent_device <> 'Unknown' group by req_blog
+	 	]]>
+	 </sql>
+	 
+	 
+	  <!-- 查文章浏览次数 -->
+	 <sql id="article_req_count">
+	 	<![CDATA[
+		 	select LEFT(REPLACE(req_url,'/entry/',''),32) url,count(*) total from blog_request_log where req_url REGEXP '^/entry/[a-z0-9]{32}' group by req_url,req_ip order by total desc
+	 	]]>
+	 </sql>
+	 
+	 <!-- 效正文章实际访问次数去掉重复Ip -->
+	 <sql id="article_req_count">
+	 	<![CDATA[
+				update blog_article a 
+				inner join (
+				select LEFT(REPLACE(req_url,'/entry/',''),32) aid,count(*) total from blog_request_log where req_url REGEXP '^/entry/[a-z0-9]{32}' group by req_url,req_ip 
+				) b  on a.id=b.aid
+				set a.article_viewcount=b.total
+	 	]]>
+	 </sql>
+	 
+	 <!-- 博客动态 -->
+	  <sql id="blog_timeline">
+	 	<![CDATA[
+		select * from (
+			select a.id ,article_title title ,article_summary text, article_updatetime time,'' site,'article' type from blog_article  a
+			where article_creator=:userid
+			UNION all 
+			select b.id,b.article_title ,a.c_text ,a.c_datetime,c.website_name ,'comment' type from blog_article_comment a 
+			left join blog_article b on a.c_article_id=b.id
+			left join blog_website c on a.c_website_id=c.id
+			where a.c_user_id=:userid and a.c_isdel='√'
+			UNION all
+			select b.id,b.article_title,'',a.createtime time,c.website_name,'like' type from blog_article_likes a 
+			left join blog_article b on a.article_id=b.id 
+			left join blog_website c on b.websiteid=c.id
+			where a.userid=:userid
+			UNION all
+			select res_key,res_name,res_type,res_date,'','res' type from blog_res where res_creator=:userid
+		) x order by time desc
+	 	]]>
+	 </sql>
+	 
+</body>
+
+
+

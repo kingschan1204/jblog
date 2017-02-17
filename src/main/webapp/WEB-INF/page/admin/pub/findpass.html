@@ -1,0 +1,143 @@
+<#compress>
+<!DOCTYPE html>
+<html>
+<head>
+<title>51so密码找回</title>
+<meta name="keywords" content="login">
+<meta name="description" content="login">
+<meta name="content-type" content="text/html; charset=UTF-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<#include "/admin/include/bootstrap.ftl">
+<style type="text/css">
+login-page {
+	background-color: #e5e7ed;
+	min-height: 100vh;
+}
+.login-page main {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 100%;
+    max-width: 460px;
+}
+.login-block {
+    background-color: #fff;
+    padding: 60px;
+    box-shadow: 0 3px 50px 0 rgba(0,0,0,.1);
+    text-align: center;
+    border-radius: 5px;
+}
+.login-block h1 {
+    font-size: 16px;
+    margin-bottom: 40px;
+    margin-top: 40px;
+    font-family: "Helvetica Neue", Helvetica, Microsoft Yahei, Hiragino Sans GB, WenQuanYi Micro Hei, sans-serif;
+    color:gray;
+}
+.btn {
+    line-height: 42px;
+    font-size: 13px;
+    letter-spacing: 1px;
+    border-radius: 3px;
+    border-color: #9e7dd3;
+    padding: 0 30px;
+    color: #fff;
+    background-color: #9e7dd3;
+    transition: all .4s ease;
+}
+</style>
+</head>
+
+<body class="login-page" style="background-color:#e5e7ed">
+	<main>
+	<div class="login-block">
+		<a href="http://51so.info"><img	src="http://51so.info/www/admin/img/logo.png" width="144px" class="img-circle"height="144px" alt="51so" data-toggle="tooltip" data-placement="bottom" title="51so一家专业做个人资料整理的网站 ~"></a>
+		<h1><#if msg??><span style="color:red;">${msg}</span><#else>瞧你这记性</#if></h1>
+		<form action="" method="post" role="form" id="findpassForm">
+			<div class="form-group">
+				<div class="input-group">
+					<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+					<input type="password" class="form-control" name="password1" required 
+						placeholder="新的密码">
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="input-group">
+					<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+					<input type="password" class="form-control" name="password2" required 
+						placeholder="再次输入">
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="input-group">
+					<span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span> <input
+						type="text" class="form-control" maxlength="4"
+						placeholder="输入下方验证码" required  name="vcode" >
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="input-group" style="margin: 0 auto;">
+					<img class="verifyimg reloadverify" alt="点击切换" data-toggle="tooltip" data-placement="bottom" title="看不清换一张，请单击我。"
+						src="vcode.do" style="cursor:pointer;" onclick="reloadVcode(this);">
+				</div>
+			</div>
+			<button class="btn btn-block" type="submit"><i class="glyphicon glyphicon-send"></i> 重置密码</button>
+		</form>
+	</div>
+	</main>
+
+</body>
+<script type="text/javascript">
+	$(function() {
+		$("[data-toggle='tooltip']").tooltip();
+	});
+	function reloadVcode(obj) {
+		obj.src = 'vcode.do?' + Date.parse(new Date());
+	}
+	 $('#findpassForm').bootstrapValidator({
+	       message: 'This value is not valid',
+	       feedbackIcons: {
+	           valid: 'glyphicon glyphicon-ok',
+	           invalid: 'glyphicon glyphicon-remove',
+	           validating: 'glyphicon glyphicon-refresh'
+	       },
+	       fields: {
+	           password1: {
+	               validators: {
+	                   notEmpty: {
+	                       message: '请输入新密码！'
+	                   },stringLength: {
+	                       min: 6,
+	                       max: 30,
+	                       message: '密码长度为6至20'
+	                   }
+	               }
+	           },
+	           password2: {
+	               validators: {
+	                   notEmpty: {
+	                       message: '请再一次输入新密码'
+	                   },identical: {
+	                       field: 'password1',
+	                       message: '两次输入新密码不一致!'
+	                   }
+	               }
+	           },
+	           vcode: {
+	               validators: {
+	                   notEmpty: {
+	                       message: '请输入下方验证码！'
+	                   },stringLength: {
+	                       min: 4,
+	                       max: 4,
+	                       message: '验证码为固定4位'
+	                   }
+	               }
+	           }
+	       }
+	   });
+</script>
+</html>
+</#compress>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>${blogsite.websiteName}-信息管理</title>
+<#include "/admin/include/bootstrap.ftl">
+</head>
+<body>
+<#include "/admin/include/dashboard-start.ftl">
+<form id="webinfoForm" class="form-horizontal" method="post" action="save_website_info.do">
+  
+  <div class="form-group">
+    <label  class="col-sm-1 control-label">博客地址</label>
+    <div class="col-sm-6">
+    	<input type="text" class="form-control"  value="http://${blogsite.websiteName!}.${host!}"  readonly>
+    	<input name="id" type="hidden" value="${blogsite.id!}"/>
+    </div>
+  </div>
+  <div class="form-group">
+    <label  class="col-sm-1 control-label">博客标题</label>
+    <div class="col-sm-6">
+      <input type="text" class="form-control" name="websiteTitle" value="${blogsite.websiteTitle!}" placeholder="websiteTitle">
+    </div>
+  </div>
+  <div class="form-group">
+    <label  class="col-sm-1 control-label">标语</label>
+    <div class="col-sm-6">
+      <input type="text" class="form-control" name="websiteTagline" value="${blogsite.websiteTagline!}" placeholder="websiteTagline">
+    </div>
+  </div>
+  <div class="form-group">
+    <label  class="col-sm-1 control-label">seo keyword</label>
+    <div class="col-sm-6">
+      <input type="text" class="form-control" name="websiteKeyword" value="${blogsite.websiteKeyword!}" placeholder="websiteTitle">
+    </div>
+  </div>
+  <div class="form-group">
+    <label  class="col-sm-1 control-label">关于</label>
+    <div class="col-sm-8">
+      <textarea class="form-control" rows="8" name="websiteAbout">${blogsite.websiteAbout!}</textarea>
+    </div>
+  </div>
+  <div class="form-group">
+    <label  class="col-sm-1 control-label">通知</label>
+    <div class="col-sm-8">
+             支持标签（a, b, blockquote, br, cite, code, dd, dl, dt, em, i, li, ol, p, pre, q,small,strike, strong, sub, sup, u, ul）
+      <textarea class="form-control" rows="5" name="websiteNotice">${blogsite.websiteNotice!}</textarea>
+    </div>
+  </div>
+  <div class="form-group">
+    <label  class="col-sm-1 control-label">banner</label>
+    <div class="col-sm-11" id="bannerdiv">
+    	<p><code>只在电脑访问时才显示</code></p>
+    	 
+         <img alt="city.jpg" src="/www/banner/thumbnail/city.jpg" >
+         <img alt="macpro.jpg" src="/www/banner/thumbnail/macpro.jpg">
+         <img alt="citysh-h800.jpg" src="/www/banner/thumbnail/citysh.jpg">
+         <img alt="work.jpg" src="/www/banner/thumbnail/work.jpg">
+         <br>
+         <img alt="sun-sh.jpg" src="/www/banner/thumbnail/sun-sh.jpg">
+         <img alt="citypink.jpg" src="/www/banner/thumbnail/citypink.jpg">
+         <img alt="balloon-h450.jpg" src="/www/banner/thumbnail/balloon.jpg">
+         <img alt="mackeyboard-h600.jpg" src="/www/banner/thumbnail/mackeyboard.jpg">          
+         <br>
+         <img alt="sky-h600.jpg" src="/www/banner/thumbnail/sky.jpg">
+         <img alt="green-h480.jpg" src="/www/banner/thumbnail/green.jpg">  
+         <img alt="sgnx-h573.jpg" src="/www/banner/thumbnail/sgnx.jpg">
+         <img alt="" src="/www/skin/green/img/bg.png" title="默认" height="98">
+         <br>
+         <img alt="classroom-h570.jpg" src="/www/banner/thumbnail/classroom.jpg">
+         <img alt="greenlight.png" src="/www/banner/thumbnail/greenlight.png">
+         <img alt="seaside-h600.jpg" src="/www/banner/thumbnail/seaside.jpg">
+         <img alt="fly-h550.jpg" src="/www/banner/thumbnail/fly.jpg">
+         <br>
+         <img alt="love-h600.jpg" src="/www/banner/thumbnail/love.jpg">
+         <input name="websiteCover" id="websiteCover" type="hidden" value="${blogsite.websiteCover!}"/>
+         <input name="websiteFooter" type="hidden" value=""/>
+    </div>
+  </div>
+  <#--
+  <div class="form-group">
+    <label  class="col-sm-1 control-label">页脚</label>
+    <div class="col-sm-8">
+         支持标签（a, b, blockquote, br, cite, code, dd, dl, dt, em, i, li, ol, p, pre, q,small,strike, strong, sub, sup, u, ul）
+      <textarea class="form-control" rows="4" name="websiteFooter">${blogsite.websiteFooter!}</textarea>
+    </div>
+  </div>
+  <div class="form-group">
+    <label  class="col-sm-1 control-label">统计代码</label>
+    <div class="col-sm-6">
+      <textarea class="form-control" rows="8" name="websiteAnalyticscode">${blogsite.websiteAnalyticscode!}</textarea>
+    </div>
+  </div>
+  -->
+  <div class="form-group">
+    <label  class="col-sm-1 control-label">皮肤</label>
+    <div class="col-sm-2">
+      <select name="websiteSkin" class="form-control">
+      	<!-- "default","pink", -->
+      		<#assign skins=["green"]/>
+      		<#list skins as skin>
+      			<option  <#if skin=blogsite.websiteSkin >selected="selected"</#if> >${skin}</option>
+      		</#list>
+      </select>
+    </div>
+  </div>
+  <div class="form-group">
+    <label  class="col-sm-1 control-label">评论</label>
+    <div class="col-sm-6">
+      <label class="checkbox-inline">
+		  <input type="radio" name="websiteAllowcomments"  value="true"  <#if blogsite.websiteAllowcomments>checked="checked"</#if> /> 允许
+		</label>
+		<label class="checkbox-inline">
+		  <input type="radio" name="websiteAllowcomments" value="false" <#if !blogsite.websiteAllowcomments>checked="checked"</#if>> 不允许
+		</label>
+    </div>
+  </div>
+  <div class="form-group">
+    <label  class="col-sm-1 control-label">编辑器</label>
+    <div class="col-sm-6">
+      <label class="checkbox-inline" >
+		  <input type="radio" name="websiteEditor"  value="html"  <#if blogsite.websiteEditor=="html">checked="checked"</#if> /> html
+		</label>
+		<label class="checkbox-inline">
+		  <input type="radio" name="websiteEditor" value="markdown" <#if blogsite.websiteEditor=="markdown">checked="checked"</#if>>MarkDown
+		</label>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-1 col-sm-10">
+      <button type="submit" class="btn btn-success">保存</button>
+    </div>
+  </div>
+</form>
+<#include "/admin/include/dashboard-end.ftl">
+</body>
+<script type="text/javascript">
+$("#bolg_info_li").addClass("nav-active");
+$('#collapseThree').collapse('show');
+var msg ="${msg!}";
+if(msg!="success"&&msg!=""){bootbox.alert("<font style='color:red;'>"+msg+"</font>");}
+$('#webinfoForm').bootstrapValidator({
+  message: 'This value is not valid',
+  feedbackIcons: {
+      valid: 'glyphicon glyphicon-ok',
+      invalid: 'glyphicon glyphicon-remove',
+      validating: 'glyphicon glyphicon-refresh'
+  },
+  fields: {
+	  websiteTitle: {
+          validators: {
+              notEmpty: {
+                  message: '不能为空!'
+              },
+              regexp: {
+                  regexp: /^(\w|[\u4E00-\u9FA5])*$/,//
+                  message: '只能是数字字母中文或者下划线!'
+              },
+              stringLength: {
+                  min: 1,
+                  max: 20,
+                  message: '标题长度最小为1最长为20'
+              }
+          }
+      },
+      websiteTagline:{
+          validators: {
+              notEmpty: {
+                  message: '不能为空!'
+              },
+              regexp: {
+                  regexp: /^(\w|\-|[\u4E00-\u9FA5]|[\u3002|\uff1f|\uff01|\uff0c|\u3001|\uff1b|\uff1a|\u201c|\u201d|\u2018|\u2019|\uff08|\uff09|\u300a|\u300b|\u3008|\u3009|\u3010|\u3011|\u300e|\u300f|\u300c|\u300d|\ufe43|\ufe44|\u3014|\u3015|\u2026|\u2014|\uff5e|\ufe4f|\uffe5])*$/,
+                  message: '只能是数字,-,字母,中文,中文标点符号或者下划线!'
+              }
+          }
+      }
+      ,
+      websiteKeyword:{
+          validators: {
+              regexp: {
+                  regexp: /^(\w|[\u4E00-\u9FA5]|,)*$/,
+                  message: '只能是数字,字母,中文或者逗号!'
+              }
+          }
+      },
+      websiteAbout:{
+          validators: {
+              notEmpty: {
+                  message: '不能为空!'
+              },
+              regexp: {
+                  regexp: /^(\w|\@|\.|[\u4E00-\u9FA5]|[\u3002|\uff1f|\uff01|\uff0c|\u3001|\uff1b|\uff1a|\u201c|\u201d|\u2018|\u2019|\uff08|\uff09|\u300a|\u300b|\u3008|\u3009|\u3010|\u3011|\u300e|\u300f|\u300c|\u300d|\ufe43|\ufe44|\u3014|\u3015|\u2026|\u2014|\uff5e|\ufe4f|\uffe5])*$/,
+                  message: '只能是数字,字母,中文,中文标点符号,@,小数点或者下划线!'
+              }
+          }
+      }
+      
+  }});
+  
+  $("#bannerdiv img").each(function(){
+	  var conver='${blogsite.websiteCover!}';
+	  if($(this).attr("alt")==conver){$(this).css({"border":"solid 1px red"})}
+	  $(this).css({"cursor":"pointer"});
+	  $(this).click(function(){
+		  var key=$(this).attr("alt");
+		  $("#bannerdiv img").css("border","none");
+		  $(this).css({"border":"solid 1px red"});
+		  $("#websiteCover").val(key);
+	  });
+  });
+</script>
+</html>

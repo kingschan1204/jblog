@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<body>
+	<!-- 评论信息-->
+	<sql id="article_comments" >
+		<![CDATA[
+			SELECT
+				a.id,
+				a.c_text,
+				a.c_support,
+				a.c_datetime,
+			from_user.id from_user_id,
+			from_user.user_profile_img,
+			from_user.user_name ,
+			from_user.user_screen_name,
+      		userurl.url from_user_url,
+			to_user.id to_uid,
+			to_user.user_profile_img to_img_s,
+			to_user.user_screen_name to_screen_name,
+      		userurl2.url to_user_url,
+			support.id support,
+      		a.c_reply_total reply_total
+			FROM blog_article_comment a
+			LEFT JOIN blog_user from_user ON a.c_user_id = from_user.id 
+			LEFT JOIN view_users_url userurl on from_user.id=userurl.id
+			LEFT JOIN blog_user to_user ON a.c_tosomeone = to_user.id
+			LEFT JOIN view_users_url userurl2 on to_user.id=userurl2.id
+			LEFT JOIN blog_article_comment_support support ON a.id = support.coment_id and support.userid=:userid
+			WHERE
+				a.c_article_id =:articleid and a.c_root=:root AND a.c_isdel = '√'
+		]]>
+	</sql>
+	
+	<!-- 文章时间轴 -->
+	<sql id="article_timeline_yyyymm" >
+		<![CDATA[
+			select 
+				id,article_title,DATE_FORMAT(article_pubtime, '%Y-%m') months 
+			from blog_article	
+			where websiteid=:website and article_private=false
+			<#if date??> and  DATE_FORMAT(article_pubtime, '%Y-%m')=:date </#if>
+		 order by months desc,article_pubtime desc
+		]]>
+	</sql>
+	<!-- 文章时间轴导航 -->
+	<sql id="article_timeline_navigate" >
+		<![CDATA[
+			SELECT
+				DATE_FORMAT(article_pubtime, '%Y-%m') months,
+				count(*) total
+			FROM blog_article  
+			where websiteid=:website
+			 GROUP BY months order by months desc
+		]]>
+	</sql>
+	
+	<!-- 点赞人员列表 -->
+	<sql id="comment_support_lis" >
+		<![CDATA[
+			SELECT u.id,u.user_screen_name,u.user_profile_img,v.url 
+				from blog_article_comment_support suport 
+			inner join blog_user u on u.id=suport.userid
+			left JOIN view_users_url v on v.id=u.id
+				where suport.coment_id=? 
+			order by suport.createtime desc
+		]]>
+	</sql>
+</body>
+
+
+

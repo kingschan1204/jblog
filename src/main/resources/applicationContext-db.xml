@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans default-lazy-init="true"
+       xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:task="http://www.springframework.org/schema/task" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+            http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.2.xsd
+            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd   
+            ">
+    <!-- druid日志记录 -->
+    <!--  <bean id= "statLoggerb" class="com.alibaba.druid.pool.DruidDataSourceStatLoggerImpl" >
+           <property name= "logger" ref ="log4jb" />
+     </bean >
+     
+     <bean id="log4jb" class="com.alibaba.druid.support.logging.Log4jImpl" >
+           <constructor-arg><value>druid.statlog</value></constructor-arg>
+     </bean > -->
+
+    <bean id="blog_ds" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+        <property name="url" value="${jdbc.blog.url}"/>
+        <property name="username" value="${jdbc.blog.username}"/>
+        <property name="password" value="${jdbc.blog.password}"/>
+        <property name="initialSize" value="1"/>
+        <property name="minIdle" value="1"/>
+        <property name="maxActive" value="20"/>
+        <property name="maxWait" value="60000"/>
+        <property name="timeBetweenEvictionRunsMillis" value="60000"/>
+        <!-- 每隔10分钟把监控数据输出到日志中 -->
+        <!--       <property name ="timeBetweenLogStatsMillis" value ="60000" /> -->
+        <property name="minEvictableIdleTimeMillis" value="300000"/>
+        <property name="validationQuery" value="SELECT 'x'"/>
+        <property name="testWhileIdle" value="true"/>
+        <property name="testOnBorrow" value="false"/>
+        <property name="testOnReturn" value="false"/>
+        <property name="poolPreparedStatements" value="true"/>
+        <property name="maxPoolPreparedStatementPerConnectionSize" value="20"/>
+        <property name="connectionProperties" value="config.decrypt=true;config.decrypt.key=${jdbc.blog.publickey}"/>
+        <property name="filters"
+                  value="config,stat,wall"/><!-- 监控统计用的filter:stat 日志用的filter:log4j 防御sql注入的filter:wall -->
+        <!--       <property name= "statLogger" ref ="statLoggerb" /> -->
+        <property name="proxyFilters">
+            <list>
+                <ref bean="stat-filter"/>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="stat-filter" class="com.alibaba.druid.filter.stat.StatFilter">
+        <property name="mergeSql" value="true"/>
+        <property name="slowSqlMillis" value="3000"/>
+        <property name="logSlowSql" value="true"/>
+    </bean>
+
+
+    <!-- ①对数据源进行代理-->
+    <!-- <bean id="dataSourceProxy"
+        class="org.springframework.jdbc.datasource.TransactionAwareDataSourceProxy" p:targetDataSource-ref="blog_ds"/>  -->
+
+    <bean id="blog_sessionfactory"
+          class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <!--dataSource属性指定要用到的连接池 -->
+        <property name="dataSource" ref="blog_ds"/>
+        <property name="packagesToScan" value="com.kingschan.blog.po"/>
+        <property name="hibernateProperties">
+            <value>
+                hibernate.dialect=org.hibernate.dialect.MySQLDialect
+                hibernate.show_sql=${jdbc.blog.showsql}
+                hibernate.temp.use_jdbc_metadata_defaults=false
+                <!-- 二级缓存 -->
+                hibernate.cache.use_second_level_cache=${hibernate.query.cache}
+                hibernate.cache.use_query_cache=${hibernate.query.cache}
+                <!-- 二级缓存区域名的前缀 hibernate.cache.region_prefix=userCache -->
+                hibernate.cache.region_prefix=
+                <!-- 高速缓存提供程序 -->
+                hibernate.cache.region.factory_class=org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
+                <!-- 指定缓存配置文件位置 -->
+                <!-- hibernate.cache.provider_configuration_file_resource_path=/ehcache.xml -->
+                <!-- 强制Hibernate以更人性化的格式将数据存入二级缓存 -->
+                hibernate.cache.use_structured_entries=true
+                <!-- Hibernate将收集有助于性能调节的统计数据 -->
+                hibernate.generate_statistics=false
+                hibernate.jdbc.fetch_size=100
+                hibernate.jdbc.batch_size=100
+                <!--  这是hibernate 4的方式hibernate.current_session_context_class=org.springframework.orm.hibernate5.SpringSessionContext -->
+                hibernate.transaction.coordinator_class=jdbc
+                hibernate.connection.release_mode=after_transaction
+                hibernate.connection.autocommit=false
+                <!-- hibernate search -->
+                hibernate.search.default.directory_provider=filesystem
+                hibernate.search.default.indexBase=${hibernate.search.default.indexBase}
+            </value>
+        </property>
+    </bean>
+
+
+    <bean id="txDefinition" class="org.springframework.transaction.support.DefaultTransactionDefinition">
+        <property name="propagationBehaviorName" value="PROPAGATION_REQUIRED"></property>
+    </bean>
+
+    <!-- 事务管理器 -->
+    <bean id="transactionManager"
+          class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="blog_sessionfactory"></property>
+    </bean>
+
+
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="has*" isolation="READ_COMMITTED" propagation="REQUIRED" read-only="true" timeout="100"/>
+            <tx:method name="query*" isolation="READ_COMMITTED" propagation="REQUIRED" read-only="true" timeout="100"/>
+            <tx:method name="locate*" isolation="READ_COMMITTED" propagation="REQUIRED" read-only="true" timeout="100"/>
+            <tx:method name="delete*" propagation="REQUIRED" rollback-for="Exception" timeout="100"/>
+            <tx:method name="update*" propagation="REQUIRED" rollback-for="Exception" timeout="100"/>
+            <tx:method name="add*" propagation="REQUIRED" rollback-for="Exception" timeout="100"/>
+            <tx:method name="save*" propagation="REQUIRED" rollback-for="Exception" timeout="100"/>
+            <tx:method name="create*" propagation="REQUIRED" rollback-for="Exception" timeout="100"/>
+            <tx:method name="*" propagation="REQUIRED" rollback-for="Exception" timeout="100"/>
+            <tx:method name="get*" propagation="REQUIRED" read-only="true" timeout="100"/>
+            <tx:method name="count*" propagation="REQUIRED" read-only="true" timeout="100"/>
+            <tx:method name="find*" propagation="REQUIRED" read-only="true" timeout="100"/>
+            <tx:method name="list*" propagation="REQUIRED" read-only="true" timeout="100"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <aop:config expose-proxy="true">
+        <!-- 只对业务逻辑层实施事务 -->
+        <aop:pointcut id="txPointcut" expression="execution(* com.kingschan.blog.services..*.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut"/>
+    </aop:config>
+    <!-- <aop:aspectj-autoproxy expose-proxy="true"/> -->
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+
+</beans>  

@@ -1,0 +1,67 @@
+<#compress>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>${website.websiteTitle}-博文目录</title>
+    <meta name="content-type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="${website.websiteKeyword}">
+    <meta property="wb:webmaster" content="af65d85078309c4c" />
+    <#include "${tpath}include/bootstrap.ftl">
+     <link rel="stylesheet" href="/www/skin/green/css/index.css">
+  </head>
+  <body>
+     <#include "${tpath}include/index-menu.ftl">
+    <div class="container" >
+    <div class="row" >
+    	<div  class="col-md-8" style="padding-top: 10px;" id="lable_lis_div">
+    	<@LableArticleItem page="${page!}"  website_id="${website.id}"  limit="30" labName="${labName!}">
+    			<#list article_items?keys as key> 
+					<div style="background: white;margin-bottom: 10px;padding-top: 10px;padding-left: 20px;padding-bottom: 20px;">
+						<h3 class="lable_title">${key}</h3>
+						<#list article_items[key] as row>
+							<div class="lable_article_li">
+								<a href="${blogprefix}/entry/${row['id']}.html" target="_blank">${row['article_title']}</a>
+							</div>
+						</#list>
+					</div>
+		    	</#list>
+    	</@LableArticleItem>
+   		<#assign url="${blogprefix}/lable_lis?">
+		<#include "${tpath}include/page.ftl">
+    	</div>
+    	<div class="col-md-3" style="padding-top: 10px;">
+    		<!-- start -->
+			<div class="widget widget_ui_tags">
+			  <h3>所有标签</h3>
+			  <div class="items">
+			  <@Lable limit="0" website_id="${website.id}" orderby="a.lableName">
+				   		<#list lable_lis as lable >
+				   			<a href="${blogprefix}/lable_lis?labName=${lable.lableName}">${lable['lableName']} (${lable['total']})</a>
+				    	</#list> 
+		    	</@Lable>
+			  </div>
+			</div>
+			 <!-- end -->
+    	</div>
+   	</div>
+   	<!-- end row -->
+   	<script type="text/javascript">
+	/* <![CDATA[ */
+	$(function () { $("[data-toggle='tooltip']").tooltip(); });
+	/* ]]> */
+	</script>
+  </div>
+  <!-- end container div -->
+  <#include "${tpath}include/footer.ftl">
+  </body>
+  <script type="text/javascript">
+  $("#menu_lable_article_lis").addClass("active");
+  var clength=$('.lable_article_li').length;
+  if(clength<10){
+	  $("#lable_lis_div").css("height","700px");
+  }
+  </script>
+</html>
+</#compress>

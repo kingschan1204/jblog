@@ -1,0 +1,61 @@
+<#compress>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>${website.websiteTitle}-博文目录</title>
+    <meta name="content-type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="${website.websiteKeyword}">
+    <meta property="wb:webmaster" content="af65d85078309c4c" />
+    <#include "${tpath}include/bootstrap.ftl">
+    <link rel="stylesheet" href="/www/skin/green/css/style.css">
+  </head>
+  <body>
+     <#include "${tpath}include/index-menu.ftl">
+    <div class="container">
+    <div class="row" style="margin-top: 6px;">
+    	<div class="col-md-8" style="padding-top: 10px;" id="article_lis_div">
+    		<@Article page="${page!}" category="${category!}" categoryId="${categoryId!}" tag="${tag!}" website_id="${website.id}" date="${date!}" limit="30" fulltext="${fulltext!}" model="font">
+						<#list article_lis as article> 
+							<div class="article_li">
+								<a href="${blogprefix}/entry/${article.id}.html" target="_blank">
+							<#if device!="Computer"><@SubString value="${article.articleTitle}" limit="10" overflow="..."></@SubString><#else><@SubString value="${article.articleTitle}" limit="30" overflow="..."></@SubString></#if></a>
+								<div class="article_li_date"><span class="glyphicon glyphicon-time" aria-hidden="true"></span>&nbsp;<@SubString value="${article.articlePubtime}" limit="5"></@SubString>
+								<#if BLOG_CURRENT_USER??&&website.websiteName==BLOG_CURRENT_USER.userName>
+						    			<a href="${blogprefix}/admin/edit_article.do?id=${article.id}" target="_blank">[编辑]</a>
+					    		</#if>
+								</div>
+							</div>   		
+				    	</#list>
+		    </@Article>
+			<#assign url="${blogprefix}/article_lis?categoryId=${categoryId!}&">
+	    	<#assign sufix="#article_lis_div">
+   			<#include "${tpath}include/page.ftl">
+    	</div>
+    	<div  class="col-md-3" >
+				<div class="list-group CategoryDiv" > 
+							<@CountCategory website_id="${website.id}">
+						    	  <#list category_lis as category>
+						    			<a class="list-group-item" href="${blogprefix}/article_lis?categoryId=${category.id}"><span class="glyphicon glyphicon-th"></span> ${category.categoryName}
+						    			<span class="badge">${category.total}</span>
+						    			</a>
+						    	</#list>
+						    </@CountCategory> 
+				</div>
+    	</div>
+   	</div>
+   	<!-- end row -->
+  </div>
+  <!-- end container div -->
+  <#include "${tpath}include/footer.ftl">
+  </body>
+  <script type="text/javascript">
+  $("#menu_article_lis").addClass("active");
+  var clength=$('.article_li').length;
+  if(clength<10){
+	  $("#article_lis_div").css("height","700px");
+  }
+  </script>
+</html>
+</#compress>
