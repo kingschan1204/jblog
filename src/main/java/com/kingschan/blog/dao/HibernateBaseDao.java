@@ -164,6 +164,24 @@ public class HibernateBaseDao  {
 		lis = q.list();
 		return lis;
 	}
+    /**
+     * 根据hql返回一个list  如果有参数刚hql用?来表示条件
+     * @param hql
+     * @param cacheable 是否开启缓存
+     * @param mapformat 是否把结果格式化成list[map]
+     * @param map 参数
+     * @return
+     */
+    public List<?> queryForListByHqlMapStyle(String hql,boolean cacheable,boolean mapformat,Map<String,Object> map) {
+        List<?> lis =null;
+        Query q =createHqlQuery(hql, map);
+        q.setCacheable(cacheable);
+        if (mapformat) {
+            q.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+        }
+        lis = q.list();
+        return lis;
+    }
 	/**
 	 * sql查询
 	 * @param sql
@@ -632,9 +650,10 @@ public class HibernateBaseDao  {
 		}
         return q;
     }
+
     /**
      * 创建HQL query
-     * @param sql
+     * @param hql
      * @param args
      * @return
      */

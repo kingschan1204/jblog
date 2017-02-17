@@ -1,8 +1,10 @@
 package com.kingschan.blog.dao.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.collect.ImmutableMap;
 import org.springframework.stereotype.Repository;
 
 import com.kingschan.blog.dao.HibernateBaseDao;
@@ -51,6 +53,14 @@ public class UserDaoImpl extends HibernateBaseDao implements UserDao {
 		String hql=" from User where sinaUid=?";
 		List<User> lis= (List<User>) queryForListByHql(hql, false, false, uid);
 		return null!=lis&&lis.size()>0?lis.get(0):null;
+	}
+
+	@Override
+	public List<User> getUsersByUserNames(String[] userNamses) throws Exception {
+		String hql =" from User where userName in (:usernames)";
+		Map<String,Object> map = new HashMap<String, Object>();
+		map.put("usernames",userNamses);
+		return (List<User>)queryForListByHqlMapStyle(hql,true,false,map);
 	}
 
 	@Override

@@ -50,4 +50,12 @@ public interface UserDao {
      * @throws Exception
      */
     User existsSinaUser(long uid)throws Exception;
+
+    /**
+     * 传入多个用户名返回数据库存在的用户
+     * @param userNamses
+     * @return
+     * @throws Exception
+     */
+    List<User> getUsersByUserNames(String[] userNamses)throws Exception;
 }
