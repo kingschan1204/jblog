@@ -3,7 +3,7 @@ A multi-user blog system implemented with Spring /MVC+ Hibernate + MySQL + Boots
 
 # about jblog
 
-> Now deployed in http://51so.info
+> Now deployed in http://51so.info and my blog home is http://kingschan.51so.info
 
 ## 背景
 本人程序员一枚，从事web开发时常要学习各种新技术，总结遇到的各种问题，已便下次遇到些类问题时能快速搞定，并将此分享帮助有需要的人。<br>最好的记性也抵不过岁月的冲击。常言道，时光能冲淡一切！把重要的东西写下来保存是个很不错的选择。
@@ -19,7 +19,7 @@ A multi-user blog system implemented with Spring /MVC+ Hibernate + MySQL + Boots
 ## 想法
 致力打造属于自已的博文平台，集百家之长。
 
-![51so.info](https://raw.githubusercontent.com/kingschan1204/51so.info/master/imgs/blog.png )
+![51so.info](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/blog.png )
 
 ## 现状
 目前平台已上线[51so.info](http://51so.info)主站构思中，个人主页已开发第一版了。目前内测阶段。暂未开放注册。sample :[我的主页](http://kingschan.51so.info),[后台管理](http://51so.info/pub/login.do) 由于我集，开发，定位，运维，推广，测试于一身。并只能在工作之余开展，所以目前进度不是很理想。
