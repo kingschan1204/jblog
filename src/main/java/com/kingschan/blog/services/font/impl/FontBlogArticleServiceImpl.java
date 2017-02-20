@@ -2,6 +2,7 @@ package com.kingschan.blog.services.font.impl;
 
 import java.util.List;
 
+import com.kingschan.blog.services.system.impl.EmailNotifyServiceImpl;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,8 @@ public class FontBlogArticleServiceImpl extends CommonServiceImpl implements Fon
     private UserServiceImpl userServ;
     @Autowired
     private WebSiteDaoImpl websiteDao;
+	@Autowired
+	private EmailNotifyServiceImpl emailNotifyService;
 	@Override
 	public Pagination getArticleDiscuss(Integer page, Integer limit,
 			String website, String articleId, String model,String currentUser) throws Exception {
@@ -163,7 +166,7 @@ public class FontBlogArticleServiceImpl extends CommonServiceImpl implements Fon
 					article_dao.update(comment);
 				}
 				if (canSendEmail&&!debug) {
-					sendEmail(toEmail,mailTitle,mailContent);
+					emailNotifyService.sendEmail(toEmail,mailTitle,mailContent);
 				}
 	}
 

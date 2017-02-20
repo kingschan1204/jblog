@@ -113,26 +113,7 @@ public class CommonServiceImpl implements CommonService {
 	}
 	
 	
-	@Resource(name="sender")
-	private JavaMailSenderImpl mail;
-	@Value("${system.notice.account}")
-	private String fromAccount;
-	@Override
-	public void sendEmail(String to, String title, String content)
-			throws Exception {
-		if (null==to||null==title||null==content) {
-			return;
-		}
-		JavaMailSender sender =mail;
-		 MimeMessage message = sender.createMimeMessage();
-         MimeMessageHelper helper = new MimeMessageHelper(message,true,"UTF-8");
-         helper.setTo(to);
-         helper.setFrom(fromAccount);
-         helper.setSentDate(new Date());
-         helper.setSubject(title);
-         helper.setText(content,true);// html: true 
-         sender.send(message);
-	}
+
 
 	
 }

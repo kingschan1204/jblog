@@ -1,10 +1,13 @@
 package com.kingschan.blog.dao.impl;
 
 import com.kingschan.blog.po.User;
+import com.kingschan.blog.services.system.EmailNotifyService;
+import com.kingschan.blog.services.system.impl.EmailNotifyServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.junit.Test;
+import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -20,19 +23,18 @@ import java.util.List;
                 "classpath:/applicationContext-bean.xml",
                 "classpath:/applicationContext-mvc.xml"
         })
-public class UserDaoImplTest {
+public class UserDaoImplTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     @Qualifier("UserDaoImpl")
     @Autowired
     private UserDaoImpl userDao;
 
+    @Autowired
+    private EmailNotifyServiceImpl mailServ;
 
     @Transactional
     @Test
     public void getUsersByUserNamesTest() throws Exception {
-       List<User> lis= userDao.getUsersByUserNames(new String[]{"kingschan","chenyc"});
-        for (User u : lis) {
-            System.out.println(u.getUserName());
-        }
+      mailServ.sendEmailToUsersByText("@kingschan@root","title","this is a test !");
     }
 }

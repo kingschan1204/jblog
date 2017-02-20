@@ -69,12 +69,5 @@ public interface CommonService {
 	 Object get(Class<?> clazz, Object id) throws Exception;
 	 
 	 
-	 /**
-	  * 邮件发送
-	  * @param to
-	  * @param title
-	  * @param content
-	  * @throws Exception
-	  */
-	 void sendEmail(String to, String title, String content)throws Exception;
+
 }

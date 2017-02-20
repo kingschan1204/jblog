@@ -3,6 +3,7 @@ package com.kingschan.blog.services.font.impl;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import com.kingschan.blog.services.system.impl.EmailNotifyServiceImpl;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -33,6 +34,8 @@ public class FontBlogServiceImpl extends CommonServiceImpl implements FontBlogSe
 	private ReportDaoImpl repoartDao;
 	@Autowired
 	private UserServiceImpl userServ;
+	@Autowired
+	private EmailNotifyServiceImpl emailNotifyService;
 	@Override
 	public void addMsgBoard(String root, String at, String content,
 			String currentUser, String website,String url) throws Exception {
@@ -79,8 +82,8 @@ public class FontBlogServiceImpl extends CommonServiceImpl implements FontBlogSe
 			User cuser=msg.getMsgSendUser();
 			User atuser=msg.getMsgAt();
 			if (cuser.getId()!=atuser.getId()&&atuser.getUserEmailActivate()) {
-				sendEmail(atuser.getUserEmail(), String.format("%s刚刚%s", cuser.getUserName(),StringUtils.isEmpty(root)?"给你留言了":"在留言板@你了"
-						), String.format("%s<br><a href='%s'>查看详情</a>", msg.getMsgText(),url));
+				emailNotifyService.sendEmail(atuser.getUserEmail(), String.format("%s刚刚%s", cuser.getUserName(),StringUtils.isEmpty(root)?"给你留言了":"在留言板@你了"
+				), String.format("%s<br><a href='%s'>查看详情</a>", msg.getMsgText(),url));
 			}
 		}
 	}

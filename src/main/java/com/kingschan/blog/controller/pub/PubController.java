@@ -17,10 +17,12 @@ import com.github.bingoohuang.patchca.custom.ConfigurableCaptchaService;
 import com.github.bingoohuang.patchca.filter.predefined.*;
 import com.github.bingoohuang.patchca.utils.encoder.EncoderHelper;
 import com.github.bingoohuang.patchca.word.RandomWordFactory;
+import com.kingschan.blog.services.system.impl.EmailNotifyServiceImpl;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.validator.constraints.Email;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +59,8 @@ public class PubController {
     private UserServiceImpl user_serv;
 	@Autowired
 	private FontBlogServiceImpl fontServ;
-	
+	@Autowired
+	private EmailNotifyServiceImpl emailNotifyService;
     private static ConfigurableCaptchaService cs = null;
     private static ColorFactory cf = null;
     private static RandomWordFactory wf = null;
@@ -302,7 +305,7 @@ public class PubController {
 						String result=null;
 						try {
 							 result=user_serv.findPswByEmail(email);
-							 user_serv.sendEmail(email,"51so.info密码找回", result);
+							emailNotifyService.sendEmail(email,"51so.info密码找回", result);
 				             mav.addObject("msg", "邮件发送成功！");
 						} catch (Exception e) {
 							mav.addObject("msg", "邮件不存在！");

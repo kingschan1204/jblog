@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.kingschan.blog.services.system.impl.EmailNotifyServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,8 @@ public class AdminPanelController {
 	private static Logger log = LoggerFactory.getLogger(AdminPanelController.class);
     @Autowired
     private UserServiceImpl user_serv;
-    
+	@Autowired
+    private EmailNotifyServiceImpl emailNotifyService;
    
     /**
      * 登录成功后跳转页面
@@ -71,7 +73,7 @@ public class AdminPanelController {
 	    	   String path=String.format("%s/%s", PathUtil.getWebInfPath(),"/template/");
 	    	   String mailcontent=FreemarkerParseUtil.parserFileTemplate(root, path,"validate-email.html");
 			   user_serv.addCache(Variable.CACHE_CONTENT_VALIDATE_EMAIL.getKey(), bu.getCurrentUser().getId(), random);
-			   user_serv.sendEmail(email,  "51so.info邮箱验证", mailcontent);
+			   emailNotifyService.sendEmail(email,  "51so.info邮箱验证", mailcontent);
 		} catch (Exception e) {
 			result=e.getMessage();
 			log.error("邮箱验证邮件发送",e);
