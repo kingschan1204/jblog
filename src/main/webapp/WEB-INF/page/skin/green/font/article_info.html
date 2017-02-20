@@ -52,7 +52,10 @@
 		    			<div class="row" style="margin-bottom: 30px;">
 		    				<div style="width: 70px;display: inline;float: left;"><img width="60" height="60" style="width: 60px;height: 60px;" src="${article.user.userProfileImg}<#if website.user.userProfileImg?index_of("res.51so.info")!=-1>_profile.60X60</#if>" class="img-circle" /></div>
 		    				<div style="margin-top: 5px;font-size: 12px;color: #969696;vertical-align: middle;height: 60px;display: table-cell;">
-		    					<strong style="color: black;">${article.user.userName}</strong> ${article.articlePubtime} 阅读 ${article.articleViewcount} 评论 ${article.articleTotalComment} 喜欢 ${article.articleLikes}<br>
+		    					<strong style="color: black;">${article.user.userName}</strong> ${article.articlePubtime} 阅读 ${article.articleViewcount} 评论 ${article.articleTotalComment} 喜欢 ${article.articleLikes}
+								<#if BLOG_CURRENT_USER??&&website.websiteName==BLOG_CURRENT_USER.userName>
+									<a href="${blogprefix}/admin/edit_article.do?id=${article.id}" target="_blank">[编辑]</a>
+								</#if><br>
 		    					<#list article.lables as lable><a href="${blogprefix}/tags/${lable.lableName}" class="index-article-list-lable">${lable.lableName}</a>&nbsp;</#list>
 		    				</div>
 		    			</div>
@@ -187,7 +190,7 @@
 	    			</div>
 	    		</div>
 	    		<!-- right -->
-	    		<div class="col-lg-3" id="right-nav">
+	    		<div class="col-lg-3" id="right-nav" style="padding-top: 50px;">
 	    		<#if (nav_title?size>1)>
 	    			<h3><strong>文章导航</strong></h3>
 	    			<div class="article-nav">
@@ -206,7 +209,7 @@
 										<ul class="similar-articles">
 											<#list SimilarArticles as row>
 												<#if row.id!=article.id>
-													<li><i class="glyphicon glyphicon-file"></i> <a href="${blogprefix}/entry/${row.id}.html" target="_blank">${row.articleTitle}</a></li>
+													<li><a href="${blogprefix}/entry/${row.id}.html" target="_blank">${row.articleTitle}</a></li>
 												</#if>
 											</#list>
 										</ul>

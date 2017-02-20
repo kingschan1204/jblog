@@ -1,16 +1,16 @@
 <script>NProgress.start();NProgress.inc();</script>
 <!-- Fixed navbar -->
     <nav class="navbar navbar-fixed-top" id="menu" >
-      <div class="container">    
-	 <div class="navbar-header">
-			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-				<span class="sr-only">${website.websiteTitle}</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>
-			<b class="navbar-brand"  title="${website.websiteTitle}">${website.websiteTitle}</b>
-		</div>
+      <div class="container">
+          <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                  <span class="sr-only">${website.websiteTitle}</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+              </button>
+              <b class="navbar-brand"  title="${website.websiteTitle}">${website.websiteTitle}</b>
+          </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
           	<li><a href="${webroot}" title="前往51so首页" data-toggle="tooltip" data-placement="bottom"><span class="glyphicon glyphicon-cloud"></span>&nbsp;51so</a></li>
@@ -18,7 +18,7 @@
             <li id="menu_article_timeline"><a href="${blogprefix}/article_timeline"><span class="glyphicon glyphicon-file"></span>&nbsp;归档</a></li>
             <li id="menu_bookmark_lis"><a href="${blogprefix}/bookmark_lis"><span class="glyphicon glyphicon-bookmark"></span>&nbsp;书签</a></li>
             <li id="menu_lable_article_lis"><a href="${blogprefix}/lable_lis"><span class="glyphicon glyphicon-tags"></span>&nbsp;标签</a></li>
-            <li id="menu_blog_timeline"><a href="${blogprefix}/blog-timeline"><span class="glyphicon glyphicon-time"></span>&nbsp;时间轴</a></li>
+            <li id="menu_blog_timeline"><a href="${blogprefix}/blog-timeline"><span class="glyphicon glyphicon-time"></span>&nbsp;动态</a></li>
             <li id="menu_blog_msgboard"><a href="${blogprefix}/blog-msgboard"><span class="glyphicon glyphicon-comment"></span>&nbsp;留言板</a></li>
             <#if BLOG_CURRENT_USER??>
             	<li class="dropdown" id="menu_user_info">

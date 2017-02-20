@@ -157,8 +157,6 @@
 			left join blog_article b on a.article_id=b.id 
 			left join blog_website c on b.websiteid=c.id
 			where a.userid=:userid
-			UNION all
-			select res_key,res_name,res_type,res_date,'','res' type from blog_res where res_creator=:userid
 		) x order by time desc
 	 	]]>
 	 </sql>
