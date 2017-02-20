@@ -40,6 +40,45 @@ A multi-user blog system implemented with Spring /MVC+ Hibernate + MySQL + Boots
 - 新浪微薄登录
 - **多编辑器支持html,markdown风格编写博文**
 
+## 界面截图
+登录界面：
+![登录](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/login.png )
+
+文章列表
+![文章列表](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/admin_article_list.png )
+
+文件上传
+![文件上传](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/admin_file_upload.png )
+
+后台首页
+![后台首页](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/admin_home.png )
+报表
+![](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/admin_report.png )
+
+资源管理
+![](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/admin_res_list.png)
+博客信息设置
+![](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/admin_site_info.png )
+文章详情
+![](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/font-article-info.png )
+
+文章归档
+![](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/font-article-list.png )
+首页
+![](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/font-index.png)
+标签墙
+![](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/font-lable.png)
+
+### 手机访问效果
+
+![](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/mobile-article-info.PNG )
+
+![](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/mobile-home.PNG)
+
+![](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/mobile-list.PNG )
+
+![](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/mobile.PNG)
+
 ## 记事 [更新图文介绍](http://about.51so.info/)
 - 2015-11-11 诞生
 - 2016-11-12 开始开发
