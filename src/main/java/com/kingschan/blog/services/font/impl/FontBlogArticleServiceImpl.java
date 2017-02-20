@@ -166,7 +166,8 @@ public class FontBlogArticleServiceImpl extends CommonServiceImpl implements Fon
 					article_dao.update(comment);
 				}
 				if (canSendEmail&&!debug) {
-					emailNotifyService.sendEmail(toEmail,mailTitle,mailContent);
+					//emailNotifyService.sendEmail(toEmail,mailTitle,mailContent);
+					emailNotifyService.sendEmailToUsersByText(text,mailTitle,mailContent);
 				}
 	}
 
