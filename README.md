@@ -1,17 +1,17 @@
 # jblog
 A multi-user blog system implemented with Spring /MVC+ Hibernate + MySQL + Bootstrap + freemarker.
 
+# about jblog
 
+> Now deployed in http://51so.info
 
-# about jblog 
-### Now deployed in http://51so.info
 ## 背景
-本人程序员一枚，从事web开发时常要学习各种新技术，总结遇到的各种问题，已便下次遇到些类问题时能快速搞定，并将此分享帮助有需要的人。<br>最好的记性也抵不过岁月的冲击。常言道，时光能冲淡一切！把重要的东西写下来保存是个很不错的选择。  
+本人程序员一枚，从事web开发时常要学习各种新技术，总结遇到的各种问题，已便下次遇到些类问题时能快速搞定，并将此分享帮助有需要的人。<br>最好的记性也抵不过岁月的冲击。常言道，时光能冲淡一切！把重要的东西写下来保存是个很不错的选择。
 - 写作的过程中会总结增强理解
 - 分享能帮助有需要有人，还能在线与人交流一起探讨
 - 下次遇到此类问题有据可查
 - 温故而知新
-- 等等...  
+- 等等...
 
 ## 遇到的问题&诞生
 写作找个好的平台还是挺重要的，最初我是在`QQ空间`发表日志，后来发现好友都不是同一个圈子的。另个`QQ空间` 对附件，代码这方面的支持不好。而且交流的圈子也比较有限。不利于交流和传播。后来我在网上找了一下其它博客平台，如`新浪`用了几个月发现功能及界面太丑，发表代码这个是硬伤。后来又加入`iteye`,`CSDN` 代码的问题解决了，但是操作不便利，界面太丑，当然iteye的自定义个性域名，我很喜欢。到最后的`github` 我突然有个想法从脑中闪过，要不我自立门户，自已开发一个？至此51so.info 就诞生了。寓意：`我要搜信息`
@@ -23,6 +23,20 @@ A multi-user blog system implemented with Spring /MVC+ Hibernate + MySQL + Boots
 
 ## 现状
 目前平台已上线[51so.info](http://51so.info)主站构思中，个人主页已开发第一版了。目前内测阶段。暂未开放注册。sample :[我的主页](http://kingschan.51so.info),[后台管理](http://51so.info/pub/login.do) 由于我集，开发，定位，运维，推广，测试于一身。并只能在工作之余开展，所以目前进度不是很理想。
+
+## 现有功能
+- 泛型域名访问个人主页：**用户名.51so.info**
+- 文章管理
+- 书签
+- 文章分类
+- 留言板
+- 文章评论，点赞，回复，emojify表情
+- 文章标签
+- 文章全文检索
+- 博客banner设置
+- 博客多皮肤（目前只开发了一套皮肤）
+- 新浪微薄登录
+- 多编辑器支持html,markdown风格编写博文
 
 ## 记事 [更新图文介绍](http://about.51so.info/)
 - 2015-11-11 诞生
@@ -75,7 +89,7 @@ A multi-user blog system implemented with Spring /MVC+ Hibernate + MySQL + Boots
 - 2017-02-15 个人图像支持裁剪及ajax上传
 - 2017-02-16 文章详情评论插件更新，表情盒子优化
 - 2017-02-17 `正式开源https://github.com/kingschan1204/jblog`
-
+- 2017-02-20 更新支持发送邮件至评论里提到的所有人
 
 ## 立项功能待开发
 - 专题的概念
