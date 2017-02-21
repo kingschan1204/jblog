@@ -273,7 +273,8 @@ public class IndexController {
         av.addObject("page", request.getParameter("page"));
         String[] s=url.split("/");
         try {
-            av.addObject("category", URLDecoder.decode(s[s.length-1], "utf-8"));
+            String category=URLDecoder.decode(s[s.length-1], "utf-8");
+            av.addObject("category", category);
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

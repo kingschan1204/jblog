@@ -18,6 +18,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.kingschan.blog.services.system.impl.UrlValidationServiceImpl;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,6 +52,8 @@ public class BlogFilter implements Filter{
     private ArticleService articleServ;
     @Resource(name="CommonServiceImpl")
     private CommonServiceImpl commonServ;
+	@Autowired
+	private UrlValidationServiceImpl urlValidateServ;
     //默认跳转博客
     @Value("${app.default.blog.keyword}")
     private String defaultBolg;   
@@ -189,6 +192,7 @@ public class BlogFilter implements Filter{
                          	 req.getRequestDispatcher(String.format("%s%s%s", "/tags","/",BlogUrlHelper.getLastSlashData(url))).forward(request, response);
       					}else if (url.matches("(\\/\\w+)?\\/category/.*")) {
       						//category 类型跳转 统一用:/category/xxx 访问  但要兼容以前的 /用户名/category/xxx
+						    if (!urlValidateServ.validateCategory(web.getId(),url))rep.sendError(404);
                          	 req.getRequestDispatcher(String.format("%s%s%s", "/category","/",BlogUrlHelper.getLastSlashData(url))).forward(request, response);
       					}else if (url.matches("(\\/\\w+)?\\/date/\\d{6,8}")) {
       						//date 日期跳转 统一用:/date/xxx 访问  但要兼容以前的 /用户名/date/xxx

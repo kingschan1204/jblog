@@ -95,6 +95,17 @@ public class CategoryDaoImpl extends HibernateBaseDao implements CategoryDao {
 	}
 
 	@Override
+	public Category getCategoryByKeyword(String website, String keyword) throws Exception {
+		if(keyword.matches("\\w{32}")){
+			return (Category)get(Category.class,keyword);
+		}
+		String hql=" from Category where categoryWebsiteid =? and  categoryName=?";
+		List<Category> list= (List<Category>)queryForListByHql(hql,true,false,website,keyword);
+		if (null!=list&&list.size()>0)return list.get(0);
+		return null;
+	}
+
+	@Override
 	public  List<Map<String,Object>> countCategory(String websiteid) throws Exception {
 		String hql ="select a.category.id as id,a.category.categoryName as name,count(*) as total from Article a where a.websiteid=? and a.articleStatus=1 group by a.category order by a.category.categoryPosition ";
 		List<Map<String,Object>> lis= (List<Map<String, Object>>) queryForListByHql(hql, false,true,websiteid);

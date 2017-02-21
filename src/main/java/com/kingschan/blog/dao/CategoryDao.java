@@ -61,4 +61,13 @@ public interface CategoryDao extends BaseDao<Category>{
      */
     int delCategory(String[] ids, String websiteId)throws Exception;
 
+    /**
+     * get a category by a keyword
+     * @param website
+     * @param keyword
+     * @return
+     * @throws Exception
+     */
+    Category getCategoryByKeyword(String website,String keyword)throws Exception;
+
 }
