@@ -68,8 +68,9 @@ $(function () {
 			$(this).click(function(){$(this).zoomify('zoom');}); 
 		}
 	});
-	$('.comment_content img').each(function(){
+	$('.info img').each(function(){
 		if(!$(this).hasClass("emoji")){
+			$(this).addClass("info_img");
 			$(this).attr({"title":"点我放大图片"});
 			$(this).click(function(){$(this).zoomify('zoom');}); 
 		}

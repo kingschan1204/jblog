@@ -15,9 +15,7 @@
 .title{font-size: 34px;font-weight: 700;line-height: 1.3;margin-bottom:20px; font-family: -apple-system,SF UI Display,Arial,PingFang SC,Hiragino Sans GB,Microsoft YaHei,WenQuanYi Micro Hei,sans-serif;}
 
 #article-content-div{min-height: 300px;word-wrap: break-word;}
-.clearfix{list-style: none; border-bottom: 1px #eee solid;padding: 15px 0;}
-.comment_content{word-wrap: break-word;color:#333;font-family: 微软雅黑;padding: 5px;}
-.comment_content img{max-height: 220px;max-width: 160px;}
+.clearfix{list-style: none; padding: 15px 0;}
 .comment_type_ul{list-style:none;}
 .comment_type_ul li{float:left;margin-left:6px;}
 .comment_type_ul li span{
@@ -39,20 +37,20 @@
     -moz-border-radius: 50px;
     -khtml-border-radius: 50px;
 }
-.user_img{float:left; margin-right:20px; width:60px; height:60px;}
-.user_img img{width:60px; height:60px; border-radius:60px;-webkit-border-radius:60px;-moz-border-radius:60px;-khtml-border-radius:60px;}
-.cot_con{ float:left;width:600px;}
-.cot_con .info{ padding:0; border:none; background:none;}
-.cot_con .info .user_name{ font-size:14px; font-weight:bold;}
-.comment_toolbar{list-style: none;}
-.comment_toolbar li{display: inline;float: right;margin-right:9px;border: none;width: 40px;}
+.user_img{float:left; margin-right:20px; width:40px; height:40px;}
+.user_img img{width:40px; height:40px; border-radius:40px;-webkit-border-radius:40px;-moz-border-radius:40px;-khtml-border-radius:40px;}
+.cot_con{ float:left;width:600px;border-bottom: 1px #eee solid;}
+.cot_con .info{ padding:0; border:none; background:none;color: #333;font-family: 微软雅黑;font-size: 13px;}
+.cot_con .info .user_name{ font-size:14px;}
+.info_img{max-height: 150px;max-width: 300px;}
+.comment_toolbar{color:#808080;padding: 5px;font-size: 12px;}
+.comment_toolbar ul{list-style: none;float: right;}
+.comment_toolbar li{display: inline;margin-right:9px;border: none;cursor: pointer;}
 .comment_toolbar li a {text-decoration: none;color:gray;}
-
 .msgboard_reply_list{
 	list-style: none;
 	background-color: #EEEEEE;
-	padding: 10px;
-	margin-top: 20px;
+    padding: 0px 10px;
 }
 .msgboard_reply_list li{
 	border-bottom: solid 1px #d9d9d9;
@@ -65,15 +63,12 @@
 	
 }
 .msg_board_reply_footer{color: #808080;line-height: 16px;padding: 6px;}
-
-.reply_toolbar{list-style: none;}
+.reply_toolbar{list-style: none;font-size: 12px;}
 .reply_toolbar li{display: inline;float: right;margin-right:9px;border: none;width: 40px;}
 .reply_toolbar li a {text-decoration: none;color:gray;}
 .reply_toolbar li a span{cursor: pointer;}
-.msg_board_reply_footer{color: #808080;line-height: 16px;padding: 6px;}
-.msg_board_readmore{color:#d9534f;font-weight: bold;}
-.msg_board_readmore:hover{color:#d9534f;text-decoration: underline;cursor: pointer;}
-
+.msg_board_reply_footer{color: #808080;line-height: 16px;padding: 6px;font-size: 12px;}
+.msg_board_readmore{color:#d9534f;cursor: pointer;}
 .article-nav-box{background-color:white;position: fixed;bottom: 20px;right:10px;width:40px;}
 .article-nav-box h3{font-size: 20px;text-align: center;font-family: 微软雅黑;}
 .article-nav-box h3 span{font-size: 12px;color:blue;cursor: pointer;}
@@ -224,7 +219,7 @@ h1, h2, h3, h4, h5, h6 {
     text-rendering: optimizelegibility;
     font-family: 微软雅黑;
 }
-.article_content blockquote {
+ blockquote {
     background: #ddd;
     border-left: 5px solid #ccc;
     padding: 15px 20px;
@@ -247,3 +242,6 @@ h1, h2, h3, h4, h5, h6 {
     color: #08c;
     text-decoration: none;
 }
+
+ #discuss_div blockquote{font-size: 12px;padding: 8px 12px;margin: 0px;}
+ #discuss_div code{background: none;}

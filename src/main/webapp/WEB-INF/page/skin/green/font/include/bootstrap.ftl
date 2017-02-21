@@ -1,5 +1,5 @@
 <#assign color="#3dccac"/><!--样式颜色-->
-<#assign version="?v=20170220"> <!--版本-->
+<#assign version="?v=20170221"> <!--版本-->
 <link href="//cdn.bootcss.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
 <link href="//cdn.bootcss.com/bootstrap/3.3.2/css/bootstrap-theme.min.css" rel="stylesheet">
 <script src="//cdn.bootcss.com/jquery/2.2.0/jquery.min.js"></script>
