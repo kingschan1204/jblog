@@ -15,4 +15,13 @@ public interface UrlValidationService {
      */
     boolean validateCategory(String websiteId,String urlPath)throws Exception;
 
+    /**
+     * validate lable url sample :/tags/xxxx
+     * @param websiteId
+     * @param urlPath
+     * @return
+     * @throws Exception
+     */
+    boolean validateLable(String websiteId,String urlPath)throws Exception;
+
 }

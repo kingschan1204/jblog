@@ -47,4 +47,13 @@ public interface LableDao extends BaseDao<Lable>{
      */
     int delArticleLable(String id)throws Exception;
 
+    /**
+     * get label quantity
+     * @param websiteId
+     * @param labName
+     * @return
+     * @throws Exception
+     */
+    int getLableQuantityByName(String websiteId,String labName)throws Exception;
+
 }

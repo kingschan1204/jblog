@@ -67,7 +67,16 @@ public class LableDaoImpl extends HibernateBaseDao implements LableDao {
         
     }
 
-	@Override
+    @Override
+    public int getLableQuantityByName(String websiteId, String labName) throws Exception {
+        String hql =" select count(1) from Lable where webSite.id =? and lableName=?";
+        Object val= uniqueQueryByHql(hql,true,websiteId,labName);
+        Integer quantity=Integer.valueOf(val.toString());
+        return quantity;
+    }
+
+
+    @Override
 	public Pagination getLableArticleItemList(String lableName,String websiteid,int limit,int page, String orderby) throws Exception {
 		StringBuffer sb = new StringBuffer();
 		sb.append("SELECT a.lable_name as lable_name, b.article_title as article_title, b.id as id FROM blog_label a inner JOIN blog_article b ON a.lable_articleid = b.id and b.article_private=false  WHERE a.websiteid = ? ");

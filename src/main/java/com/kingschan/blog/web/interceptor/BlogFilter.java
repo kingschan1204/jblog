@@ -189,6 +189,7 @@ public class BlogFilter implements Filter{
                       	 	req.getRequestDispatcher(String.format("%s%s%s", "/entry","/",BlogUrlHelper.getLastSlashData(url))).forward(request, response);
       					}else if (url.matches("(\\/\\w+)?\\/tags/.*")) {
       						//tags 标签跳转 统一用:/tags/xxx 访问  但要兼容以前的 /用户名/tags/xxx
+						   if (!urlValidateServ.validateLable(web.getId(),url))rep.sendError(404);
                          	 req.getRequestDispatcher(String.format("%s%s%s", "/tags","/",BlogUrlHelper.getLastSlashData(url))).forward(request, response);
       					}else if (url.matches("(\\/\\w+)?\\/category/.*")) {
       						//category 类型跳转 统一用:/category/xxx 访问  但要兼容以前的 /用户名/category/xxx
