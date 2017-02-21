@@ -61,6 +61,8 @@ A multi-user blog system implemented with Spring /MVC+ Hibernate + MySQL + Boots
 ![](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/admin_site_info.png )
 文章详情
 ![](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/font-article-info.png )
+评论
+![](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/article-info-comment.png )
 
 文章归档
 ![](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/font-article-list.png )
