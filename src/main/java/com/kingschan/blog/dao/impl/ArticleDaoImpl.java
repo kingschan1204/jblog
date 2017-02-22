@@ -386,13 +386,29 @@ public class  ArticleDaoImpl extends HibernateBaseDao implements ArticleDao{
 	}
 
 	@Override
-	public Pagination articleArchive(int page,
-			int limit, String website) throws Exception {
-		
+	public Pagination articleArchive(int page,int limit, String website) throws Exception {
 		return null;
 	}
 
-	@Override
+    @Override
+    public int getArticleDateQuantity(String websiteId, String dateString) throws Exception {
+        Integer year=Integer.valueOf(dateString.substring(0, 4)) ;
+        Integer month=Integer.valueOf(dateString.substring(4,6));
+        ArrayList<Object> args = new ArrayList<Object>();
+        args.add(websiteId);
+        args.add(year);
+        args.add(month);
+        StringBuffer hql = new StringBuffer("select count(1) from Article a where a.websiteid =?  and YEAR(a.articlePubtime)=? and MONTH(a.articlePubtime)=?");
+        if(dateString.length()==8){
+            Integer day=Integer.valueOf(dateString.substring(6));
+            args.add(day);
+            hql.append(" and DAY(a.articlePubtime)=?");
+        }
+        Object val = uniqueQueryByHql(hql.toString(),true,args.toArray(new Object[1]));
+        return Integer.valueOf(val.toString());
+    }
+
+    @Override
 	public int delSelfComments(String id, String userid) throws Exception {
 		String hql="update ArticleComment set CIsdel='X'  where id = :id and CUser.id=:userid";
 		 Map<String, Object> map = new HashMap<String, Object>();

@@ -65,20 +65,23 @@ public interface ArticleDao extends BaseDao<Article>{
      * @throws Exception
      */
     Article getArticleByID(String id, String website)throws Exception;
-    
+
     /**
      * 通过标题得到文章
-     * @param title
+     * @param keyword
+     * @param website
      * @return
      * @throws Exception
      */
     Article getArticleByTitleOrLinkURL(String keyword, String website)throws Exception;
-   
-    
+
+
     /**
      * 通知标签名字得到文章
      * @param lableName
-     * @param pageindex
+     * @param website
+     * @param page
+     * @param limit
      * @return
      * @throws Exception
      */
@@ -199,5 +202,15 @@ public interface ArticleDao extends BaseDao<Article>{
      * @throws Exception
      */
     Pagination articleArchive(int page, int limit, String website)throws Exception;
+
+
+    /**
+     * 统计指定日期发表的文章数量
+     * @param websiteId
+     * @param dateString
+     * @return
+     * @throws Exception
+     */
+    int getArticleDateQuantity(String websiteId,String dateString)throws Exception;
 
 }

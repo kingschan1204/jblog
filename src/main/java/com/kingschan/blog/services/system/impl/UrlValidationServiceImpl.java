@@ -1,5 +1,6 @@
 package com.kingschan.blog.services.system.impl;
 
+import com.kingschan.blog.dao.ArticleDao;
 import com.kingschan.blog.dao.CategoryDao;
 import com.kingschan.blog.dao.LableDao;
 import com.kingschan.blog.po.Category;
@@ -22,7 +23,9 @@ public class UrlValidationServiceImpl implements UrlValidationService {
     @Qualifier("LableDaoImpl")
     @Autowired
     private LableDao labDao;
-
+    @Qualifier("ArticleDaoImpl")
+    @Autowired
+    private ArticleDao aritcleDao;
     @Override
     public boolean validateCategory(String websiteId, String urlPath) throws Exception {
         String category= BlogUrlHelper.getLastSlashData(urlPath);
@@ -35,5 +38,11 @@ public class UrlValidationServiceImpl implements UrlValidationService {
         String lab= BlogUrlHelper.getLastSlashData(urlPath);
         int quantity=labDao.getLableQuantityByName(websiteId,lab);
         return quantity>0;
+    }
+
+    @Override
+    public boolean validateDate(String websiteId, String urlPath) throws Exception {
+        String date= BlogUrlHelper.getLastSlashData(urlPath);
+        return aritcleDao.getArticleDateQuantity(websiteId,date)>0;
     }
 }

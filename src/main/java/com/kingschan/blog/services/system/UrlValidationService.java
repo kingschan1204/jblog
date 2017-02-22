@@ -24,4 +24,13 @@ public interface UrlValidationService {
      */
     boolean validateLable(String websiteId,String urlPath)throws Exception;
 
+    /**
+     * validate date url sample : /date/20160216 or 201602
+     * @param websiteId
+     * @param urlPath
+     * @return
+     * @throws Exception
+     */
+    boolean validateDate(String websiteId,String urlPath)throws Exception;
+
 }

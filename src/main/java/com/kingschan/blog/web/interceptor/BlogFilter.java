@@ -197,6 +197,7 @@ public class BlogFilter implements Filter{
                          	 req.getRequestDispatcher(String.format("%s%s%s", "/category","/",BlogUrlHelper.getLastSlashData(url))).forward(request, response);
       					}else if (url.matches("(\\/\\w+)?\\/date/\\d{6,8}")) {
       						//date 日期跳转 统一用:/date/xxx 访问  但要兼容以前的 /用户名/date/xxx
+						   if (!urlValidateServ.validateDate(web.getId(),url))rep.sendError(404);
                          	 req.getRequestDispatcher(String.format("%s%s%s", "/date","/",BlogUrlHelper.getLastSlashData(url))).forward(request, response);
       					}else  if (url.endsWith("sitemap.xml")) {
                              sitemap(req, rep, web.getId());
