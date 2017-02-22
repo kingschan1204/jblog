@@ -30,7 +30,7 @@ import com.kingschan.blog.common.enums.BLOG_MODEL;
 import com.kingschan.blog.common.enums.Variable;
 import com.kingschan.blog.common.freemarker.util.TemplateStaticUtil;
 import com.kingschan.blog.common.skin.template.SkinTemplateVariable;
-import com.kingschan.blog.controller.vo.UserVo;
+import com.kingschan.blog.model.vo.UserVo;
 import com.kingschan.blog.po.User;
 import com.kingschan.blog.po.WebSite;
 import com.kingschan.blog.services.ArticleService;

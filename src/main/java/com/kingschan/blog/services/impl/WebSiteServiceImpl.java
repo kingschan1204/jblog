@@ -7,8 +7,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.kingschan.blog.controller.vo.UserVo;
-import com.kingschan.blog.controller.vo.WebSiteVo;
+import com.kingschan.blog.model.vo.UserVo;
+import com.kingschan.blog.model.vo.WebSiteVo;
 import com.kingschan.blog.dao.WebSiteDao;
 import com.kingschan.blog.po.User;
 import com.kingschan.blog.po.WebSite;

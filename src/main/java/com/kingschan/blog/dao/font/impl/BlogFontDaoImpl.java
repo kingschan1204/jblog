@@ -24,9 +24,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
 
 import com.chenlb.mmseg4j.analysis.MaxWordAnalyzer;
-import com.kingschan.blog.controller.vo.ArticleCommentVo;
-import com.kingschan.blog.controller.vo.ArticleVo;
-import com.kingschan.blog.controller.vo.UserVo;
+import com.kingschan.blog.model.vo.ArticleCommentVo;
+import com.kingschan.blog.model.vo.ArticleVo;
+import com.kingschan.blog.model.vo.UserVo;
 import com.kingschan.blog.dao.HibernateBaseDao;
 import com.kingschan.blog.dao.Pagination;
 import com.kingschan.blog.dao.font.BlogFontDao;

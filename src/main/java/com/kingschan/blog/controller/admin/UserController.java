@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.kingschan.blog.controller.vo.UserVo;
+import com.kingschan.blog.model.vo.UserVo;
 import com.kingschan.blog.po.User;
 import com.kingschan.blog.services.impl.UserServiceImpl;
 import com.kingschan.blog.util.BlogUtil;

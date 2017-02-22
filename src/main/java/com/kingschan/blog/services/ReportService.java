@@ -3,7 +3,7 @@ package com.kingschan.blog.services;
 import java.util.List;
 import java.util.Map;
 
-import com.kingschan.blog.controller.vo.WebSiteCountInfoVo;
+import com.kingschan.blog.model.vo.WebSiteCountInfoVo;
 import com.kingschan.blog.dao.Pagination;
 
 /**

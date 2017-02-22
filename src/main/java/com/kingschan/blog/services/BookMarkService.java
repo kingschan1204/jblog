@@ -3,8 +3,8 @@ package com.kingschan.blog.services;
 import java.util.List;
 import java.util.Map;
 
-import com.kingschan.blog.controller.vo.BookMarkFolderVo;
-import com.kingschan.blog.controller.vo.BookMarkVo;
+import com.kingschan.blog.model.vo.BookMarkFolderVo;
+import com.kingschan.blog.model.vo.BookMarkVo;
 import com.kingschan.blog.dao.Pagination;
 import com.kingschan.blog.po.Bookmarks;
 import com.kingschan.blog.po.BookmarksFolder;

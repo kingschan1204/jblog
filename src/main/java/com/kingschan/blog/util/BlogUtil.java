@@ -23,7 +23,7 @@ import com.fasterxml.uuid.EthernetAddress;
 import com.fasterxml.uuid.Generators;
 import com.kingschan.blog.common.enums.BLOG_SKIN_PAGE;
 import com.kingschan.blog.common.enums.Variable;
-import com.kingschan.blog.controller.vo.UserVo;
+import com.kingschan.blog.model.vo.UserVo;
 import com.kingschan.blog.po.WebSite;
 import com.kingschan.blog.services.impl.CommonServiceImpl;
 

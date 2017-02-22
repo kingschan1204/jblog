@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import com.kingschan.blog.controller.vo.CategoryVo;
+import com.kingschan.blog.model.vo.CategoryVo;
 import com.kingschan.blog.dao.CategoryDao;
 import com.kingschan.blog.po.Category;
 import com.kingschan.blog.po.User;

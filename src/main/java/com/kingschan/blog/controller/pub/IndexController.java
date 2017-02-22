@@ -23,8 +23,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.kingschan.blog.common.enums.BLOG_SKIN_PAGE;
 import com.kingschan.blog.common.freemarker.util.TemplateStaticUtil;
-import com.kingschan.blog.controller.vo.ArticleVo;
-import com.kingschan.blog.controller.vo.LableVo;
+import com.kingschan.blog.model.vo.ArticleVo;
+import com.kingschan.blog.model.vo.LableVo;
 import com.kingschan.blog.dao.Pagination;
 import com.kingschan.blog.po.WebSite;
 import com.kingschan.blog.services.ArticleService;

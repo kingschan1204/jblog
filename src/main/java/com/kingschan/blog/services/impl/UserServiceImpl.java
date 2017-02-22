@@ -29,7 +29,7 @@ import com.kingschan.blog.common.enums.UserLevel;
 import com.kingschan.blog.common.enums.Variable;
 import com.kingschan.blog.common.freemarker.util.FreemarkerParseUtil;
 import com.kingschan.blog.common.qiniu.QiNiuManagement;
-import com.kingschan.blog.controller.vo.UserVo;
+import com.kingschan.blog.model.vo.UserVo;
 import com.kingschan.blog.dao.UserDao;
 import com.kingschan.blog.po.User;
 import com.kingschan.blog.po.WebSite;

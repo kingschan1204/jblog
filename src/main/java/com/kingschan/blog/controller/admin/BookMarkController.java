@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.kingschan.blog.controller.vo.BookMarkVo;
+import com.kingschan.blog.model.vo.BookMarkVo;
 import com.kingschan.blog.po.Bookmarks;
 import com.kingschan.blog.services.BookMarkService;
 import com.kingschan.blog.util.BlogUtil;

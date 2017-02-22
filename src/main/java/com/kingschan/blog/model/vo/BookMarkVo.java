@@ -1,4 +1,4 @@
-package com.kingschan.blog.controller.vo;
+package com.kingschan.blog.model.vo;
 
 import com.kingschan.blog.util.RegexUtil;
 

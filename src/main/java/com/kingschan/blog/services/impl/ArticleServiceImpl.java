@@ -18,11 +18,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import com.kingschan.blog.controller.vo.ArticleCommentVo;
-import com.kingschan.blog.controller.vo.ArticleVo;
-import com.kingschan.blog.controller.vo.CategoryVo;
-import com.kingschan.blog.controller.vo.LableVo;
-import com.kingschan.blog.controller.vo.UserVo;
+import com.kingschan.blog.model.vo.ArticleCommentVo;
+import com.kingschan.blog.model.vo.ArticleVo;
+import com.kingschan.blog.model.vo.CategoryVo;
+import com.kingschan.blog.model.vo.LableVo;
+import com.kingschan.blog.model.vo.UserVo;
 import com.kingschan.blog.dao.CategoryDao;
 import com.kingschan.blog.dao.Pagination;
 import com.kingschan.blog.dao.impl.ArticleDaoImpl;

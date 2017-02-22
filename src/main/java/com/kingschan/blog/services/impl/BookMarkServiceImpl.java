@@ -7,8 +7,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.kingschan.blog.controller.vo.BookMarkFolderVo;
-import com.kingschan.blog.controller.vo.BookMarkVo;
+import com.kingschan.blog.model.vo.BookMarkFolderVo;
+import com.kingschan.blog.model.vo.BookMarkVo;
 import com.kingschan.blog.dao.Pagination;
 import com.kingschan.blog.dao.impl.BookMarksDaoImpl;
 import com.kingschan.blog.po.Bookmarks;

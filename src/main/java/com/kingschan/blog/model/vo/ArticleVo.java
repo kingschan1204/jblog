@@ -1,4 +1,4 @@
-package com.kingschan.blog.controller.vo;
+package com.kingschan.blog.model.vo;
 
 import java.util.HashSet;
 import java.util.Set;

@@ -13,7 +13,7 @@ import org.jsoup.safety.Whitelist;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.kingschan.blog.controller.vo.ArticleCommentVo;
+import com.kingschan.blog.model.vo.ArticleCommentVo;
 import com.kingschan.blog.dao.font.impl.BlogFontDaoImpl;
 import com.kingschan.blog.dao.impl.ReportDaoImpl;
 import com.kingschan.blog.po.BlogMsgBoard;

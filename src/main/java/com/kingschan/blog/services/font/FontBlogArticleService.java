@@ -2,7 +2,7 @@ package com.kingschan.blog.services.font;
 
 import java.util.List;
 
-import com.kingschan.blog.controller.vo.ArticleVo;
+import com.kingschan.blog.model.vo.ArticleVo;
 import com.kingschan.blog.dao.Pagination;
 import com.kingschan.blog.po.ArticleComment;
 

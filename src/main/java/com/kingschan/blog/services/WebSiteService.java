@@ -2,7 +2,7 @@ package com.kingschan.blog.services;
 
 import java.util.List;
 
-import com.kingschan.blog.controller.vo.WebSiteVo;
+import com.kingschan.blog.model.vo.WebSiteVo;
 import com.kingschan.blog.po.User;
 import com.kingschan.blog.po.WebSite;
 /**

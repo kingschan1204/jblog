@@ -1,4 +1,4 @@
-package com.kingschan.blog.controller.vo;
+package com.kingschan.blog.model.vo;
 
 
 public class CategoryVo {

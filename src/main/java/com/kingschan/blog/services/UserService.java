@@ -9,7 +9,7 @@ import net.sf.json.JSONObject;
 
 import weibo4j.http.AccessToken;
 
-import com.kingschan.blog.controller.vo.UserVo;
+import com.kingschan.blog.model.vo.UserVo;
 import com.kingschan.blog.po.User;
 
 public interface UserService {

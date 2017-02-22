@@ -6,8 +6,7 @@
 <#include "/admin/include/bootstrap.ftl">
 </head>
 <body>
-<#include "/admin/include/dashboard-start.ftl">
-	
+
 	<!--start Modal -->
 <div class="modal fade" id="queryModal" tabindex="-1" role="dialog"  aria-hidden="true">
    <div class="modal-dialog">
@@ -92,7 +91,6 @@
 		</table>
     <#assign url="${admin_blogprefix}/admin/report/accessLog.do?url=${url!}&ip=${ip!}&datetime1=${datetime1!}&datetime2=${datetime2!}&agentname=${agentname!}&os=${os!}&device=${device!}&">
     <#include "/admin/include/page.ftl">
-    <#include "/admin/include/dashboard-end.ftl">
 </body>
 <script type="text/javascript">
 $("#blog_access_log_li").addClass("nav-active");

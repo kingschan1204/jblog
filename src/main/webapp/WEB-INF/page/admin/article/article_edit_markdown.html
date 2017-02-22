@@ -12,10 +12,7 @@
 	<link rel="stylesheet" type="text/css" href="${webroot}/www/fancybox/jquery.fancybox.css" media="screen" />
 	<link href="${webroot}/www/bootstrap/bootstrap-tokenfield/bootstrap-tokenfield.min.css" rel="stylesheet">
     <script type="text/javascript" src="${webroot}/www/bootstrap/bootstrap-tokenfield/bootstrap-tokenfield.min.js"></script>
-    <!-- fancybox -->
-    <script type="text/javascript" src="${webroot}/www/fancybox/jquery.fancybox.js"></script>
-	<link rel="stylesheet" type="text/css" href="${webroot}/www/fancybox/jquery.fancybox.css" media="screen" />
-	
+
 	<link rel="stylesheet" href="http://cdn.bootcss.com/highlight.js/8.0/styles/monokai_sublime.min.css">
 	<script src="http://cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>
 	<script src="//cdn.bootcss.com/marked/0.3.6/marked.min.js"></script>
@@ -23,25 +20,30 @@
     <link href="//cdn.bootcss.com/bootstrap-markdown/2.10.0/css/bootstrap-markdown.min.css" rel="stylesheet">
     <script src="//cdn.bootcss.com/bootstrap-markdown/2.10.0/js/bootstrap-markdown.min.js"></script>
     <script src="${webroot}/www/emojify/js/emojify.min.js"></script>
+
+	<script type="text/javascript" charset="utf-8" src="${webroot}/www/admin/js/edit_article.js"></script>
     <style type="text/css">
     .emoji { width: 1.5em; height: 1.5em; display: inline-block; margin-bottom: -.25em; background-size: 1.5em; }
     </style>
   </head>
   <body >
-  <#include "/admin/include/dashboard-start.ftl">
 
 <form class="form-horizontal" method="post" action="${admin_blogprefix}/admin/save_article.do" id="ar_editform">
 	  <div class="form-group">
-	    <div class="col-sm-12">
+	    <div class="col-sm-10">
 	     <input type="hidden" name="id" value="${article.id!}"/>
 	     <input type="hidden" name="articleEditor" value="markdown"/>
 	     <input type="hidden" name="articleCover" id="articleCover" value="${article.articleCover!}" >
 	      <input type="text" class="form-control" name="articleTitle" placeholder="请输入文章标题" value="${article.articleTitle!}" maxlength="100" >
 	    </div>
+		  <#if article??&&article.id??>
+			  <a href="${admin_blogprefix}/${AdminWebSite.websiteName}/entry/${article.id}.html" target="_blank" class="btn btn-primary" >预览</a>
+		  </#if>
+		  <button type="button" class="btn btn-default" onclick="Article.AdvancedMode(this);">高级</button>
+		  <button type="submit" class="btn btn-success" >保存</button>
 	  </div>
 	  <div class="form-group">
 	    <div class="col-sm-12">
-	    
     	<@Category website_id="${AdminWebSite.id}">
 					  <#list category_lis as category>
 						<label class="radio-inline">
@@ -58,7 +60,7 @@
 				</@Category>
 	    </div>
 	  </div>
-	  <div class="form-group">
+	  <div class="form-group"  id="div_summary" style="display: none;">
 	    <div class="col-sm-12">
 	      <textarea class="form-control" rows="3" name="articleSummary" maxlength="400" placeholder="概要">${article.articleSummary!}</textarea>
 	    </div>
@@ -70,15 +72,15 @@
     </div>
   	<div class="form-group">
 	    <div class="col-sm-12">
-	     	<textarea id="target-editor-twitter" name="articleContent" style="height: 400px;width: 100%;" ><#if article.articleEditor=="markdown">${article.articleContent?html}<#else>${article.articleContent!}</#if></textarea>
+	     	<textarea id="target-editor-twitter" name="articleContent" style="height: 600px;width: 100%;" ><#if article.articleEditor=="markdown">${article.articleContent?html}<#else>${article.articleContent!}</#if></textarea>
 	    </div>
 	</div>
-	<div class="form-group">
+	<div class="form-group" id="div_password"  style="display: none;">
 	    <div class="col-sm-4">
 	    	<input type="text" class="form-control" name="articlePassword" maxlength="10" placeholder="查看密码,私密博文下无效" value="${article.articlePassword!}">
 	    </div>
 	</div>
-	<div class="form-group">
+	<div class="form-group"  id="div_private"  style="display: none;">
 	    <div class="col-sm-5">
 		    <div class="radio">
 			  <label><input type="radio" name="articlePrivate" value="true" checked="checked">私有文章</label>
@@ -88,7 +90,7 @@
 			</div>
 	    </div>
 	</div>
-	<div class="form-group">
+	<div class="form-group" id="div_discuss"  style="display: none;">
 	    <div class="col-sm-4">
 		    <div class="radio">
 			  <label><input type="radio" name="articleAllowcomments" value="true" checked="checked">允许评论</label>
@@ -97,7 +99,7 @@
 			</div>
 	    </div>
 	</div>
-	<div class="form-group">
+	<div class="form-group" id="div_post_type"  style="display: none;">
 	    <div class="col-sm-4">
 		    <div class="radio">
 			  <label><input type="radio" name="type" value="update" checked="checked">更新(只更新内容)</label>
@@ -106,13 +108,7 @@
 			</div>
 	    </div>
 	</div>
-	<button type="button" class="btn btn-default" onclick="openblogRes('lcallBack');">设置封面</button>
-	<button type="submit" class="btn btn-success" >保存</button>
-    <#if article??&&article.id??>
-    	<a href="${admin_blogprefix}/${AdminWebSite.websiteName}/entry/${article.id}.html" target="_blank" class="btn btn-primary" >预览</a>
-    </#if>
 	  </form>
-  <#include "/admin/include/dashboard-end.ftl">
   </body>
   <script type="text/javascript">
   $("#write_article_li").addClass("nav-active");
@@ -172,30 +168,6 @@
            }
        }
    }});
- function lcallBack(res){
-	$("#articleCover").val(res);
-  }
- function openblogRes(callfun){
-	  var url='${admin_blogprefix}/admin/blogres_dialog.do?callback='+callfun+'&multiSelect=false';
-	  $.fancybox.open({
-	        href: url,
-	        type: 'iframe',
-	        padding: 10,
-	        scrolling: 'no',
-	        fitToView: true,
-	        width: 1000,
-	        height: 640,
-	        autoSize: false,
-	        closeClick: false,
-	        iframe: {
-	       		 scrolling :'no',
-	       		 preload : true
-	       		 }
-	    });
- }
-   
- 
- 
  window.onload=function(){
 	 $('#lables').tokenfield({limit:4})
 	  .on('tokenfield:removedtoken', function (e) {

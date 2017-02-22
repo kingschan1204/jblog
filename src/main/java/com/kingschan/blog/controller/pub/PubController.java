@@ -22,7 +22,6 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.StringUtils;
-import org.hibernate.validator.constraints.Email;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +35,8 @@ import weibo4j.http.AccessToken;
 
 import com.kingschan.blog.common.enums.Variable;
 import com.kingschan.blog.common.sina.SinaWeiBoUtil;
-import com.kingschan.blog.controller.vo.ArticleCommentVo;
-import com.kingschan.blog.controller.vo.UserVo;
+import com.kingschan.blog.model.vo.ArticleCommentVo;
+import com.kingschan.blog.model.vo.UserVo;
 import com.kingschan.blog.po.User;
 import com.kingschan.blog.services.font.impl.FontBlogServiceImpl;
 import com.kingschan.blog.services.impl.UserServiceImpl;

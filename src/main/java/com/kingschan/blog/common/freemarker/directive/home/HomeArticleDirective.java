@@ -9,7 +9,7 @@ import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.kingschan.blog.controller.vo.ArticleVo;
+import com.kingschan.blog.model.vo.ArticleVo;
 import com.kingschan.blog.dao.Pagination;
 import com.kingschan.blog.services.ArticleService;
 

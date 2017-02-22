@@ -7,9 +7,9 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.kingschan.blog.controller.vo.ArticleVo;
-import com.kingschan.blog.controller.vo.MsgBoardVo;
-import com.kingschan.blog.controller.vo.PubTimeLineVo;
+import com.kingschan.blog.model.vo.ArticleVo;
+import com.kingschan.blog.model.vo.MsgBoardVo;
+import com.kingschan.blog.model.vo.PubTimeLineVo;
 import com.kingschan.blog.dao.Pagination;
 import com.kingschan.blog.dao.font.impl.BlogFontDaoImpl;
 import com.kingschan.blog.dao.impl.ReportDaoImpl;

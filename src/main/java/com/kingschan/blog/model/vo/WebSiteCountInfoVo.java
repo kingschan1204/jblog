@@ -1,4 +1,4 @@
-package com.kingschan.blog.controller.vo;
+package com.kingschan.blog.model.vo;
 /**
  * 博客网站统计信息
  * @author kingschan

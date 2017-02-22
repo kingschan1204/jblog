@@ -9,7 +9,6 @@
 	<#include "/admin/include/fancybox.ftl">
   </head>
   <body>
-  <#include "/admin/include/dashboard-start.ftl">
   <form class="form-inline" method="post" action="bookmark_list.do"  id="sform">
 	  <div class="form-group">
 	    <label for="keyword_txt">名称</label>
@@ -63,7 +62,6 @@
 		</table>
     <#assign url="${admin_blogprefix}/admin/bookmark_list.do?title=${title!}&folder=${folder!}&">
     <#include "/admin/include/page.ftl">
-    <#include "/admin/include/dashboard-end.ftl">
   </body>
   <script type="text/javascript">
   $("#bookmark_li").addClass("nav-active");

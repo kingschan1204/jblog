@@ -27,7 +27,6 @@
             	 	 <ul class="dropdown-menu" role="menu">
             	 	 	<#if BLOG_CURRENT_USER.userLevel=="admin">
 	            	 	 	<li><a href="${webroot}/admin/edit_article.do" target="_blank"><span class="glyphicon glyphicon-plus"></span>&nbsp;写文章</a></li>
-	            	 	 	<li><a href="${webroot}/admin/website_info.do" target="_blank"><span class="glyphicon glyphicon-cog"></span>&nbsp;博客信息设置</a></li>
 	            	 	 	<li><a href="http://${host}/admin/main.do" target="_blank"><span class="glyphicon glyphicon-cloud"></span>&nbsp;管理</a></li>
             	 	    </#if>
 	                  	<li><a href="http://${host}/font/logout.do" style="color:red;"><span class="glyphicon glyphicon-remove"></span>&nbsp;退出</a></li>

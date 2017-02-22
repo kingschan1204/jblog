@@ -6,7 +6,6 @@
     <meta name="description" content="this is my page">
     <meta name="content-type" content="text/html; charset=UTF-8">
 	<#include "/admin/include/bootstrap.ftl">
-    <base href="${blogprefix!}"> 
 	<!-- ueditor -->
 	<script type="text/javascript" charset="utf-8" src="${webroot}/www/ueditor/ueditor.config.js"></script>
     <script type="text/javascript" charset="utf-8" src="${webroot}/www/ueditor/ueditor.all.min.js"> </script>
@@ -24,19 +23,22 @@
 	<!-- <link href="${webroot}/www/bootstrap/bootstrap-tokenfield/tokenfield-typeahead.min.css" rel="stylesheet"> -->
 	<link href="${webroot}/www/bootstrap/bootstrap-tokenfield/bootstrap-tokenfield.min.css" rel="stylesheet">
     <script type="text/javascript" src="${webroot}/www/bootstrap/bootstrap-tokenfield/bootstrap-tokenfield.min.js"></script>
-     <script type="text/javascript" src="${webroot}/www/fancybox/jquery.fancybox.js"></script>
-	<link rel="stylesheet" type="text/css" href="${webroot}/www/fancybox/jquery.fancybox.css" media="screen" />
+	<script type="text/javascript" charset="utf-8" src="${webroot}/www/admin/js/edit_article.js"></script>
   </head>
   <body>
-    <#include "/admin/include/dashboard-start.ftl">
   	<form class="form-horizontal" method="post" action="${admin_blogprefix}/admin/save_article.do" id="ar_editform">
 	  <div class="form-group">
-	    <div class="col-sm-12">
+	    <div class="col-sm-10">
 	     <input type="hidden" name="id" value="${article.id!}"/>
 	     <input type="hidden" name="articleEditor" value="html"/>
 	     <input type="hidden" name="articleCover" id="articleCover" value="${article.articleCover!}" >
 	      <input type="text" class="form-control" name="articleTitle" placeholder="请输入文章标题" value="${article.articleTitle!}" maxlength="100">
 	    </div>
+		  <button type="button" class="btn btn-default" onclick="Article.AdvancedMode(this);">高级</button>
+		  <#if article??&&article.id??>
+			  <a href="${admin_blogprefix}/${AdminWebSite.websiteName}/entry/${article.id}.html" target="_blank" class="btn btn-primary" >预览</a>
+		  </#if>
+		  <button type="submit" class="btn btn-success" >保存</button>
 	  </div>
 	  <div class="form-group">
 	    <div class="col-sm-12">
@@ -62,7 +64,7 @@
 	     <input type="text" class="form-control" name="articleLableStr" id="lables" placeholder="标签 (最多4个,已逗号分隔)"   />
 	    </div>
 	  </div>
-	  <div class="form-group">
+	  <div class="form-group" id="div_summary" style="display: none;">
 	    <div class="col-sm-12">
 	      <textarea class="form-control" rows="4" name="articleSummary" maxlength="400">${article.articleSummary!}</textarea>
 	    </div>
@@ -73,24 +75,16 @@
 	     	<!--用父容器来控制宽度-->
 				<div style="width:100%">
 				    <!--用当前元素来控制高度-->
-				    <script id="editor" type="text/plain" style="height:300px;">${article.articleContent!}</script>
+				    <script id="editor" type="text/plain" style="height:600px;">${article.articleContent!}</script>
 				</div>
 	    </div>
 	  </div>
-	<#--
-	<div class="form-group">
-	    <label  class="col-sm-2 control-label">链接地址</label>
-	    <div class="col-sm-8">
-	      <input type="text" class="form-control" name="articleLinkurl" maxlength="50" placeholder="自定义链接" value="${article.articleLinkurl!}">
-	    </div>
-	</div>
-	-->
-	<div class="form-group">
+	<div class="form-group" id="div_password"  style="display: none;">
 	    <div class="col-sm-2">
 	      <input type="text" class="form-control" name="articlePassword" maxlength="10" placeholder="查看密码,私密博文下无效" value="${article.articlePassword!}">
 	    </div>
 	</div>
-	<div class="form-group">
+	<div class="form-group" id="div_private"  style="display: none;">
 	    <div class="col-sm-4">
 		    <div class="radio">
 			  <label><input type="radio" name="articlePrivate" value="true" checked="checked">私有文章</label>
@@ -100,7 +94,7 @@
 			</div>
 	    </div>
 	</div>
-	<div class="form-group">
+	<div class="form-group" id="div_discuss"  style="display: none;">
 	    <div class="col-sm-4">
 		    <div class="radio">
 			  <label><input type="radio" name="articleAllowcomments" value="true" checked="checked">允许评论</label>
@@ -109,7 +103,7 @@
 			</div>
 	    </div>
 	</div>
-	<div class="form-group">
+	<div class="form-group" id="div_post_type"  style="display: none;">
 	    <div class="col-sm-4">
 		    <div class="radio">
 			  <label><input type="radio" name="type" value="update" checked="checked">更新(只更新内容)</label>
@@ -118,31 +112,10 @@
 			</div>
 	    </div>
 	</div>
-	  <div class="form-group">
-	    <div class="col-sm-8">
-	    		<button type="button" class="btn btn-default" onclick="openblogRes('lcallBack');">设置封面</button>
-			    <button type="submit" class="btn btn-success" >保存</button>
-			    <#if article??&&article.id??>
-			    	<a href="${admin_blogprefix}/${AdminWebSite.websiteName}/entry/${article.id}.html" target="_blank" class="btn btn-primary" >预览</a>
-			    </#if>
-	    </div>
-	  </div>
-	  
 </form>
-<#include "/admin/include/dashboard-end.ftl">
   </body>
   <script type="text/javascript">
   $("#write_article_li").addClass("nav-active");
-  $('.form_datetime').datetimepicker({
-      language: 'zh-CN',
-//       pickTime: false,
-       todayBtn: true,
-       autoclose: true,
-//       minView: '2',
-//       forceParse: false,
-      format:"yyyy-mm-dd hh:ii:ss"
-  });
-
   (function(){
 	    // 关闭窗口时弹出确认提示
 	    $(window).bind('beforeunload', function(){
@@ -167,51 +140,38 @@
 	     var html = ue.getContent();//editor.$txt.html();
 		$("#ar_content").val(html);
    }
- 
- 
- $('#ar_editform').bootstrapValidator({
+
+  $('#ar_editform').bootstrapValidator({
 //   live: 'disabled',
-   message: 'This value is not valid',
-   feedbackIcons: {
-       valid: 'glyphicon glyphicon-ok',
-       invalid: 'glyphicon glyphicon-remove',
-       validating: 'glyphicon glyphicon-refresh'
-   },
-   fields: {
-	   articleTitle: {
-           validators: {
-               notEmpty: {
-                   message: '文章标题不能为空!'
-               },
-               stringLength: {
-                   min: 3,
-                   max: 30,
-                   message: '标题长度最小为3最长为30'
-               }/* ,regexp: {
-                   regexp: /^(\w|[\u4E00-\u9FA5]|[\u3002|\uff1f|\uff01|\uff0c|\u3001|\uff1b|\uff1a|\u201c|\u201d|\u2018|\u2019|\uff08|\uff09|\u300a|\u300b|\u3008|\u3009|\u3010|\u3011|\u300e|\u300f|\u300c|\u300d|\ufe43|\ufe44|\u3014|\u3015|\u2026|\u2014|\uff5e|\ufe4f|\uffe5])*$/,
-                   message: '只能是数字,字母,中文,中文标点符号或者下划线!'
-               } */
-           }
-       }
-   /* ,
-       lables: {
-           validators: {
-               notEmpty: {message: '不能为空' },
-		       regexp: {
-		           regexp: /^(\w|[\u4E00-\u9FA5]|\s)*$/,
-		           message: '只能是数字,字母,中文或者空格!'
-		       }
-           }
-       } */       
-       ,articlePubtime: {
-           validators: {
-               date: {
-                   format: 'YYYY-MM-DD hh:ii:ss',
-                   message: '发布时间不合法'
-               }
-           }
-       }
-   }});
+	  message: 'This value is not valid',
+	  feedbackIcons: {
+		  valid: 'glyphicon glyphicon-ok',
+		  invalid: 'glyphicon glyphicon-remove',
+		  validating: 'glyphicon glyphicon-refresh'
+	  },
+	  fields: {
+		  articleTitle: {
+			  validators: {
+				  notEmpty: {
+					  message: '文章标题不能为空!'
+				  },
+				  stringLength: {
+					  min: 3,
+					  max: 30,
+					  message: '标题长度最小为3最长为30'
+				  }
+			  }
+		  }
+		  ,articlePubtime: {
+			  validators: {
+				  date: {
+					  format: 'YYYY-MM-DD hh:ii:ss',
+					  message: '发布时间不合法'
+				  }
+			  }
+		  }
+	  }});
+
  window.onload=function(){
 	 $('#lables').tokenfield({limit:4})
 	  .on('tokenfield:removedtoken', function (e) {
@@ -250,26 +210,6 @@
 	});
 	 <#if article??&&article.id!=''> $('#lables').tokenfield('setTokens', [<#list article.lables as lable>{ value: '${lable.id}', label: '${lable.lableName}'}<#if lable_has_next>,</#if></#list>]);</#if>
  };
- function lcallBack(res){
-		$("#articleCover").val(res);
-	  }
-	 function openblogRes(callfun){
-		  var url='${admin_blogprefix}/admin/blogres_dialog.do?callback='+callfun+'&multiSelect=false';
-		  $.fancybox.open({
-		        href: url,
-		        type: 'iframe',
-		        padding: 10,
-		        scrolling: 'no',
-		        fitToView: true,
-		        width: 1000,
-		        height: 640,
-		        autoSize: false,
-		        closeClick: false,
-		        iframe: {
-		       		 scrolling :'no',
-		       		 preload : true
-		       		 }
-		    });
-	 }
+
 </script> 
 </html>

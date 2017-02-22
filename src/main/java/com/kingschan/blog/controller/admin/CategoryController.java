@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.kingschan.blog.controller.vo.CategoryVo;
+import com.kingschan.blog.model.vo.CategoryVo;
 import com.kingschan.blog.services.CategoryService;
 import com.kingschan.blog.util.BlogUtil;
 /**

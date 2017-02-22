@@ -2,7 +2,7 @@ package com.kingschan.blog.services.pub;
 
 import java.util.List;
 
-import com.kingschan.blog.controller.vo.ArticleVo;
+import com.kingschan.blog.model.vo.ArticleVo;
 import com.kingschan.blog.dao.Pagination;
 
 /**

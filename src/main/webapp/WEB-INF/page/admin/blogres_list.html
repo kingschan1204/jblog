@@ -28,7 +28,6 @@
 </style>
 </head>
 <body>
-<#include "/admin/include/dashboard-start.ftl">
 <div class="row" style="padding-left: 10px;">
 	<form class="form-inline" method="post" action="blogres_list.do"  id="sform">
 		  <div class="form-group">
@@ -64,8 +63,7 @@
 </div>
     <#assign url="${admin_blogprefix}/admin/blogres_list.do?resname=${resname!}&">
     <#include "/admin/include/page.ftl">
-   <#include "/admin/include/dashboard-end.ftl">
-    
+
 </body>
 <script type="text/javascript">
 $("#blog_res_li").addClass("nav-active");

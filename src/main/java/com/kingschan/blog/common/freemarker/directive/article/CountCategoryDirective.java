@@ -7,7 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.kingschan.blog.controller.vo.CategoryVo;
+import com.kingschan.blog.model.vo.CategoryVo;
 import com.kingschan.blog.services.CategoryService;
 
 import freemarker.core.Environment;

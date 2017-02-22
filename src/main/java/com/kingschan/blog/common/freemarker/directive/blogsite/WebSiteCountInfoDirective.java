@@ -6,7 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.kingschan.blog.controller.vo.WebSiteCountInfoVo;
+import com.kingschan.blog.model.vo.WebSiteCountInfoVo;
 import com.kingschan.blog.services.ReportService;
 
 import freemarker.core.Environment;
