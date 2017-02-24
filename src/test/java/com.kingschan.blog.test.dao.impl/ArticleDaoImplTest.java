@@ -1,5 +1,6 @@
 package com.kingschan.blog.dao.impl;
 
+import com.kingschan.blog.services.impl.ArticleServiceImpl;
 import com.kingschan.blog.services.system.impl.EmailNotifyServiceImpl;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +25,17 @@ public class ArticleDaoImplTest extends AbstractTransactionalJUnit4SpringContext
     @Qualifier("ArticleDaoImpl")
     @Autowired
     private ArticleDaoImpl articleDao;
+    @Autowired
+    private ArticleServiceImpl articleServ;
 
-    @Transactional
-    @Test
+
     public void getArticleDateQuantityTest() throws Exception {
        int val= articleDao.getArticleDateQuantity("3c2ec7b28db9416cafc488660c603bb4","201602");
         System.out.println(val);
+    }
+    @Transactional
+    @Test
+    public void builderIndexTest() throws Exception {
+        articleServ.buildIndex();
     }
 }

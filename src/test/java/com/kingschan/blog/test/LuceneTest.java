@@ -1,16 +1,17 @@
 package com.kingschan.blog.test;
 
-import com.chenlb.mmseg4j.analysis.MaxWordAnalyzer;
 import com.hankcs.hanlp.HanLP;
+import com.hankcs.hanlp.dictionary.stopword.CoreStopWordDictionary;
 import com.hankcs.hanlp.seg.common.Term;
 import com.hankcs.hanlp.tokenizer.IndexTokenizer;
+import com.hankcs.lucene.HanLPAnalyzer;
+import com.hankcs.lucene.HanLPIndexAnalyzer;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.analysis.tokenattributes.OffsetAttribute;
 import org.apache.lucene.analysis.tokenattributes.PositionIncrementAttribute;
 import org.apache.lucene.analysis.tokenattributes.TypeAttribute;
-
 import java.util.List;
 
 /**
@@ -29,7 +30,7 @@ public class LuceneTest {
         List<Term> termLis = NLPTokenizer.segment(text);
         System.out.println(termLis);*/
         //索引分词
-        List<Term> termList1 = IndexTokenizer.segment(text);
+       /* List<Term> termList1 = IndexTokenizer.segment(text);
         int index=0;
         for (Term term : termList1)
         {
@@ -42,14 +43,39 @@ public class LuceneTest {
         System.out.println(keywordList);
         //自动摘要
         List<String> sentenceList = HanLP.extractSummary(text, 5);
-        System.out.println(sentenceList);
+        System.out.println(sentenceList);*/
         /*
         Segment nShortSegment = new NShortSegment().enableCustomDictionary(false).enablePlaceRecognize(true).enableOrganizationRecognize(true);
         Segment shortestSegment = new DijkstraSegment().enableCustomDictionary(false).enablePlaceRecognize(true).enableOrganizationRecognize(true);
         System.out.println("N-最短分词：" + nShortSegment.seg(text) + "\n最短路分词：" + shortestSegment.seg(text));*/
 
+        for (int i = 0; i < text.length(); ++i)
+        {
+            System.out.print(text.charAt(i) + "" + i + " ");
+        }
+        System.out.println();
+        Analyzer analyzer1 = new HanLPIndexAnalyzer();
+        TokenStream tokenStream1 = analyzer1.tokenStream("field", text);
+        tokenStream1.reset();
+        int _index=1;
+        while (tokenStream1.incrementToken())
+        {
+            CharTermAttribute attribute = tokenStream1.getAttribute(CharTermAttribute.class);
+            // 偏移量
+            OffsetAttribute offsetAtt = tokenStream1.getAttribute(OffsetAttribute.class);
+            // 距离
+            PositionIncrementAttribute positionAttr = tokenStream1.getAttribute(PositionIncrementAttribute.class);
+            // 词性
+            TypeAttribute typeAttr = tokenStream1.getAttribute(TypeAttribute.class);
+            //if (offsetAtt.endOffset()-offsetAtt.startOffset()==1)continue;
+            /*System.out.print(_index + ":");
+            System.out.println(attribute);
+            _index++;*/
+            System.out.printf("[%d:%d %d] %s/%s\n", offsetAtt.startOffset(), offsetAtt.endOffset(), positionAttr.getPositionIncrement(), attribute, typeAttr.type());
+        }
 
-        System.out.println("------------------mmseg4j--------------------------------------------");
+
+       /* System.out.println("------------------mmseg4j--------------------------------------------");
         Analyzer analyzer = new MaxWordAnalyzer();
         TokenStream tokenStream = analyzer.tokenStream("text", text);
         OffsetAttribute offsetAttribute = tokenStream.addAttribute(OffsetAttribute.class);
@@ -68,7 +94,8 @@ public class LuceneTest {
             int startOffset = offsetAttribute.startOffset();
             int endOffset = offsetAttribute.endOffset();
             String term = charTermAttribute.toString();
-            System.out.println("[" + term + "]" + ":(" + startOffset + "-->" + endOffset + "):" + typeAttribute.type());
-        }
+            System.out.println(term);
+           // System.out.println("[" + term + "]" + ":(" + startOffset + "-->" + endOffset + "):" + typeAttribute.type());
+        }*/
     }
 }

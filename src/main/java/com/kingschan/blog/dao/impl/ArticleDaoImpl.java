@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.hankcs.lucene.HanLPIndexAnalyzer;
 import org.apache.lucene.search.highlight.Formatter;
 import org.apache.lucene.search.highlight.Fragmenter;
 import org.apache.lucene.search.highlight.Highlighter;
@@ -17,7 +18,6 @@ import org.jsoup.Jsoup;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
 
-import com.chenlb.mmseg4j.analysis.MaxWordAnalyzer;
 import com.kingschan.blog.model.vo.ArticleCommentVo;
 import com.kingschan.blog.model.vo.ArticleVo;
 import com.kingschan.blog.model.vo.CategoryVo;
@@ -217,7 +217,7 @@ public class  ArticleDaoImpl extends HibernateBaseDao implements ArticleDao{
               }else {
                   summary=Jsoup.parse(article.getArticleSummary()).text();
               }
-              String highlighterTitle = highlighter.getBestFragment(new MaxWordAnalyzer() , "articleTitle", title);
+              String highlighterTitle = highlighter.getBestFragment(new HanLPIndexAnalyzer() , "articleTitle", title);
               
               //转换为vo
               ArticleVo vo = new ArticleVo();

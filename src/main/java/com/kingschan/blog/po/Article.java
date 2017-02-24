@@ -16,8 +16,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.hankcs.lucene.HanLPAnalyzer;
+import com.hankcs.lucene.HanLPIndexAnalyzer;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Analyzer;
@@ -37,7 +40,7 @@ import com.kingschan.blog.common.bean.convert.BeanConvert;
 @Table(name="blog_article")
 @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
 @Indexed //hibernate search
-@Analyzer(impl=MaxWordAnalyzer.class)
+@Analyzer(impl=HanLPIndexAnalyzer.class)
 public class Article  implements java.io.Serializable,BeanConvert {
 
     
