@@ -44,10 +44,10 @@
 	      	<div class="row summary_box">
 		      	<div class="row" >
 		      		<@WebSiteCountInfo siteid="${website.id}">
-		      		<div class="col-xs-3"><a href="${blogprefix}/article_timeline">${WebSiteCountInfoVo.articleTotal}</a></div>
-		      		<div class="col-xs-3"><a href="${blogprefix}/article_lis">${WebSiteCountInfoVo.categoryTotal}</a></div>
-		      		<div class="col-xs-3"><a href="${blogprefix}/lable_lis">${WebSiteCountInfoVo.lableTotal}</a></div>
-		      		<div class="col-xs-3"><a>${WebSiteCountInfoVo.commentTotal}</a></div>
+		      		<div class="col-xs-3"><a href="${blogprefix}/article_timeline">${WebSiteCountInfoVo.WArticleQuantity}</a></div>
+		      		<div class="col-xs-3"><a href="${blogprefix}/article_lis">${WebSiteCountInfoVo.WCategoryQuantity}</a></div>
+		      		<div class="col-xs-3"><a href="${blogprefix}/lable_lis">${WebSiteCountInfoVo.WLableQuantity}</a></div>
+		      		<div class="col-xs-3"><a>${WebSiteCountInfoVo.WDiscussQuantity}</a></div>
 		      		</@WebSiteCountInfo>
 		      	</div>
 		      	<div class="row" style="font-size: 16px;">

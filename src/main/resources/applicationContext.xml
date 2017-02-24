@@ -34,6 +34,6 @@
 	<import resource="applicationContext-db.xml" />
 	<import resource="applicationContext-cache.xml" />
 	<import resource="applicationContext-bean.xml" />
-	
+	<import resource="applicationContext-quartz.xml"/>
 	
 </beans>  

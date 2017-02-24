@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.hankcs.lucene.HanLPIndexAnalyzer;
 import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.search.highlight.Formatter;
 import org.apache.lucene.search.highlight.Fragmenter;
@@ -23,7 +24,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Repository;
 
-import com.chenlb.mmseg4j.analysis.MaxWordAnalyzer;
 import com.kingschan.blog.model.vo.ArticleCommentVo;
 import com.kingschan.blog.model.vo.ArticleVo;
 import com.kingschan.blog.model.vo.UserVo;
@@ -204,7 +204,7 @@ public class BlogFontDaoImpl extends HibernateBaseDao implements BlogFontDao {
               }else {
                   summary=Jsoup.parse(article.getArticleSummary()).text();
               }
-              String highlighterTitle = highlighter.getBestFragment(new MaxWordAnalyzer() , "articleTitle", title);
+              String highlighterTitle = highlighter.getBestFragment(new HanLPIndexAnalyzer() , "articleTitle", title);
               //转换为vo
               ArticleVo vo = new ArticleVo();
               BeanUtils.copyProperties(article, vo);

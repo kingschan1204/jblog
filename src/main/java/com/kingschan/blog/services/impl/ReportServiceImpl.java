@@ -3,10 +3,11 @@ package com.kingschan.blog.services.impl;
 import java.util.List;
 import java.util.Map;
 
+import com.kingschan.blog.model.vo.BlogSiteStatisticalVo;
+import com.kingschan.blog.po.BlogStatisticalSite;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.kingschan.blog.model.vo.WebSiteCountInfoVo;
 import com.kingschan.blog.dao.Pagination;
 import com.kingschan.blog.dao.ReportDao;
 import com.kingschan.blog.services.ReportService;
@@ -57,12 +58,12 @@ public class ReportServiceImpl implements ReportService {
 		return reportDao.articlePercent();
 	}
 	@Override
-	public WebSiteCountInfoVo websiteCountInfo(String siteid)
+	public BlogSiteStatisticalVo websiteCountInfo(String siteid)
 			throws Exception {
-		Map<String, Object>  map=reportDao.websiteCountInfo(siteid);
-		if (null!=map) {
-			WebSiteCountInfoVo web=new WebSiteCountInfoVo();
-			org.apache.commons.beanutils.BeanUtils.populate(web, map);
+		BlogStatisticalSite bss=reportDao.websiteCountInfo(siteid);
+		if (null!=bss) {
+			BlogSiteStatisticalVo web=new BlogSiteStatisticalVo();
+			BeanUtils.copyProperties(bss,web);
 			return web;
 		}
 		return null;

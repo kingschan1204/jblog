@@ -245,7 +245,6 @@ public class ArticleServiceImpl extends CommonServiceImpl  implements ArticleSer
 		 Pagination p=article_dao.getHomeFullTextSearch(page, limit, keyword, fields);
 		return p;
 	}
-	
 	@Override
 	public ArticleVo getArticle(String keyword, boolean readonce, String website)
 			throws Exception {

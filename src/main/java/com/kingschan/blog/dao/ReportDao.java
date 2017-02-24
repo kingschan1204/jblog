@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.kingschan.blog.po.BlogMsgBoard;
+import com.kingschan.blog.po.BlogStatisticalSite;
 
 /**
  * 
@@ -82,7 +83,7 @@ public interface ReportDao {
 	 * @return
 	 * @throws Exception
 	 */
-	Map<String, Object> websiteCountInfo(String siteId)throws Exception;
+	BlogStatisticalSite websiteCountInfo(String siteId)throws Exception;
 	
 	/**
 	 * 博客动态
@@ -110,5 +111,12 @@ public interface ReportDao {
 	 * @throws Exception
 	 */
 	 List<BlogMsgBoard>  getMsgBoardByrootId(String website, String rootid, Integer page)throws Exception;
+
+
+	/**
+	 * 刷新博客信息统计
+	 * @throws Exception
+     */
+	void refreshBlogStatistical ()throws Exception;
 
 }

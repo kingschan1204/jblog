@@ -27,10 +27,12 @@ public interface WebSiteService {
      * @throws Exception
      */
     WebSite getWebSite(String keyword)throws Exception;
-    
+
     /**
      * 保存
-     * @param ws
+     * @param vo
+     * @param user
+     * @return
      * @throws Exception
      */
     WebSite saveWebSite(WebSiteVo vo, User user)throws Exception;

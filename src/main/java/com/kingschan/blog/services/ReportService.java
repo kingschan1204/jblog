@@ -3,7 +3,7 @@ package com.kingschan.blog.services;
 import java.util.List;
 import java.util.Map;
 
-import com.kingschan.blog.model.vo.WebSiteCountInfoVo;
+import com.kingschan.blog.model.vo.BlogSiteStatisticalVo;
 import com.kingschan.blog.dao.Pagination;
 
 /**
@@ -71,13 +71,13 @@ public interface ReportService {
 	  * @return
 	  */
 	 List<Map<String, Object>> articlePercent() throws Exception;
-	 
-	 
- 	/**
+
+
+    /**
 	 * 博客网站统计
-	 * @param websiteName
+	 * @param siteid
 	 * @return
 	 * @throws Exception
-	 */
-	WebSiteCountInfoVo websiteCountInfo(String siteid)throws Exception;
+     */
+	BlogSiteStatisticalVo websiteCountInfo(String siteid)throws Exception;
 }

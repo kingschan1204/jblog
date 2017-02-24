@@ -42,26 +42,6 @@
 				group by a.websiteid 
 		]]>
 	</sql>
-	<!-- 网站信息汇总-->
-	<sql id="siteInfo" >
-		<![CDATA[
-			select 
-				u.user_screen_name userName,
-				DATE_FORMAT(site.website_datetime,'%Y.%m.%d') as createDateTime,
-				DATE_FORMAT(u.user_lastlogin,'%Y.%m.%d') as lastLoginDateTime,
-				article.total as articleTotal,
-				category.ctotal as categoryTotal,
-				lable.ltotal as lableTotal,
-				comments.comtotal as commentTotal
-			from blog_website site 
-				left join blog_user u on u.id=site.webiste_creator
-				left join( select websiteid,count(*) total from blog_article where websiteid=:siteid group by websiteid ) article on article.websiteid=site.id
-				left join (select count(*) ctotal,category_websiteid from blog_category where category_websiteid=:siteid group by category_websiteid)category on category.category_websiteid=site.id
-				left join (select count(*) ltotal,websiteid from (select websiteid,lable_name from blog_label where websiteid=:siteid group by lable_name) x group by websiteid ) lable on lable.websiteid=site.id
-				LEFT JOIN (select count(*) comtotal,c_website_id from blog_article_comment where c_isdel='√' and c_website_id=:siteid group by c_website_id ) comments on comments.c_website_id=site.id
-			where site.id=:siteid
-		]]>
-	</sql>
 	<!-- 网站主页访问数-->
 	<sql id="blog_home_http" >
 		<![CDATA[
@@ -160,7 +140,31 @@
 		) x order by time desc
 	 	]]>
 	 </sql>
-	 
+
+	<!-- 统计平台博客信息 -->
+	<sql id="refresh_Blog_Statistical">
+		<![CDATA[
+		insert into blog_statistical_site
+			select
+				site.id as id,
+				u.id uid,
+				site.website_datetime as createDateTime,
+				u.user_lastlogin as lastLoginDateTime,
+				article.total as articleTotal,
+				category.ctotal as categoryTotal,
+				lable.ltotal as lableTotal,
+				comments.comtotal as commentTotal,
+        request.reqTotal
+			from blog_website site
+				inner join blog_user u on u.id=site.webiste_creator
+				inner join( select websiteid,count(1) total from blog_article  group by websiteid ) article on article.websiteid=site.id
+				inner join (select count(1) ctotal,category_websiteid from blog_category  group by category_websiteid)category on category.category_websiteid=site.id
+				inner join (select count(1) ltotal,websiteid from (select websiteid,lable_name from blog_label  group by lable_name) x group by websiteid ) lable on lable.websiteid=site.id
+				inner JOIN (select count(1) comtotal,c_website_id from blog_article_comment where c_isdel='√'  group by c_website_id ) comments on comments.c_website_id=site.id
+			  inner join (select req_blog,count(1) reqTotal from blog_request_log a left join base_agent b on a.req_agent=b.agent_key  where  agent_device <> 'Unknown' and agent_os <> 'Unknown' and agent_browser_name<>'Robot/Spider' group by req_blog)
+        request on request.req_blog=site.website_name
+	 	]]>
+	</sql>
 </body>
 
 

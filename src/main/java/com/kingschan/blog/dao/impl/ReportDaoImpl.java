@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.kingschan.blog.po.BlogStatisticalSite;
 import org.springframework.stereotype.Repository;
 import com.kingschan.blog.dao.HibernateBaseDao;
 import com.kingschan.blog.dao.Pagination;
@@ -104,16 +105,10 @@ public class ReportDaoImpl extends HibernateBaseDao implements ReportDao {
 	}
 
 	@Override
-	public Map<String, Object> websiteCountInfo(String siteId)
+	public BlogStatisticalSite websiteCountInfo(String siteId)
 			throws Exception {
-		String sql=SqlUtil.getSql("report","siteInfo");
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("siteid", siteId);
-		List<Map<String, Object>> lis =(List<Map<String, Object>>)queryForListMapBySql2(sql, false, map);
-		if (null!=lis&&lis.size()==1) {
-			return lis.get(0);
-		}
-		return null;
+		BlogStatisticalSite bss = (BlogStatisticalSite)get(BlogStatisticalSite.class,siteId);
+		return bss;
 	}
 
 	@Override
@@ -138,7 +133,14 @@ public class ReportDaoImpl extends HibernateBaseDao implements ReportDao {
 		return (List<BlogMsgBoard>) PaginationByHql(hql, page, 10, false,rootid);
 	}
 
-	
-	
+	@Override
+	public void refreshBlogStatistical() throws Exception {
+		String clear_sql="truncate table blog_statistical_site";
+		executeSQL(clear_sql);
+		String sql =SqlUtil.getSql("report","refresh_Blog_Statistical");;
+		executeSQL(sql);
+	}
+
+
 }
 

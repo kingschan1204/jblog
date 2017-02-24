@@ -30,8 +30,6 @@ import org.hibernate.search.annotations.Index;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Store;
 import org.springframework.beans.BeanUtils;
-
-import com.chenlb.mmseg4j.analysis.MaxWordAnalyzer;
 import com.kingschan.blog.common.bean.convert.BeanConvert;
 
 

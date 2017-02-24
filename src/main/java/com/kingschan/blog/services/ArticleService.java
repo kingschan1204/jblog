@@ -57,12 +57,11 @@ public interface ArticleService {
      * @throws Exception
      */
     Pagination getFullTextSearch(int page, int limit, String website, String keyword, String... fields)throws Exception;
-    
+
     /**
      * 文章全文检索
      * @param page
      * @param limit
-     * @param website
      * @param keyword
      * @param fields
      * @return

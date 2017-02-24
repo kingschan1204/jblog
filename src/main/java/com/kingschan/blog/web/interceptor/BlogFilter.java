@@ -279,7 +279,10 @@ public class BlogFilter implements Filter{
 		}else if (url.endsWith(".do")||url.matches(".*\\.do;jsessionid=\\w{32}$")) {
             User u = (User) req.getSession().getAttribute(BlogUtil.CURRENT_USER);
             return null==u?url.split("/")[1]:u.getUserName();
-        }/*else if (commonServ.isDebug()&&domain.matches("^http(s)?://localhost/.*")) {
+        }else if (url.matches("/q")){
+			return defaultBolg;
+		}
+		/*else if (commonServ.isDebug()&&domain.matches("^http(s)?://localhost/.*")) {
         	//开发模式下的url映射
         	String keywords[]=domain.replace("//", "").split("/");
         	return keywords[1];
