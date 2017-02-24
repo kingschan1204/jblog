@@ -41,14 +41,13 @@
 				<div class="row"><#include "${tpath}include/page.ftl"></div>
       		</div>
       	<div class="col-md-3">
+			<@WebSiteCountInfo siteid="${website.id}">
 	      	<div class="row summary_box">
 		      	<div class="row" >
-		      		<@WebSiteCountInfo siteid="${website.id}">
 		      		<div class="col-xs-3"><a href="${blogprefix}/article_timeline">${WebSiteCountInfoVo.WArticleQuantity}</a></div>
 		      		<div class="col-xs-3"><a href="${blogprefix}/article_lis">${WebSiteCountInfoVo.WCategoryQuantity}</a></div>
 		      		<div class="col-xs-3"><a href="${blogprefix}/lable_lis">${WebSiteCountInfoVo.WLableQuantity}</a></div>
 		      		<div class="col-xs-3"><a>${WebSiteCountInfoVo.WDiscussQuantity}</a></div>
-		      		</@WebSiteCountInfo>
 		      	</div>
 		      	<div class="row" style="font-size: 16px;">
 		      		<div class="col-xs-3">文章</div>
@@ -57,6 +56,9 @@
 		      		<div class="col-xs-3">评论</div>
 		      	</div>
 	      	</div>
+			<div class="row summary_box" style="margin-top: 10px;padding: 10px;font-size: 20px;">
+				<span class="glyphicon glyphicon-refresh"></span>&nbsp;访问&nbsp;${WebSiteCountInfoVo.WRequestQuantity}次
+			</div>
       		<div class="row summary_box" style="margin-top: 10px;">
 					<form class="navbar-form navbar-left" method="get" action="${blogprefix}/query">
 		             <div class="input-group">
@@ -67,28 +69,11 @@
 				    </div><!-- /input-group -->
 		          </form>
 	      	</div>
-	      	
-      	<div class="row">
-		      <div class="right-navbox" id="pushSort">
-		      	  <h3>【推荐】</h3>
-				  <@Article  website_id="${website.id}"  limit="10" orderby="a.articleSort desc">
-				  		<ul>
-				   		<#list article_lis as article> 
-				   			<li>
-				    		<a href="${blogprefix}/entry/${article.id}.html#comments" target="_blank" title="${article.articleTitle}-(${article.articleTotalComment})" >
-				    			${article.articleTitle}
-				    		</a>
-				    		</li>
-				    	</#list> 
-				    	</ul>
-				    </@Article>
-			 </div>
-	      </div>			        
-      				         
+		</@WebSiteCountInfo>
       	<div class="row">
 		      <!-- read sort -->
 		      <div class="right-navbox" id="readSort">
-		      		<@HotArticle website_id="${website.id}" limit="10" >
+		      		<@HotArticle website_id="${website.id}" limit="15" >
 			  			<h3>阅读排行</h3>
 			  			<ul>
 				   		<#list article_lis as article> 
@@ -124,7 +109,7 @@
 			<div class="right-navbox" style="padding-left:30px;padding-right:30px;">
 			  <h3>热门标签</h3>
 			  <div>
-			   <@Lable website_id="${website.id}" limit="40">
+			   <@Lable website_id="${website.id}" limit="60">
 			   			<ol class="index-lable">
 			   				<#list lable_lis as lable >
 				   				<li><a href="${blogprefix}/tags/${lable.lableName}"  title="${lable.lableName}">${lable['lableName']}</a></li>
