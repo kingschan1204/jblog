@@ -141,7 +141,7 @@
 	 	]]>
 	 </sql>
 
-	<!-- 统计平台博客信息 -->
+	<!-- 统计平台博客信息 set @@sql_mode='NO_ENGINE_SUBSTITUTION' -->
 	<sql id="refresh_Blog_Statistical">
 		<![CDATA[
 		insert into blog_statistical_site
