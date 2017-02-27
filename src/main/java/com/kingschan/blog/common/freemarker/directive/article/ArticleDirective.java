@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.kingschan.blog.model.vo.ArticleVo;
 import org.jsoup.Jsoup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -42,7 +43,7 @@ public class ArticleDirective implements TemplateDirectiveModel {
     @SuppressWarnings("unchecked")
 	@Override
     public void execute(Environment env, @SuppressWarnings("rawtypes") Map params, TemplateModel[] tm, TemplateDirectiveBody body) throws TemplateException, IOException {
-        List<Article> lis=null;
+        List<ArticleVo> lis=null;
         try {
             int page =params.containsKey("page")&&params.get("page").toString().matches("\\d+")?Integer.valueOf(params.get("page").toString()):1;
             int limit =params.containsKey("limit")&&params.get("limit").toString().matches("\\d+")?Integer.valueOf(params.get("limit").toString()):10;
@@ -83,14 +84,14 @@ public class ArticleDirective implements TemplateDirectiveModel {
                 p=article_serv.getArticleByLable(params.get("tag").toString(),website_id, page,limit);
             }else if (!fulltext.isEmpty()) {
                 //全文检索
-                p=article_serv.getFullTextSearch(page, limit, website_id, fulltext, "articleTitle","articleContent","id");
+                p=article_serv.getFullTextSearch(page, limit, website_id, fulltext, "articleTitle","articleText.articleContent","id");
             }else{
                 p=article_serv.getArticleList(page,limit, website_id, map);
             }
             if (fulltext.isEmpty()) {
-            	lis=(List<Article>) p.getData();
+            	lis=(List<ArticleVo>) p.getData();
                 String summary=null;
-                for (Article article : lis) {
+                for (ArticleVo article : lis) {
                     if (null==article.getArticleSummary()||article.getArticleSummary().isEmpty()) {
                         summary=Jsoup.parse(article.getArticleContent()).text();
                         summary=summary.length()>300? summary.substring(0,300):summary;

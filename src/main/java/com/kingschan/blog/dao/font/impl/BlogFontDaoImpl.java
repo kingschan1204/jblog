@@ -174,7 +174,7 @@ public class BlogFontDaoImpl extends HibernateBaseDao implements BlogFontDao {
         	         ).must(
 				             qb.keyword().onFields("articlePrivate").matching("false").createQuery()
 					   ).must(
-        	             qb.keyword().onFields("articleTitle","articleContent").matching(keyword).createQuery()
+        	             qb.keyword().onFields("articleTitle","articleText.articleContent").matching(keyword).createQuery()
         	         ).createQuery();
        /* org.apache.lucene.search.Query query = qb
         .keyword().onFields(fields).matching(keyword)
@@ -198,11 +198,11 @@ public class BlogFontDaoImpl extends HibernateBaseDao implements BlogFontDao {
         List<ArticleVo> list=new ArrayList<ArticleVo>();
           for (Article article : lis) {
               String title=article.getArticleTitle();
-              if (null==article.getArticleSummary()||article.getArticleSummary().isEmpty()) {
-                  summary=Jsoup.parse(article.getArticleContent()).text();
+              if (null==article.getArticleText().getArticleSummary()||article.getArticleText().getArticleSummary().isEmpty()) {
+                  summary=Jsoup.parse(article.getArticleText().getArticleContent()).text();
                   summary=summary.length()>300? summary.substring(0,300):summary;
               }else {
-                  summary=Jsoup.parse(article.getArticleSummary()).text();
+                  summary=Jsoup.parse(article.getArticleText().getArticleSummary()).text();
               }
               String highlighterTitle = highlighter.getBestFragment(new HanLPIndexAnalyzer() , "articleTitle", title);
               //转换为vo

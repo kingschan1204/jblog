@@ -413,7 +413,7 @@ public class HibernateBaseDao  {
         page.setData(lis);
         page.setLimit(limit);
         page.setPageindex(pageindex);
-        String total_hql=String.format("select count(*) from (%s) as xxxx", sql);
+        String total_hql=String.format("select count(1) from (%s) as xxxx", sql);
         Integer total=Integer.valueOf(uniqueQueryBySql(total_hql, cacheable, args).toString());
         page.setTotal(total);
         page.setMaxPage((total-1)/limit+1);
@@ -441,7 +441,7 @@ public class HibernateBaseDao  {
         page.setData(lis);
         page.setLimit(limit);
         page.setPageindex(pageindex);
-        String total_hql=String.format("select count(*) from (%s) as xxxx", sql);
+        String total_hql=String.format("select count(1) from (%s) as xxxx", sql);
         Integer total=Integer.valueOf(uniqueQueryBySql(total_hql, cacheable, args).toString());
         page.setTotal(total);
         page.setMaxPage((total-1)/limit+1);
@@ -449,7 +449,7 @@ public class HibernateBaseDao  {
     }
 	
 	
-	public static final String ROW_COUNT = "select count(*) ";
+	public static final String ROW_COUNT = "select count(1) ";
 	public static final String FROM = "from";
 	public static final String HQL_FETCH = "fetch";
 	public static final String ORDER_BY = "order";

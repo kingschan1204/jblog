@@ -3,7 +3,10 @@ A multi-user blog system implemented with Spring /MVC+ Hibernate + MySQL + Boots
 
 # about jblog
 
-> Now deployed in http://51so.info and my blog home is http://kingschan.51so.info
+> Now deployed in http://51so.info and my blog home is http://kingschan.51so.info 
+
+
+### 部署方法及二次开发的步骤正在整理中，不日我将整理好公布 ~ 
 
 ## 背景
 本人程序员一枚，从事web开发时常要学习各种新技术，总结遇到的各种问题，已便下次遇到些类问题时能快速搞定，并将此分享帮助有需要的人。<br>最好的记性也抵不过岁月的冲击。常言道，时光能冲淡一切！把重要的东西写下来保存是个很不错的选择。

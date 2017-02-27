@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.kingschan.blog.po.*;
 import org.hibernate.Session;
 import org.hibernate.search.FullTextSession;
 import org.jsoup.Jsoup;
@@ -27,14 +28,6 @@ import com.kingschan.blog.dao.CategoryDao;
 import com.kingschan.blog.dao.Pagination;
 import com.kingschan.blog.dao.impl.ArticleDaoImpl;
 import com.kingschan.blog.dao.impl.WebSiteDaoImpl;
-import com.kingschan.blog.po.Article;
-import com.kingschan.blog.po.ArticleComment;
-import com.kingschan.blog.po.ArticleCommentSupport;
-import com.kingschan.blog.po.BlogArticleLikes;
-import com.kingschan.blog.po.Category;
-import com.kingschan.blog.po.Lable;
-import com.kingschan.blog.po.User;
-import com.kingschan.blog.po.WebSite;
 import com.kingschan.blog.services.ArticleService;
 import com.kingschan.blog.util.BlogUtil;
 import com.kingschan.blog.util.CommomEncrypt;
@@ -69,7 +62,27 @@ public class ArticleServiceImpl extends CommonServiceImpl  implements ArticleSer
     @Override
     public Pagination getArticleList(int page,int limit, String website, Map<String, Object> args)
             throws Exception {
-        return article_dao.getNewArticleByPage(page,limit, website,args);
+		//转成articleVo
+		Pagination p =article_dao.getNewArticleByPage(page,limit, website,args);
+		List<ArticleVo> result=new ArrayList<ArticleVo>();
+		List<Article> list=(List<Article> )p.getData();
+		for (Article a :list) {
+			ArticleText at= a.getArticleText();
+
+			ArticleVo vo = new ArticleVo();
+			CategoryVo cgv =new CategoryVo();
+
+			BeanUtils.copyProperties(a, vo);
+			BeanUtils.copyProperties(a.getCategory(), cgv);
+			vo.setArticlePubtime(TimeStampUtil.timestampToString(a.getArticlePubtime()));
+			vo.setArticleUpdatetime((TimeStampUtil.timestampToString(a.getArticleUpdatetime())));
+			vo.setArticleContent(at.getArticleContent());
+			vo.setArticleSummary(at.getArticleSummary());
+			vo.setCategory(cgv);
+			result.add(vo);
+		}
+		p.setData(result);
+		return p;
     }
     @Override
     public Article ArticleInfo(String keyword,boolean readonce,String website) throws Exception {
@@ -87,7 +100,26 @@ public class ArticleServiceImpl extends CommonServiceImpl  implements ArticleSer
     }
     @Override
     public Pagination getArticleByLable(String lableName,String website, int page,int limit) throws Exception {
-        return article_dao.getArticleByLable(lableName,website, page,limit);
+		Pagination p =article_dao.getArticleByLable(lableName,website, page,limit);
+		List<ArticleVo> result=new ArrayList<ArticleVo>();
+		List<Article> list=(List<Article> )p.getData();
+		for (Article a :list) {
+			ArticleText at= a.getArticleText();
+
+			ArticleVo vo = new ArticleVo();
+			CategoryVo cgv =new CategoryVo();
+
+			BeanUtils.copyProperties(a, vo);
+			BeanUtils.copyProperties(a.getCategory(), cgv);
+			vo.setArticlePubtime(TimeStampUtil.timestampToString(a.getArticlePubtime()));
+			vo.setArticleUpdatetime((TimeStampUtil.timestampToString(a.getArticleUpdatetime())));
+			vo.setArticleContent(at.getArticleContent());
+			vo.setArticleSummary(at.getArticleSummary());
+			vo.setCategory(cgv);
+			result.add(vo);
+		}
+		p.setData(result);
+		return p;
     }
     @Override
 //    @Cacheable(value="hotLable",key="#websiteid")
@@ -113,9 +145,11 @@ public class ArticleServiceImpl extends CommonServiceImpl  implements ArticleSer
     public String saveArticle(ArticleVo vo,String type,User user,WebSite ws) throws Exception {
         boolean add=false;
         Article a = null;
+		ArticleText at =null;
         Set<Lable> labes = new HashSet<Lable>();
         if (null==vo.getId()||vo.getId().isEmpty()) {
             a = new Article();
+			at=new ArticleText();
             a.setArticleViewcount(0);
             a.setArticleStatus((short) 1);
             a.setArticleSort(0);
@@ -130,6 +164,7 @@ public class ArticleServiceImpl extends CommonServiceImpl  implements ArticleSer
             add=true;
         }else{
             a=article_dao.getArticleByID(vo.getId());
+			at=a.getArticleText();
             //如果是发布就设置更新时间
             if (type.equalsIgnoreCase("release")) {
             	 a.setArticleUpdatetime(TimeStampUtil.getCurrentDate());
@@ -137,8 +172,6 @@ public class ArticleServiceImpl extends CommonServiceImpl  implements ArticleSer
         }
         a.setArticleCover(vo.getArticleCover());
         a.setArticleAllowcomments(vo.getArticleAllowcomments());
-        a.setArticleContent(vo.getArticleContent());
-        a.setArticleSummary(vo.getArticleSummary());
         a.setArticleTitle(Jsoup.parse(vo.getArticleTitle()).text());
         a.setCategory(category_dao.getObj(vo.getCategory().getId()));
         a.setArticlePrivate(vo.getArticlePrivate());
@@ -169,17 +202,23 @@ public class ArticleServiceImpl extends CommonServiceImpl  implements ArticleSer
 				}
 			}
         }
+
+		at.setArticleContent(vo.getArticleContent());
+		at.setArticleSummary(vo.getArticleSummary());
         a.setUser(user);
-        a.setArticleMd5(CommomEncrypt.MD5(a.getArticleContent()));
+        a.setArticleMd5(CommomEncrypt.MD5(at.getArticleContent()));
         a.setLables(labes);
         if (a.getArticleEditor().equals("html")) {
-        	String _html=Jsoup.clean(a.getArticleContent(),Whitelist.relaxed());
-			a.setArticleContent(_html);
+        	String _html=Jsoup.clean(at.getArticleContent(),Whitelist.relaxed());
+			at.setArticleContent(_html);
 		}
         if (add) {
             article_dao.addObj(a);
+			at.setId(a.getId());
+			article_dao.save(at);
         }else{
             article_dao.updateObj(a);
+			article_dao.update(at);
         }
         return a.getId();
     }
@@ -227,13 +266,16 @@ public class ArticleServiceImpl extends CommonServiceImpl  implements ArticleSer
 		 UserVo temp_user=null;
 		 for (Object[] obj : data) {
 			Article article=(Article) obj[0];
-			User user =(User) obj[1];
+		    ArticleText at = (ArticleText) obj[1];
+			User user =(User) obj[2];
 			temp_article=new ArticleVo();
 			temp_user=new UserVo();
 			temp_article.setArticlePubtime(TimeStampUtil.timestampToString(article.getArticlePubtime()));
 			BeanUtils.copyProperties(article, temp_article);
 			BeanUtils.copyProperties(user, temp_user);
 			temp_article.setUser(temp_user);
+		    temp_article.setArticleSummary(at.getArticleSummary());
+		    temp_article.setArticleContent(at.getArticleContent());
 			lis.add(temp_article);
 		 }
 		 p.setData(lis);
@@ -249,6 +291,7 @@ public class ArticleServiceImpl extends CommonServiceImpl  implements ArticleSer
 	public ArticleVo getArticle(String keyword, boolean readonce, String website)
 			throws Exception {
 		Article a =ArticleInfo(keyword, readonce, website);
+		ArticleText at =a.getArticleText();
 		if (null==a) {
 			return null;
 		}
@@ -274,6 +317,8 @@ public class ArticleServiceImpl extends CommonServiceImpl  implements ArticleSer
 		vo.setUser(uvo);
 		vo.setArticlePubtime(TimeStampUtil.timestampToString(a.getArticlePubtime()));
 		vo.setArticleUpdatetime((TimeStampUtil.timestampToString(a.getArticleUpdatetime())));
+		vo.setArticleSummary(at.getArticleSummary());
+		vo.setArticleContent(at.getArticleContent());
 		return vo;
 	}
 	@Override

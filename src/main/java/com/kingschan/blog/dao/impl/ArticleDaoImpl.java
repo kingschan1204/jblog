@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.hankcs.lucene.HanLPIndexAnalyzer;
+import com.kingschan.blog.po.*;
 import org.apache.lucene.search.highlight.Formatter;
 import org.apache.lucene.search.highlight.Fragmenter;
 import org.apache.lucene.search.highlight.Highlighter;
@@ -25,10 +26,6 @@ import com.kingschan.blog.model.vo.UserVo;
 import com.kingschan.blog.dao.ArticleDao;
 import com.kingschan.blog.dao.HibernateBaseDao;
 import com.kingschan.blog.dao.Pagination;
-import com.kingschan.blog.po.Article;
-import com.kingschan.blog.po.ArticleComment;
-import com.kingschan.blog.po.Category;
-import com.kingschan.blog.po.User;
 import com.kingschan.blog.util.TimeStampUtil;
 import com.kingschan.blog.util.UnixDate;
 /**
@@ -71,7 +68,7 @@ public class  ArticleDaoImpl extends HibernateBaseDao implements ArticleDao{
 
     @Override
     public Pagination getNewArticleByPage(int page,int limit, String website,Map<String, Object> args) throws Exception {
-        StringBuffer hql = new StringBuffer(String.format("from Article a  where a.websiteid='%s'", website));
+        StringBuffer hql = new StringBuffer(String.format("from Article a inner join a.articleText inner join a.category  where a.websiteid='%s'", website));
         if (args.get("model").toString().equalsIgnoreCase("font")) {
             hql.append(" and a.articlePrivate=false ");
         }
@@ -98,13 +95,25 @@ public class  ArticleDaoImpl extends HibernateBaseDao implements ArticleDao{
 			hql.append(" order by a.articleSort desc ,a.articleUpdatetime desc");
 		}
         args.remove("model");
-        return PaginationsByHQLMapParams(hql.toString(), page, limit, true, args);
+        Pagination p = PaginationsByHQLMapParams(hql.toString(), page, limit, true, args);
+        List<Object[]> list = (List<Object[]>)p.getData();
+        List<Article> result=new ArrayList<Article>();
+        for (Object[] row:list) {
+            Article a =(Article)row[0];
+            ArticleText at =(ArticleText)row[1];
+            Category cg =(Category)row[2];
+            a.setArticleText(at);
+            a.setCategory(cg);
+            result.add(a);
+        }
+        p.setData(result);
+        return p;
     }
     
     @Override
 	public Pagination getHomeArticleList(int page,
 			int limit, Map<String, Object> args) throws Exception {
-    	StringBuffer hql = new StringBuffer(" from Article a left join a.user where  a.articlePrivate=false");
+    	StringBuffer hql = new StringBuffer(" from Article a left join a.articleText left join a.user where  a.articlePrivate=false");
         if (args.containsKey("category")) {
             hql.append(" and a.category.categoryName=:category ");
         }       
@@ -122,7 +131,8 @@ public class  ArticleDaoImpl extends HibernateBaseDao implements ArticleDao{
     @Override
     public Pagination getArticleByLable(String lableName,String website,int page,int limit) throws Exception {
         Pagination p = null;
-        String hql="select lableName,article from Lable a where a.lableName =:lablename and a.webSite.id=:website and a.article.articlePrivate=false ";
+        //String hql="select lableName,article from Lable a where a.lableName =:lablename and a.webSite.id=:website and a.article.articlePrivate=false ";
+        String hql =" from Lable a inner join a.article inner join a.article.articleText where a.webSite.id=:website and a.lableName=:lablename";
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("lablename", lableName);
         map.put("website", website);
@@ -131,6 +141,8 @@ public class  ArticleDaoImpl extends HibernateBaseDao implements ArticleDao{
         List<Article> list = new ArrayList<Article>();
         for (Object[] objects : lis) {
             Article a = (Article) objects[1];
+            ArticleText at = (ArticleText)objects[2];
+            a.setArticleText(at);
             list.add(a);
         }
         p.setData(list);
@@ -178,7 +190,7 @@ public class  ArticleDaoImpl extends HibernateBaseDao implements ArticleDao{
         	query= qb.bool().must(
         	            qb.keyword().onField("websiteid").matching(website).createQuery()
         	         ).must(
-				             qb.keyword().onFields("articlePrivate").matching("false").createQuery()
+				             qb.keyword().onField("articlePrivate").matching("false").createQuery()
 					   ).must(
         	             qb.keyword().onFields(fields).matching(keyword).createQuery()
         	         ).createQuery();
@@ -186,7 +198,7 @@ public class  ArticleDaoImpl extends HibernateBaseDao implements ArticleDao{
 			query=qb.bool().must(
 			             qb.keyword().onFields(fields).matching(keyword).createQuery()
 			         ).must(
-				             qb.keyword().onFields("articlePrivate").matching("false").createQuery()
+				             qb.keyword().onField("articlePrivate").matching("false").createQuery()
 					   ).createQuery();
 		}
        /* org.apache.lucene.search.Query query = qb
@@ -211,11 +223,12 @@ public class  ArticleDaoImpl extends HibernateBaseDao implements ArticleDao{
         List<ArticleVo> list=new ArrayList<ArticleVo>();
           for (Article article : lis) {
               String title=article.getArticleTitle();
-              if (null==article.getArticleSummary()||article.getArticleSummary().isEmpty()) {
-                  summary=Jsoup.parse(article.getArticleContent()).text();
+               summary=article.getArticleText().getArticleSummary();
+              if (null==summary||summary.isEmpty()) {
+                  summary=Jsoup.parse(article.getArticleText().getArticleContent()).text();
                   summary=summary.length()>300? summary.substring(0,300):summary;
               }else {
-                  summary=Jsoup.parse(article.getArticleSummary()).text();
+                  summary=Jsoup.parse(article.getArticleText().getArticleSummary()).text();
               }
               String highlighterTitle = highlighter.getBestFragment(new HanLPIndexAnalyzer() , "articleTitle", title);
               

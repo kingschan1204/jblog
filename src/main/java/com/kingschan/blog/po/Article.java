@@ -5,30 +5,17 @@ import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.hankcs.lucene.HanLPAnalyzer;
 import com.hankcs.lucene.HanLPIndexAnalyzer;
+import com.kingschan.blog.common.hibernate.search.ArticleTextBridge;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.search.annotations.Analyze;
-import org.hibernate.search.annotations.Analyzer;
-import org.hibernate.search.annotations.DocumentId;
-import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.*;
 import org.hibernate.search.annotations.Index;
-import org.hibernate.search.annotations.Indexed;
-import org.hibernate.search.annotations.Store;
 import org.springframework.beans.BeanUtils;
 import com.kingschan.blog.common.bean.convert.BeanConvert;
 
@@ -50,9 +37,9 @@ public class Article  implements java.io.Serializable,BeanConvert {
      private Category category;
      @Field(index=Index.YES, analyze=Analyze.YES, store=Store.YES) 
      private String articleTitle;
-     @Field(index=Index.YES, analyze=Analyze.YES, store=Store.NO)
-     private String articleContent;
-     private String articleSummary;
+//     @Field(index=Index.YES, analyze=Analyze.YES, store=Store.NO)
+//     private String articleContent;
+//     private String articleSummary;
      private Timestamp articlePubtime;
      private Timestamp articleUpdatetime;
      @Field(index=Index.YES, analyze=Analyze.NO, store=Store.YES) 
@@ -71,6 +58,22 @@ public class Article  implements java.io.Serializable,BeanConvert {
      private String articleEditor;
      private Integer articleLikes;
      private Set<Lable> lables = new HashSet<Lable>(0);
+    @FieldBridge(impl=ArticleTextBridge.class)
+ //   @Field(index=Index.YES, analyze=Analyze.YES, store=Store.YES)
+    @IndexedEmbedded
+    private ArticleText articleText;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="id", nullable=false)
+    @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
+    public ArticleText getArticleText() {
+        return articleText;
+    }
+
+    public void setArticleText(ArticleText articleText) {
+        this.articleText = articleText;
+    }
+
 
 
     // Constructors
@@ -89,7 +92,7 @@ public class Article  implements java.io.Serializable,BeanConvert {
         this.user = user;
         this.category = category;
         this.articleTitle = articleTitle;
-        this.articleContent = articleContent;
+//        this.articleContent = articleContent;
         this.articlePubtime = articlePubtime;
         this.articleUpdatetime = articleUpdatetime;
         this.websiteid = websiteid;
@@ -102,8 +105,8 @@ public class Article  implements java.io.Serializable,BeanConvert {
         this.user = user;
         this.category = category;
         this.articleTitle = articleTitle;
-        this.articleContent = articleContent;
-        this.articleSummary = articleSummary;
+//        this.articleContent = articleContent;
+//        this.articleSummary = articleSummary;
         this.articlePubtime = articlePubtime;
         this.articleUpdatetime = articleUpdatetime;
         this.websiteid = websiteid;
@@ -158,24 +161,24 @@ public class Article  implements java.io.Serializable,BeanConvert {
         this.articleTitle = articleTitle;
     }
     
-    @Column(name="article_content", nullable=false)
-    public String getArticleContent() {
-        return this.articleContent;
-    }
+//    @Column(name="article_content", nullable=false)
+//    public String getArticleContent() {
+//        return this.articleContent;
+//    }
     
-    public void setArticleContent(String articleContent) {
-        this.articleContent = articleContent;
-    }
+//    public void setArticleContent(String articleContent) {
+//        this.articleContent = articleContent;
+//    }
     
-    @Column(name="article_summary", length=500)
+//    @Column(name="article_summary", length=500)
 
-    public String getArticleSummary() {
-        return this.articleSummary;
-    }
+//    public String getArticleSummary() {
+//        return this.articleSummary;
+//    }
     
-    public void setArticleSummary(String articleSummary) {
-        this.articleSummary = articleSummary;
-    }
+//    public void setArticleSummary(String articleSummary) {
+//        this.articleSummary = articleSummary;
+//    }
     
     @Column(name="article_pubtime", nullable=false, length=19)
 
@@ -333,6 +336,8 @@ public class Article  implements java.io.Serializable,BeanConvert {
 	public void setArticleLikes(Integer articleLikes) {
 		this.articleLikes = articleLikes;
 	}
+
+
 
 	@Override
 	public <ArticleVo> ArticleVo po2vo(ArticleVo obj) throws Exception {

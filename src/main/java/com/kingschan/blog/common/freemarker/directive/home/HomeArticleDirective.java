@@ -57,7 +57,7 @@ public class HomeArticleDirective implements TemplateDirectiveModel {
                 map.put("category", params.get("category").toString());
             } if (!fulltext.isEmpty()) {
                 //全文检索
-                p=article_serv.getHomeFullTextSearch(page, limit, fulltext, "articleTitle","articleContent","id");
+                p=article_serv.getHomeFullTextSearch(page, limit, fulltext, "articleTitle","articleText.articleContent","id");
             }else{
                 p=article_serv.getHomeArticleList(page,limit, map);
             }

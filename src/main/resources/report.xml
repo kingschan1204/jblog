@@ -125,7 +125,8 @@
 	  <sql id="blog_timeline">
 	 	<![CDATA[
 		select * from (
-			select a.id ,article_title title ,article_summary text, article_updatetime time,'' site,'article' type from blog_article  a
+			select a.id ,article_title title ,b.article_summary text, article_updatetime time,'' site,'article' type from blog_article  a
+      		inner join blog_article_text b on a.id=b.id
 			where article_creator=:userid
 			UNION all 
 			select b.id,b.article_title ,a.c_text ,a.c_datetime,c.website_name ,'comment' type from blog_article_comment a 
