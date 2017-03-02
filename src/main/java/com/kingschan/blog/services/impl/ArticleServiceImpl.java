@@ -291,10 +291,10 @@ public class ArticleServiceImpl extends CommonServiceImpl  implements ArticleSer
 	public ArticleVo getArticle(String keyword, boolean readonce, String website)
 			throws Exception {
 		Article a =ArticleInfo(keyword, readonce, website);
-		ArticleText at =a.getArticleText();
 		if (null==a) {
 			return null;
 		}
+		ArticleText at =a.getArticleText();
 		ArticleVo vo = new ArticleVo();
 		BeanUtils.copyProperties(a, vo);
 		//lables
