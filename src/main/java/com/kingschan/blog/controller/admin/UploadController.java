@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class UploadController {
 	
-	@RequestMapping("/upload_page")
+	/*@RequestMapping("/upload_page")
 	public String uploadPage(){
 		
 		return "/admin/upload";
-	}
+	}*/
 }

@@ -1,17 +1,38 @@
 <!-- 左边导航 -->
 		<div class="navigate-panel" >
 			<div class="row nav-profile">
-				<img src="${BLOG_CURRENT_USER.userProfileImg}<#if AdminWebSite.user.userProfileImg?index_of("res.51so.info")!=-1>_profile.100X100</#if>" align="bottom" width="100" height="100" class="center-block"/>
-				<center class="dashboard_title">${AdminWebSite.websiteTitle}</center>
+                <a href="${webroot}/admin/profile.do">
+                    <img src="${BLOG_CURRENT_USER.userProfileImg}<#if AdminWebSite.user.userProfileImg?index_of("res.51so.info")!=-1>_profile.100X100</#if>" align="bottom" width="100" height="100" class="center-block"/>
+                    <center class="dashboard_title">${AdminWebSite.websiteTitle}</center>
+                </a>
 			</div>
-			<div class="nav-folder" id="blog_main_li" onclick="window.location='${webroot}/admin/main.do'">
-				<a style="color:#aeb2b7;"><span class="glyphicon glyphicon-home"></span>&nbsp;后台首页</a>
-			</div>
-			<div class="nav-folder" id="write_article_li" onclick="window.location='${webroot}/admin/edit_article.do'">
-				<a style="color:#aeb2b7;"><span class="glyphicon glyphicon-pencil"></span>&nbsp;写日志</a>
-			</div>
+            <a href="${webroot}/admin/edit_article.do" target="_blank">
+                <div class="nav-folder"  >
+                    <span class="glyphicon glyphicon-pencil"></span>发布文章
+                </div>
+            </a>
+            <a href="${webroot}/admin/article_list.do">
+                <div class="nav-folder" >
+                   <span class="glyphicon glyphicon-th-list"></span>文章管理
+                </div>
+            </a>
+            <a href="${webroot}/admin/article_comments.do">
+                <div class="nav-folder" >
+                    <span class="glyphicon glyphicon-comment"></span>讨论管理
+                </div>
+            </a>
+            <a href="${webroot}/admin/blogres_list.do">
+                <div class="nav-folder" >
+                    <span class="glyphicon glyphicon-cloud"></span>文件管理
+                </div>
+            </a>
+            <a href="${webroot}/admin/website_info.do">
+                <div class="nav-folder" >
+                    <span class="glyphicon glyphicon-cog"></span>博客设置
+                </div>
+            </a>
 			<!---->
-<div class="panel-group" id="accordion">
+<#--<div class="panel-group" id="accordion">
     <div class="panel panel-default">
         <div class="panel-heading">
             <h4 class="panel-title">
@@ -57,7 +78,7 @@
                <a  class="nav-folder-item" data-toggle="modal" data-target="#myModal" href="#" ><span class="glyphicon glyphicon-lock"></span>&nbsp;修改密码</a>
        			<a id="bolg_info_li" class="nav-folder-item" href="${webroot}/admin/website_info.do"><span class="glyphicon glyphicon-info-sign"></span>&nbsp;博客信息</a>
        			<a id="blog_res_li" class="nav-folder-item" href="${webroot}/admin/blogres_list.do"><span class="glyphicon glyphicon-folder-open"></span>&nbsp;资源管理</a>	            
-            	<a id="blog_upload_page" class="nav-folder-item" href="${webroot}/admin/upload_page.do"><span class="glyphicon glyphicon-upload"></span>&nbsp;文件上传</a>
+            	<a id="blog_upload_page" class="nav-folder-item" href="${webroot}/admin/.do"><span class="glyphicon glyphicon-upload"></span>&nbsp;文件上传</a>
             </div>
         </div>
     </div>
@@ -78,15 +99,12 @@
         </div>
     </div>
     
-</div>
+</div>-->
 			<div class="nav-folder" onclick="<#if AdminWebSite??>window.open('http://${AdminWebSite.websiteName}.${host}');<#else>javascript:alert('你还未创建博客!');</#if>">
-				<span class="glyphicon glyphicon-globe"></span>&nbsp;我的博客
-			</div>
-			<div class="nav-folder" onclick="window.open('http://${host}');">
-				<span class="glyphicon glyphicon-globe"></span>&nbsp;平台首页
+				<span class="glyphicon glyphicon-globe"></span>我的博客
 			</div>
 			<div class="nav-folder" style="color:red;" onclick="blog.userLogout();">
-				<span class="glyphicon glyphicon-remove"></span>&nbsp;退出
+				<span class="glyphicon glyphicon-remove"></span>退出
 			</div>		
 				
 			<!---->

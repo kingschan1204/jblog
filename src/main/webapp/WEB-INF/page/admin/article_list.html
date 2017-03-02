@@ -8,6 +8,7 @@
 <script src="${webroot}/www/blog/js/pub/blog-alert.js"></script>
 </head>
 <body>
+<#include "/admin/include/dashboard-start.ftl">
 	<div class="module-toolbar g-clearfix">
 			<form class="form-inline" method="post" action="article_list.do"  id="sform">
 				  <div class="form-group">
@@ -93,6 +94,7 @@
 		</table>
     <#assign url="${admin_blogprefix}/admin/article_list.do?category=${categoryName!}&title=${title!}&">
     <#include "/admin/include/page.ftl">
+	<#include "/admin/include/dashboard-end.ftl">
 	<div id="article_info"></div>
      <!-- 模态框（Modal） -->
 <div class="modal fade" id="update_type_modal" tabindex="-1" role="dialog" aria-labelledby="modallab" aria-hidden="true">

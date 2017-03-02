@@ -6,8 +6,8 @@
 <#include "/admin/include/bootstrap.ftl">
 </head>
 <body>
+<#include "/admin/include/dashboard-start.ftl">
 <form id="webinfoForm" class="form-horizontal" method="post" action="save_website_info.do">
-  
   <div class="form-group">
     <label  class="col-sm-1 control-label">博客地址</label>
     <div class="col-sm-6">
@@ -132,6 +132,7 @@
     </div>
   </div>
 </form>
+    <#include "/admin/include/dashboard-end.ftl">
 </body>
 <script type="text/javascript">
 $("#bolg_info_li").addClass("nav-active");

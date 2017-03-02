@@ -17,7 +17,7 @@ body{background-color: #f1f2f7;overflow-x:hidden;overflow-y: auto; }
 	text-align: center;
 }
 
-
+a:hover{text-decoration: none;}
 .nav-folder{
 	width: 100%;
 	border-top: 1px solid rgba(255,255,255,0.05);
@@ -29,9 +29,10 @@ body{background-color: #f1f2f7;overflow-x:hidden;overflow-y: auto; }
     line-height: 18px;
     height: 54px;
     transition: all .3s ease;
-    cursor: pointer;
     font-size: 16px;
 }
+.nav-folder a {color: #aeb2b7;}
+.nav-folder span{padding-right: 20px;font-size: 18px;}
 .nav-folder:HOVER{background-color: black;}
 
 .nav-folder-item{

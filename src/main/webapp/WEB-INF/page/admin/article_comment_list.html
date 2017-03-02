@@ -36,6 +36,7 @@
 </style>
 </head>
 <body>
+<#include "/admin/include/dashboard-start.ftl">
 	<form class="form-inline" method="post" action="article_comments.do"  id="sform">
 	  <div class="form-group">
 	    <label for="keyword_txt">关键字</label>
@@ -76,6 +77,7 @@
 		
     <#assign url="${admin_blogprefix}/admin/article_comments.do?">
     <#include "/admin/include/page.ftl">
+	<#include "/admin/include/dashboard-end.ftl">
 </body>
 <script type="text/javascript">
 $("#blog_comment_li").addClass("nav-active");

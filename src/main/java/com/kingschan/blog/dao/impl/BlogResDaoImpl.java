@@ -29,6 +29,7 @@ public class BlogResDaoImpl extends HibernateBaseDao implements BlogResDao {
 		}else if (type.equals("file")) {
 			hql+="  and res.resType not like 'image%'";
 		}
+		hql +=" order by resDate Desc";
 		return PaginationsByHQLMapParams(hql, pageindex, limit, true, map);
 	}
 

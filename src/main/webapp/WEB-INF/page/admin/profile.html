@@ -49,6 +49,7 @@
 </style>
 </head>
 <body>
+<#include "/admin/include/dashboard-start.ftl">
 <form id="userinfoForm" class="form-horizontal" method="post" action="http://${host}/admin/savePorfile.do">
 <div class="form-group">
     <label  class="col-sm-1 control-label"></label>
@@ -124,6 +125,7 @@
 		<#elseif msg!="">
 		<script type="text/javascript"> blogAlert.alert('${msg}',"red");</script>
 	</#if>
+<#include "/admin/include/dashboard-end.ftl">
 </body>
 <script type="text/javascript">
 $("#bolg_profile_li").addClass("nav-active");
