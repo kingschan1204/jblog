@@ -112,7 +112,7 @@
 	  <#include "/admin/include/dashboard-end.ftl">
   </body>
   <script type="text/javascript">
-  $("#write_article_li").addClass("nav-active");
+	  blogControlPanel.activePanelByText("发布文章");
   (function(){
 	    // 关闭窗口时弹出确认提示
 	    $(window).bind('beforeunload', function(){

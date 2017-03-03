@@ -135,8 +135,7 @@
     <#include "/admin/include/dashboard-end.ftl">
 </body>
 <script type="text/javascript">
-$("#bolg_info_li").addClass("nav-active");
-$('#collapseThree').collapse('show');
+    blogControlPanel.activePanelByText("博客设置");
 var msg ="${msg!}";
 if(msg!="success"&&msg!=""){bootbox.alert("<font style='color:red;'>"+msg+"</font>");}
 $('#webinfoForm').bootstrapValidator({

@@ -7,9 +7,10 @@ body{background-color: #f1f2f7;overflow-x:hidden;overflow-y: auto; }
     width:240px;
     position:fixed;
     top: 0;
-    background-color: #32323a;
+    /*background-color: #32323a;*/
     overflow:hidden;
     z-index: 9;
+    background: url('/www/admin/img/left-bg.jpg');
 }
 .nav-profile{
 	padding-top:20px;
@@ -20,7 +21,7 @@ body{background-color: #f1f2f7;overflow-x:hidden;overflow-y: auto; }
 a:hover{text-decoration: none;}
 .nav-folder{
 	width: 100%;
-	border-top: 1px solid rgba(255,255,255,0.05);
+	/*border-top: 1px solid rgba(255,255,255,0.05);*/
 	color: #aeb2b7;
     display: block;
     text-decoration: none;

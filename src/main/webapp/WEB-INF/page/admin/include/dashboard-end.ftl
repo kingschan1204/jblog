@@ -123,3 +123,4 @@ function builderindex(){
 	   }
    }
 </script>
+<script src="http://${host}/www/admin/js/controlPanel.js"></script>

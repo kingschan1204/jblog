@@ -117,7 +117,7 @@
 	  <#include "/admin/include/dashboard-end.ftl">
   </body>
   <script type="text/javascript">
-  $("#write_article_li").addClass("nav-active");
+	  blogControlPanel.activePanelByText("发布文章");
   (function(){
 	    // 关闭窗口时弹出确认提示
 	    $(window).bind('beforeunload', function(){
@@ -143,6 +143,7 @@
 			  'blockquote', //引用
 			  'fontfamily', //字体
 			  'fontsize', //字号
+			  'paragraph', //段落格式
 			  'forecolor', //字体颜色
 			  'justifyleft', //居左对齐
 			  'justifyright', //居右对齐
@@ -150,40 +151,21 @@
 			  'justifyjustify', //两端对齐
 			  'insertorderedlist', //有序列表
 			  'insertunorderedlist', //无序列表
-			  'paragraph', //段落格式
 			  'pasteplain', //纯文本粘贴模式
 			  'selectall', //全选
 			  'horizontal', //分隔线
 			  'removeformat', //清除格式
-			  'unlink', //取消链接
 			  'simpleupload', //单图上传
 			  'insertimage', //多图上传
-			  'imagenone', //默认
-			  'imageleft', //左浮动
-			  'imageright', //右浮动
 			  'attachment', //附件
-			  'imagecenter', //居中
 			  'wordimage', //图片转存
 			  'link', //超链接
 			  'spechars', //特殊字符
 			  'searchreplace', //查询替换
 			  'fullscreen', //全屏
-
 			  'lineheight', //行间距
 			  'edittip ', //编辑提示
 			  'autotypeset', //自动排版
-			  'mergeright', //右合并单元格
-			  'mergedown', //下合并单元格
-			  'deleterow', //删除行
-			  'deletecol', //删除列
-			  'splittorows', //拆分成行
-			  'splittocols', //拆分成列
-			  'splittocells', //完全拆分单元格
-			  'deletecaption', //删除表格标题
-			  'inserttitle', //插入标题
-			  'mergecells', //合并多个单元格
-			  'deletetable', //删除表格
-			  'insertparagraphbeforetable', //"表格前插入行"
 			  'inserttable', //插入表格
 			  'insertcode', //代码语言
 			  'source', //源代码

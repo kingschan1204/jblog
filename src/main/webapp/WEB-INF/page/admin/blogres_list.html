@@ -80,9 +80,8 @@
 	<#include "/admin/include/dashboard-end.ftl">
 </body>
 <script type="text/javascript">
-$("#blog_res_li").addClass("nav-active");
-$('#collapseThree').collapse('show');
-$(function () { 
+	blogControlPanel.activePanelByText("文件管理");
+$(function () {
 	$("[data-toggle='tooltip']").tooltip();
 	bootbox.setLocale("zh_CN"); 
 		$('.image').viewer(); 
