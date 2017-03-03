@@ -8,7 +8,12 @@
 <!--viewer-->
 <link rel="stylesheet" href="${webroot}/www/viewer/viewer.min.css" type="text/css">
 <script type="text/javascript" src="${webroot}/www/viewer/viewer.min.js"></script>  
-<script src="${webroot}/www/blog/js/pub/blog-alert.js"></script> 
+<script src="${webroot}/www/blog/js/pub/blog-alert.js"></script>
+
+
+	<link href="//cdn.bootcss.com/fancybox/2.1.6/css/jquery.fancybox.min.css" rel="stylesheet">
+	<script src="//cdn.bootcss.com/fancybox/2.1.6/js/jquery.fancybox.min.js"></script>
+	<script src="//cdn.bootcss.com/zeroclipboard/2.3.0/ZeroClipboard.min.js"></script>
 <style type="text/css">
 	.file-box{    width: 110px;
 		/*border: solid 1px gray;*/
@@ -61,14 +66,16 @@
 		<div class="file-box" id="${res.resKey}">
 			<div class="file-head">
 				<#if res.resType?contains("image")>
-					<img class="img-rounded" src="http://res.51so.info/${res.resKey}_admin.res.manage" >
+					<a class="fancybox" rel="group" href="http://res.51so.info/${res.resKey}?a.jpg">
+						<img class="img-rounded" src="http://res.51so.info/${res.resKey}_admin.res.manage" title="${res.resName}" >
+					</a>
 					<#else>
 						不是图片
 				</#if>
 			</div>
 			<div class="file-name">${res.resName}</div>
 			<div>
-				<span class="label label-success">复制</span>
+				<span class="label label-success copy-btn">复制</span>
 				<span class="label label-danger" onclick="delfile('${res.resKey}');">删除</span>
 			</div>
 	   </div>
@@ -81,10 +88,37 @@
 </body>
 <script type="text/javascript">
 	blogControlPanel.activePanelByText("文件管理");
+	/*$('.file-head img').each(function(){
+		if(!$(this).hasClass("emoji")){
+			$(this).attr({"title":"点我放大图片"});
+			$(this).click(function(){$(this).zoomify('zoom');});
+		}
+	});*/
+	var client = new ZeroClipboard( $('.copy-btn') );
+
+	client.on( 'ready', function(event) {
+		// console.log( 'movie is loaded' );
+
+		client.on( 'copy', function(event) {
+			var imghref=$(event.target).parent().parent().find("a[class='fancybox']").attr("href");
+			event.clipboardData.setData('text/plain', imghref);
+		} );
+
+		client.on( 'aftercopy', function(event) {
+			console.log('Copied text to clipboard: ' + event.data['text/plain']);
+			blogAlert.notify("复制成功","success");
+		} );
+	} );
+
+	client.on( 'error', function(event) {
+		// console.log( 'ZeroClipboard error of type "' + event.name + '": ' + event.message );
+		ZeroClipboard.destroy();
+	} );
 $(function () {
 	$("[data-toggle='tooltip']").tooltip();
 	bootbox.setLocale("zh_CN"); 
-		$('.image').viewer(); 
+		//$('.file-head img').viewer();
+		$(".fancybox").fancybox({titlePosition:'outside',transitionIn:'elastic',transitionOut:'elastic'});
 	});
 function allchk(obj){
 	var chk=obj.checked;

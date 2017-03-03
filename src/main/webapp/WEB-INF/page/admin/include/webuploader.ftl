@@ -706,6 +706,8 @@ jQuery(function() {
                 stats = uploader.getStats(); 
                 if ( stats.successNum>0 ) {
                     blogAlert.notify("上传成功!","success");
+                    setTimeout(function(){location.reload();},2000);
+
                 } else {
                     // 没有成功的图片，重设
                     state = 'done';
