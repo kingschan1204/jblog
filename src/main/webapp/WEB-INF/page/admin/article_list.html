@@ -53,16 +53,16 @@
 				<th>标题</th>
 				<th>文章类型</th>
 				<th>阅读次数</th>
-				<th>评论数</th>
+				<!--<th>评论数</th>
 				<th>点赞数</th>
-				<th>发布时间</th>
+				<th>发布时间</th>-->
 				<th>上一修改</th>
 				<th>标签(<strong style="color: red;">单击可删除</strong>)</th>
 				<th>置顶</th>
 				<th>操作</th>
 			</tr>
 			</thead>
-		<@Article page="${page!}" category="${categoryName!}" title="${title!}"  website_id="${AdminWebSite.id}"  limit="${limit!15}" >
+		<@Article page="${page!}" category="${categoryName!}" title="${title!}"  website_id="${AdminWebSite.id}"  limit="${limit!13}" >
 		   		<#list article_lis as ar> 
 		    		<tr onclick="rowclick(this);">
 		    			<td><input type="checkbox" name="ar_chk" value="${ar.id}"> </td>
@@ -72,21 +72,27 @@
 						<#if ar.articlePassword!=""><span class="glyphicon glyphicon-lock" title="密码查看"></span></#if>
 						<#if !ar.articleAllowcomments><span class="glyphicon glyphicon-comment" title="禁止评论"></span></#if>
 						<a href="${admin_blogprefix}/admin/edit_article.do?id=${ar.id}" target="_blank"  title="${ar.articleTitle}" data-toggle="tooltip" data-placement="bottom"  >
-						<@SubString value="${ar.articleTitle}" limit="18"></@SubString></a>
+						<@SubString value="${ar.articleTitle}" limit="25"></@SubString></a>
 						</td>
 						<td>${ar.category.categoryName}</td>
 						<td>${ar.articleViewcount}</td>
-						<td>${ar.articleTotalComment}</td>
+						<!--<td>${ar.articleTotalComment}</td>
 						<td>${ar.articleLikes}</td>
-						<td>${ar.articlePubtime}</td>
+						<td>${ar.articlePubtime}</td>-->
 						<td>${ar.articleUpdatetime}</td>
 						<td><#list ar.lables as lable><span class="label label-default" onclick="dellable('${lable.id}');">${lable.lableName}</span><#if lable_has_next> </#if></#list></td>
 						<td><#if (ar.articleSort>0)> <a href="javascript:canclefixedTop('${ar.id}');"  data-toggle="tooltip" title="取消置顶"><span class="glyphicon glyphicon-repeat"></span></a></#if></td>						
 						<td>
+							<!--
 							<a href="http://${host}/${AdminWebSite.websiteName}/entry/${ar.id}.html" target="_blank" data-toggle="tooltip" title="预览"><span class="glyphicon glyphicon-search"></span> </a>
 							<a href="${admin_blogprefix}/admin/edit_article.do?id=${ar.id}" target="_blank" data-toggle="tooltip" title="编辑"><span class="glyphicon glyphicon-edit"></span> </a>
 							<#if (ar.articleSort==0)> <a href="javascript:fixedTop('${ar.id}');"  data-toggle="tooltip" title="置顶"><span class="glyphicon glyphicon-pushpin"></span> </a></#if> 
-							<a href="javascript:fundel('${ar.id}');" target="_blank" data-toggle="tooltip" title="删除"><span class="glyphicon glyphicon-remove"></span> </a>
+							<a href="javascript:fundel('${ar.id}');" target="_blank" data-toggle="tooltip" title="删除"><span class="glyphicon glyphicon-remove"></span> </a>-->
+							<a class="sbtn sbtn-yellow" onclick="fixedTop('${ar.id}');" target="_blank" data-toggle="tooltip" title="预览"><span class="glyphicon glyphicon-pushpin"></span> </a>
+							<a class="sbtn sbtn-green" href="http://${host}/${AdminWebSite.websiteName}/entry/${ar.id}.html" target="_blank" data-toggle="tooltip" title="预览"><span class="glyphicon glyphicon-search"></span> </a>
+							<a class="sbtn sbtn-purple" href="${admin_blogprefix}/admin/edit_article.do?id=${ar.id}" target="_blank" data-toggle="tooltip" title="编辑"><span class="glyphicon glyphicon-pencil"></span> </a>
+							<button type="button" class="sbtn sbtn-red" onclick="fundel('${ar.id}');"  data-toggle="tooltip" title="删除"><span class="glyphicon glyphicon-remove"></span></button>
+
 						</td>
 					</tr>
 		    	</#list>
@@ -152,7 +158,7 @@ function fundel(id){
 			lis.push(chks[i].value);
 		}
 	}
-	blogAlert.confirm("你确定要删除选中记录吗？","blue",function(result){
+	blogAlert.confirm("你确定要删除选中记录吗？","black",function(result){
 		if(result){
 			blogAlert.showLoading("正在处理请稍后...");
 			$.ajax({

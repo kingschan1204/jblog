@@ -56,6 +56,19 @@ a:hover{text-decoration: none;}
     z-index: 1;
 }
 
+.sbtn{
+    padding: 8px 18px;
+    border: none;
+    border-radius: 4px;
+    margin-left: 4px;
+    color: #fff!important;
+    cursor: pointer;
+}
+.sbtn-green{ background-color: #42c02e;}
+.sbtn-purple{ background-color: #6666CC;}
+.sbtn-red{ background-color: #FF3333;}
+.sbtn-yellow{background-color: #FFCC00;}
+
 
 
 
