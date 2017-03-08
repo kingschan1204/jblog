@@ -1,5 +1,6 @@
 package com.kingschan.blog.dao;
 
+import java.util.List;
 import java.util.Map;
 
 import com.kingschan.blog.po.BlogRes;
@@ -14,7 +15,6 @@ public interface BlogResDao {
 	void saveRes(BlogRes po)throws Exception;
 	/**
 	 * 得到资源列表
-	 * @param websiteid
 	 * @param type
 	 * @param pageindex
 	 * @param limit
@@ -50,7 +50,7 @@ public interface BlogResDao {
 	 * @return
 	 * @throws Exception
 	 */
-	int auth(String keys[], String websiteid)throws Exception;
+	List<String> auth(String keys[], String websiteid)throws Exception;
 	
 	/**
 	 * 资源重命名

@@ -60,13 +60,13 @@ public class BlogResDaoImpl extends HibernateBaseDao implements BlogResDao {
 
 
 	@Override
-	public int auth(String[] keys, String websiteid) throws Exception {
-		String hql ="select count(*) from BlogRes res where res.resKey in(:ids) and res.resWebsiteid=:website";
+	public List<String> auth(String[] keys, String websiteid) throws Exception {
+		String hql ="select resKey from BlogRes res where res.resKey in(:ids) and res.resWebsiteid=:website";
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("ids", keys);
 		map.put("website", websiteid);
-		Object value=uniqueQueryByHQL(hql, false, map);
-		return Integer.valueOf(value.toString());
+		List<String> lis= createHqlQuery(hql,map).list();
+		return lis;
 	}
 
 

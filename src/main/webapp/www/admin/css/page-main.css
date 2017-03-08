@@ -57,10 +57,10 @@ a:hover{text-decoration: none;}
 }
 
 .sbtn{
-    padding: 8px 18px;
+    padding: 5px;
     border: none;
     border-radius: 4px;
-    margin-left: 4px;
+    margin-left: 1px;
     color: #fff!important;
     cursor: pointer;
 }

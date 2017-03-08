@@ -44,7 +44,7 @@ public class BlogFullTextAnalyzerTest extends AbstractTransactionalJUnit4SpringC
 //        int val= articleDao.getArticleDateQuantity("3c2ec7b28db9416cafc488660c603bb4","201602");
 //        System.out.println(val);
 
-        Pagination page = articleDao.getFullTextSearch(1, 10, "3c2ec7b28db9416cafc488660c603bb4", "java对数据库事务进行处理", "articleTitle", "articleText.articleContent");
+        Pagination page = articleDao.getFullTextSearch(1, 10, "3c2ec7b28db9416cafc488660c603bb4",true, "java对数据库事务进行处理", "articleTitle", "articleText.articleContent");
         List<ArticleVo> lis = (List<ArticleVo>) page.getData();
         for (ArticleVo a : lis) {
             System.out.println(a.getArticleTitle());

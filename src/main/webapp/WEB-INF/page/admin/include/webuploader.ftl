@@ -437,7 +437,7 @@ jQuery(function() {
         dnd: '#uploader .queueList',
         paste: document.body,
 
-        accept:{title:'Images',extensions:'gif,jpg,jpeg,bmp,png',mimeTypes:'image/gif,image/jpg,image/jpeg,image/bmp,image/png'},
+        accept:{title:'Images',extensions:'gif,jpg,jpeg,bmp,png',mimeTypes:'image/*'},
 
         // swf文件路径
         swf: '${webroot}/www/ueditor/third-party/webuploader/Uploader.swf',

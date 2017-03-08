@@ -6,9 +6,14 @@
                     <center class="dashboard_title">${AdminWebSite.websiteTitle}</center>
                 </a>
 			</div>
-            <a href="${webroot}/admin/edit_article.do" target="_blank">
+            <a href="${webroot}/admin/edit_article.do" >
                 <div class="nav-folder"  >
                     <span class="glyphicon glyphicon-pencil"></span>发布文章
+                </div>
+            </a>
+            <a href="${webroot}/admin/category_list.do">
+                <div class="nav-folder" >
+                    <span class="glyphicon glyphicon-th-large"></span>文章分类
                 </div>
             </a>
             <a href="${webroot}/admin/article_list.do">

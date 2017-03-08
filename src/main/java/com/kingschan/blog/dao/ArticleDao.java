@@ -24,19 +24,20 @@ public interface ArticleDao extends BaseDao<Article>{
      * @throws Exception
      */
     Pagination getHomeArticleList(int page, int limit, Map<String, Object> args)throws Exception;
-    
-    
+
+
     /**
      * 全文检索
      * @param page
      * @param limit
      * @param website
+     * @param isback 是否后台（如果是前）
      * @param keyword
      * @param fields
      * @return
      * @throws Exception
      */
-    Pagination getFullTextSearch(int page, int limit, String website, String keyword, String... fields)throws Exception;
+    Pagination getFullTextSearch(int page, int limit, String website,Boolean isback,String keyword, String... fields)throws Exception;
     
     /**
      *  主文检索

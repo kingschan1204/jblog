@@ -4,70 +4,97 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>资源列表</title>
 <#include "/admin/include/bootstrap.ftl">
-<#include "/admin/include/webuploader.ftl">
-<!--viewer-->
-<link rel="stylesheet" href="${webroot}/www/viewer/viewer.min.css" type="text/css">
-<script type="text/javascript" src="${webroot}/www/viewer/viewer.min.js"></script>  
 <script src="${webroot}/www/blog/js/pub/blog-alert.js"></script>
 
+	<link href="//cdn.bootcss.com/dropzone/4.3.0/min/dropzone.min.css" rel="stylesheet">
 
 	<link href="//cdn.bootcss.com/fancybox/2.1.6/css/jquery.fancybox.min.css" rel="stylesheet">
 	<script src="//cdn.bootcss.com/fancybox/2.1.6/js/jquery.fancybox.min.js"></script>
 	<script src="//cdn.bootcss.com/zeroclipboard/2.3.0/ZeroClipboard.min.js"></script>
+	<style>
+		#dropzone {
+			margin-bottom: 3rem;    height: 200px;
+		}
+		.dropzone {
+			border: 2px dashed #0087F7;
+			border-radius: 5px;
+			background: white;
+		}
+		.dropzone .dz-message {
+			font-weight: 400;
+		}
+		.dropzone .dz-message .note {
+			font-size: 0.8em;
+			font-weight: 200;
+			display: block;
+			margin-top: 1.4rem;
+		}
+		.attach-img {
+			width: 100px;
+			height: 100px;
+			border-radius: 10px;
+			box-shadow: 0px 0px 8px #333;
+		}
+		.attach-text {
+			font-size: 12px;
+			font-weight: 300;
+		}
+		.attach-img:hover {
+			background-color: #f9f9f9;
+		}
+	</style>
 <style type="text/css">
-	.file-box{    width: 110px;
+	.file-box{    width: 130px;
 		/*border: solid 1px gray;*/
 		float: left;
 		margin: 10px;
 		height: 150px;}
 	.file-head{max-width: 100px;max-height: 100px;overflow: hidden;min-height: 100px;}
-	.file-name{display:block;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;width: 110px;}
+	.file-head img{height: 100px;}
+	.file-name{display:block;white-space:nowrap; overflow:hidden; text-overflow:ellipsis;width: 110px;padding: 5px;color: gray;}
 </style>
 </head>
 <body>
 <#include "/admin/include/dashboard-start.ftl">
-	<div class="row" style="height: 400px;">
-		<blockquote>您可以尝试文件拖拽，使用QQ截屏工具，然后激活窗口后粘贴，或者点击添加图片按钮<code>只能上传图片</code></blockquote>
-		<!-- 上传图片 -->
-		<div id="uploader" class="wu-example">
-			<div class="queueList">
-				<div id="dndArea" class="placeholder">
-					<div id="filePicker" class="webuploader-container"><div class="webuploader-pick">点击选择文件</div><div id="rt_rt_1apue7p1d14q3i3qan41kum1bjo1" style="position: absolute; top: 0px; left: 448px; width: 168px; height: 44px; overflow: hidden; bottom: auto; right: auto;"><input type="file" name="file" class="webuploader-element-invisible" multiple="multiple" accept="image/*"><label style="opacity: 0; width: 100%; height: 100%; display: block; cursor: pointer; background: rgb(255, 255, 255);"></label></div></div>
-					<p>或将文件拖到这里，单次最多可选300个</p>
-				</div>
-				<ul class="filelist"></ul></div>
-			<div class="statusBar" style="display:none;">
-				<div class="progress" style="display: none;">
-					<span class="text">0%</span>
-					<span class="percentage" style="width: 0%;"></span>
-				</div><div class="info">共0个（0B），已上传0个</div>
-				<div class="btns">
-					<div id="filePicker2" class="webuploader-container"><div class="webuploader-pick">继续添加</div><div id="rt_rt_1apue7p1l116ojqb15t7dn81n5j6" style="position: absolute; top: 0px; left: 0px; width: 1px; height: 1px; overflow: hidden;"><input type="file" name="file" class="webuploader-element-invisible" multiple="multiple" accept="image/*"><label style="opacity: 0; width: 100%; height: 100%; display: block; cursor: pointer; background: rgb(255, 255, 255);"></label></div></div><div class="uploadBtn state-pedding">开始上传</div>
+<div class="row" style="padding: 20px;" >
+			<div class="col-md-12 portlets">
+				<!-- Your awesome content goes here -->
+				<div class="m-b-30">
+					<form action="#" class="dropzone" id="dropzone">
+						<div class="fallback">
+							<input name="file" type="file" multiple="multiple">
+						</div>
+						<div class="dz-message">
+							<p>将文件拖至此处或点击上传.${attach_url}</p>
+							<p>
+								<span style="font-size: 16px; color: #d0d0d0;">一次最多可以上传10个文件</span>
+							</p>
+						</div>
+					</form>
 				</div>
 			</div>
 		</div>
+<div class="row" style="padding: 20px;">
+	<div class="row" style="padding-left: 25px;" >
+		<form class="form-inline" method="post" action="blogres_list.do"  id="sform">
+			<div class="form-group">
+				<input type="text" value="${resname!}" name="resname" class="form-control" id="keyword_txt" placeholder="关键字">
+			</div>
+			<div class="btn-group">
+				<button type="submit" class="btn btn-default" data-toggle="tooltip" title="根据您输入的关键字进行查询" data-placement="bottom">
+					<span class="glyphicon glyphicon-search"></span>&nbsp;查询</button>
+				<button type="button" class="btn btn-default" onclick="fundel();" data-toggle="tooltip" title="删除您选中的资源" data-placement="bottom">
+					<span class="glyphicon glyphicon-remove"></span>&nbsp;删除</button>
+			</div>
+		</form>
 	</div>
-<div class="row" style="padding-left: 10px;margin-top: 40px;">
-	<form class="form-inline" method="post" action="blogres_list.do"  id="sform">
-		  <div class="form-group">
-		    <input type="text" value="${resname!}" name="resname" class="form-control" id="keyword_txt" placeholder="关键字">
-		  </div>
-		  <div class="btn-group">
-		  <button type="submit" class="btn btn-default" data-toggle="tooltip" title="根据您输入的关键字进行查询" data-placement="bottom">
-		  <span class="glyphicon glyphicon-search"></span>&nbsp;查询</button>
-		  <button type="button" class="btn btn-default" onclick="fundel();" data-toggle="tooltip" title="删除您选中的资源" data-placement="bottom">
-		  <span class="glyphicon glyphicon-remove"></span>&nbsp;删除</button>
-		  </div>
-	</form>
-</div>
-<div class="row" style="margin-top: 5px;">
-<@BlogRes page="${page!}"  resname="${resname!}"  websiteid="${AdminWebSite.id}"  limit="22">
+<@BlogRes page="${page!}"  resname="${resname!}"  websiteid="${AdminWebSite.id}"  limit="10">
  	<#list blogres_lis as res> 
 		<div class="file-box" id="${res.resKey}">
 			<div class="file-head">
 				<#if res.resType?contains("image")>
-					<a class="fancybox" rel="group" href="http://res.51so.info/${res.resKey}?a.jpg">
-						<img class="img-rounded" src="http://res.51so.info/${res.resKey}_admin.res.manage" title="${res.resName}" >
+					<a class="fancybox" rel="group" href="http://res.51so.info/${res.resKey}?a.jpg" title="${res.resName}">
+						<img class="img-thumbnail" src="http://res.51so.info/${res.resKey}_admin.res.manage"  >
 					</a>
 					<#else>
 						不是图片
@@ -75,8 +102,9 @@
 			</div>
 			<div class="file-name">${res.resName}</div>
 			<div>
-				<span class="label label-success copy-btn">复制</span>
-				<span class="label label-danger" onclick="delfile('${res.resKey}');">删除</span>
+				<span class="sbtn sbtn-green copy-btn">复制</span>
+				<span class="sbtn sbtn-yellow" onclick="rename(this,'${res.id}');">命名</span>
+				<span class="sbtn sbtn-red" onclick="delfile('${res.resKey}');">删除</span>
 			</div>
 	   </div>
    </#list>
@@ -86,6 +114,7 @@
     <#include "/admin/include/page.ftl">
 	<#include "/admin/include/dashboard-end.ftl">
 </body>
+<script src="//cdn.bootcss.com/dropzone/4.3.0/min/dropzone.min.js"></script>
 <script type="text/javascript">
 	blogControlPanel.activePanelByText("文件管理");
 	/*$('.file-head img').each(function(){
@@ -141,8 +170,7 @@ function delfile(chks){
 		ids=new Array();
 		ids.push(chks);
 	}
-	console.info(ids);
-	blogAlert.confirm('你确定要删除选中记录吗？',"blue", function(result){
+	blogAlert.confirm('你确定要删除选中记录吗？',"black", function(result){
 		if(result){
 			$('body').showLoading();
 			$.ajax({
@@ -152,12 +180,8 @@ function delfile(chks){
 				dataType:'json',
 				success: function(data){
 					$('body').hideLoading();
-					if('msg' in data){
-						blog.nofify("成功删除资源："+data.affected+"("+data.msg+")","success");
-					}else{
-						blogAlert.notify("选中"+chks.length+"条,成功删除："+data.affected+"条","success");
-						setTimeout(function(){$("#sform").submit()},1000);
-					}
+					blogAlert.notify("成功删除："+data.affected+"条","success");
+					$('#'+ids[0]).remove();
 				}
 			});
 		}
@@ -179,7 +203,8 @@ function getCheckItems(){
 	});
 	return ids;
 }
-function rename(name,id){
+function rename(obj,id){
+	var name=$(obj).parent().parent().find('.file-name').text();
 	bootbox.prompt({
 	    title: "重命名",
 	    value: name,
@@ -195,7 +220,7 @@ function rename(name,id){
 					   $('body').hideLoading();
 					  if(data=="success"){
 						  blogAlert.notify("操作成功！","success");
-						  setTimeout(function(){$("#sform").submit()},1000);
+						  $(obj).parent().parent().find('.file-name').text(result)
 					  }else{
 						  bootbox.alert("操作失败！"+data);
 					  }
@@ -204,5 +229,35 @@ function rename(name,id){
 	    }
 	}); 
 }
+
+
+
+	$("#dropzone").dropzone({
+		url: "${webroot}/admin/article_uploadImg.do?action=uploadfile",
+		filesizeBase:1024,//定义字节算法 默认1000
+		maxFiles: 10,//最大文件数量
+		maxFilesize: '50', //MB
+		fallback:function(){
+			blogAlert.notify("暂不支持您的浏览器上传","danger");
+		},
+		acceptedFiles: ".jpg,.gif,.png,.pdf,.doc", //上传的类型
+		uploadMultiple: true,
+		dictFileTooBig:'您的文件超过50MB!',
+		dictInvalidInputType:'不支持您上传的类型',
+		dictMaxFilesExceeded:'您的文件超过10个!',
+		init: function() {
+			this.on('queuecomplete', function (files) {
+				//blogAlert.notify("上传成功","success");
+//				setTimeout(function(){$("#sform").submit()},1000);
+			});
+			this.on('error', function (a, errorMessage, result) {
+				blogAlert.notify(errorMessage,"danger");
+			});
+			this.on('maxfilesreached', function () {
+				this.removeAllFiles(true);
+				blogAlert.notify("文件数量超出限制","danger");
+			});
+		}
+	});
 </script>
 </html>

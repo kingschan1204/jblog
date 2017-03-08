@@ -136,9 +136,9 @@ public class ArticleServiceImpl extends CommonServiceImpl  implements ArticleSer
         return article_dao.getEveryDayArticleInfo(websiteid, year, month);
     }
     @Override
-    public Pagination getFullTextSearch(int page, int limit, String website, String keyword,
+    public Pagination getFullTextSearch(int page, int limit, String website,Boolean isback, String keyword,
             String... fields) throws Exception {
-        Pagination p=article_dao.getFullTextSearch(page, limit, website, keyword, fields);
+        Pagination p=article_dao.getFullTextSearch(page, limit, website,isback, keyword, fields);
         return p;
     }
     @Override

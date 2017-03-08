@@ -96,17 +96,17 @@ public class BlogResServiceImpl implements BlogResService {
 
 	@Override
 	public int delBlogRes(String[] keys, String website) throws Exception {
-		int auth=resdao.auth(keys, website);
-		if (keys.length!=auth) {
-			throw new Exception("选中资源中存在无权限操作的资源");
-		}
+		List<String> lis=resdao.auth(keys, website);
 		List<String> res=new ArrayList<String>();
-		for (String key : keys) {
+		for (String key : lis) {
 			try {
 				qiniu.delRes(key);
 				res.add(key);
 			} catch (QiniuException e) {
 				Response re=e.response;
+				if (re.error.equals("no such file or directory")){
+					res.add(key);
+				}
 				log.error(re.bodyString());
 			}
 		}

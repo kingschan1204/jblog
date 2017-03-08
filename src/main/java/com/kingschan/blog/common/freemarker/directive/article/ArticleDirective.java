@@ -84,7 +84,7 @@ public class ArticleDirective implements TemplateDirectiveModel {
                 p=article_serv.getArticleByLable(params.get("tag").toString(),website_id, page,limit);
             }else if (!fulltext.isEmpty()) {
                 //全文检索
-                p=article_serv.getFullTextSearch(page, limit, website_id, fulltext, "articleTitle","articleText.articleContent","id");
+                p=article_serv.getFullTextSearch(page, limit, website_id,model.equals("back"), fulltext, "articleTitle","articleText.articleContent","id");
             }else{
                 p=article_serv.getArticleList(page,limit, website_id, map);
             }

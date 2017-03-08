@@ -7,6 +7,7 @@
 <script src="//cdn.bootcss.com/marked/0.3.6/marked.min.js"></script>
 <link rel="stylesheet" href="http://cdn.bootcss.com/highlight.js/8.0/styles/monokai_sublime.min.css">
 <script src="http://cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>
+<script src="http://${host}/www/emojify/js/emojify.min.js"></script>
 <style type="text/css">
 .comments{  
     border:0;  
@@ -33,6 +34,7 @@
     -moz-border-radius: 50px;
     -khtml-border-radius: 50px;
 }
+.emoji { width: 1.5em; height: 1.5em; display: inline-block; /*margin-bottom: -.25em;*/ background-size: 1.5em; }
 </style>
 </head>
 <body>
@@ -81,7 +83,8 @@
 </body>
 <script type="text/javascript">
 blogControlPanel.activePanelByText("讨论管理");
-$(function () { $("[data-toggle='tooltip']").tooltip(); bootbox.setLocale("zh_CN");  });
+emojify.setConfig({emojify_tag_type:'div', img_dir: '${admin_blogprefix}/www/emojify/images/emoji'});
+$(function () { $("[data-toggle='tooltip']").tooltip(); bootbox.setLocale("zh_CN");emojify.run();  });
 function allchk(obj){
 	var chk=obj.checked;
 	if(chk){

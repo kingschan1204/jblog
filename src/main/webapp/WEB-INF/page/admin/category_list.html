@@ -6,6 +6,7 @@
 <#include "/admin/include/bootstrap.ftl">
 </head>
 <body>
+<#include "/admin/include/dashboard-start.ftl">
  <!-- 模态框（Modal） -->
 <div class="modal fade" id="categoryModal" tabindex="-1" role="dialog" aria-labelledby="categoryModalLabel" aria-hidden="true">
    <div class="modal-dialog">
@@ -53,7 +54,8 @@
 	<button type="button" class="btn btn-default" onclick="fundel();" data-toggle="tooltip" title="删除一个分类" data-placement="bottom">
 	<span class="glyphicon glyphicon-remove"></span>&nbsp;删除</button>
 </div>
-<table class="table table-striped table-hover table-condensed">
+	<p></p>
+<table class="table table-striped table-hover  table-bordered">
 			<thead>
 				<tr>
 					<th> </th>
@@ -75,10 +77,10 @@
     	</#list>
     </@Category>
 </table>
+	<#include "/admin/include/dashboard-end.ftl">
 </body>
 <script type="text/javascript">
-$("#category_li").addClass("nav-active");
-$('#collapseOne').collapse('show');
+	blogControlPanel.activePanelByText("文章分类");
 $(function () { $("[data-toggle='tooltip']").tooltip(); });
 function fundel(){
 	var chks=$("input[name='categroy_radio']:checked");

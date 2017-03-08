@@ -180,13 +180,19 @@ public class  ArticleDaoImpl extends HibernateBaseDao implements ArticleDao{
     }
 
     @Override
-    public Pagination getFullTextSearch(int page, int limit, String website,
+    public Pagination getFullTextSearch(int page, int limit, String website,Boolean isback,
             String keyword, String... fields) throws Exception {
         Pagination p = new Pagination();
         QueryBuilder qb = getFullTextSession().getSearchFactory()
         .buildQueryBuilder().forEntity(Article.class).get();
         org.apache.lucene.search.Query query = null;
-        if (null!=website) {
+        if (isback){
+            query=qb.bool().must(
+                    qb.keyword().onField("websiteid").matching(website).createQuery()
+            ).must(
+                    qb.keyword().onFields(fields).matching(keyword).createQuery()
+            ).createQuery();
+        }else if (null!=website) {
         	query= qb.bool().must(
         	            qb.keyword().onField("websiteid").matching(website).createQuery()
         	         ).must(
@@ -194,7 +200,8 @@ public class  ArticleDaoImpl extends HibernateBaseDao implements ArticleDao{
 					   ).must(
         	             qb.keyword().onFields(fields).matching(keyword).createQuery()
         	         ).createQuery();
-		}else{
+		}
+        else{
 			query=qb.bool().must(
 			             qb.keyword().onFields(fields).matching(keyword).createQuery()
 			         ).must(
@@ -299,7 +306,7 @@ public class  ArticleDaoImpl extends HibernateBaseDao implements ArticleDao{
 	@Override
 	public Pagination getHomeFullTextSearch(int page,
 			int limit, String keyword, String... fields) throws Exception {
-		return getFullTextSearch(page, limit, null, keyword, fields);
+		return getFullTextSearch(page, limit, null,false,keyword, fields);
 	}
 
 	@Override
