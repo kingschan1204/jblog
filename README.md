@@ -8,34 +8,7 @@ A multi-user blog system implemented with Spring /MVC+ Hibernate + MySQL + Boots
 
 ### 部署方法及二次开发的步骤正在整理中，不日我将整理好公布 ~ 
 
-## 所用技术(感谢己下项目)
-- [Spring](https://spring.io/projects ) : Spring ,Spring MVC 
-- [Hibernate](https://github.com/hibernate/hibernate-orm ):ORM 框架
-- [Hibernate Search](https://github.com/hibernate/hibernate-search ):全文检索
-- [HanLP](https://github.com/hankcs/HanLP ):中文分词处理
-- [Quartz](https://github.com/quartz-scheduler/quartz) :任务调度
-- [Junit4](https://github.com/junit-team/junit4 ):单元测试
-- [pegdown](https://github.com/sirthias/pegdown ):java markdown 处理
-- [jsoup](https://github.com/jhy/jsoup ):HTML分析器
-- [druid](https://github.com/alibaba/druid ):一个好用的数据源
-- [java-uuid-generator](https://github.com/cowtowncoder/java-uuid-generator ):java uuid 时间戳式的生成
-- [user-agent-utils](https://github.com/HaraldWalker/user-agent-utils ):use-agent 分析处理
-- [bootstrap](https://github.com/twbs/bootstrap ):bootstrap 前端流行的UI
-- [ueditor](https://github.com/fex-team/ueditor ):html 编辑器
-- [bootstrap-popover-x](https://github.com/kartik-v/bootstrap-popover-x ):提示框
-- [bootstrap-notify](https://github.com/mouse0270/bootstrap-notify ):bootstrap 消息通知插件
-- [bootstrap-markdown](https://github.com/toopay/bootstrap-markdown ):bootstrap markdown 编辑器
-- [bootstrap-tokenfield](https://github.com/sliptree/bootstrap-tokenfield ):bootstrap 标签插件
-- [scrollfix](https://github.com/kujian/scrollfix):jquery插件：滚动到某个位置固定起来
-- [PhotoSwipe](https://github.com/dimsemenov/PhotoSwipe ):图片浏览插件
-- [viewerjs](https://github.com/fengyuanchen/viewerjs ):又一个图片浏览插件
-- [cropbox](https://github.com/hongkhanh/cropbox ):base64图像裁剪插件
-- [echarts](https://github.com/ecomfe/echarts ):百度echarts
-- [highlight](https://github.com/isagalaev/highlight.js ):语法高亮
-- [emojify](https://github.com/Ranks/emojify.js):emojify 表情包
-- [nprogress](https://github.com/rstacruz/nprogress ):jquery 进度条 
-- [animate.css](https://github.com/daneden/animate.css ):css 动画
-- [webuploader](https://github.com/fex-team/webuploader ):百度文件上传插件
+
 
 ## 背景
 本人程序员一枚，从事web开发时常要学习各种新技术，总结遇到的各种问题，已便下次遇到些类问题时能快速搞定，并将此分享帮助有需要的人。<br>最好的记性也抵不过岁月的冲击。常言道，时光能冲淡一切！把重要的东西写下来保存是个很不错的选择。
@@ -77,21 +50,29 @@ A multi-user blog system implemented with Spring /MVC+ Hibernate + MySQL + Boots
 ![登录](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/login.png )
 
 文章列表
-![文章列表](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/admin_article_list.png )
+![文章列表](https://raw.githubusercontent.com/kingschan1204/jblog/f69a0b4e0e973f42e053fa8b4a09f7d901ab0fc9/git-res/admin_article_list.png )
 
 文件上传
-![文件上传](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/admin_file_upload.png )
+![文件上传](https://raw.githubusercontent.com/kingschan1204/jblog/f69a0b4e0e973f42e053fa8b4a09f7d901ab0fc9/git-res/admin_res_list.png )
 
 后台首页
-![后台首页](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/admin_home.png )
-报表
-![](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/admin_report.png )
+![后台首页](https://raw.githubusercontent.com/kingschan1204/jblog/f69a0b4e0e973f42e053fa8b4a09f7d901ab0fc9/git-res/admin_home.png )
 
-资源管理
-![](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/admin_res_list.png)
 博客信息设置
-![](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/admin_site_info.png )
-文章详情
+![](https://raw.githubusercontent.com/kingschan1204/jblog/f69a0b4e0e973f42e053fa8b4a09f7d901ab0fc9/git-res/admin_site_info.png )
+
+### 手机访问效果
+
+![](https://raw.githubusercontent.com/kingschan1204/jblog/f69a0b4e0e973f42e053fa8b4a09f7d901ab0fc9/git-res/mobile-article-info.PNG )
+
+![](https://raw.githubusercontent.com/kingschan1204/jblog/f69a0b4e0e973f42e053fa8b4a09f7d901ab0fc9/git-res/mobile-home.PNG )
+
+![](https://raw.githubusercontent.com/kingschan1204/jblog/f69a0b4e0e973f42e053fa8b4a09f7d901ab0fc9/git-res/mobile-list.PNG )
+
+![](https://raw.githubusercontent.com/kingschan1204/jblog/f69a0b4e0e973f42e053fa8b4a09f7d901ab0fc9/git-res/mobile.PNG )
+
+### 文章详情
+
 ![](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/font-article-info.png )
 
 ### 评论
@@ -105,16 +86,6 @@ A multi-user blog system implemented with Spring /MVC+ Hibernate + MySQL + Boots
 ![](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/font-index.png)
 标签墙
 ![](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/font-lable.png)
-
-### 手机访问效果
-
-![](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/mobile-article-info.PNG )
-
-![](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/mobile-home.PNG)
-
-![](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/mobile-list.PNG )
-
-![](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/mobile.PNG)
 
 ## 记事 [更新图文介绍](http://about.51so.info/)
 - 2015-11-11 诞生
@@ -181,3 +152,32 @@ A multi-user blog system implemented with Spring /MVC+ Hibernate + MySQL + Boots
 - 评论点赞明细
 - 打赏
 - ...
+
+## 所用技术(感谢己下项目)
+- [Spring](https://spring.io/projects ) : Spring ,Spring MVC 
+- [Hibernate](https://github.com/hibernate/hibernate-orm ):ORM 框架
+- [Hibernate Search](https://github.com/hibernate/hibernate-search ):全文检索
+- [HanLP](https://github.com/hankcs/HanLP ):中文分词处理
+- [Quartz](https://github.com/quartz-scheduler/quartz) :任务调度
+- [Junit4](https://github.com/junit-team/junit4 ):单元测试
+- [pegdown](https://github.com/sirthias/pegdown ):java markdown 处理
+- [jsoup](https://github.com/jhy/jsoup ):HTML分析器
+- [druid](https://github.com/alibaba/druid ):一个好用的数据源
+- [java-uuid-generator](https://github.com/cowtowncoder/java-uuid-generator ):java uuid 时间戳式的生成
+- [user-agent-utils](https://github.com/HaraldWalker/user-agent-utils ):use-agent 分析处理
+- [bootstrap](https://github.com/twbs/bootstrap ):bootstrap 前端流行的UI
+- [ueditor](https://github.com/fex-team/ueditor ):html 编辑器
+- [bootstrap-popover-x](https://github.com/kartik-v/bootstrap-popover-x ):提示框
+- [bootstrap-notify](https://github.com/mouse0270/bootstrap-notify ):bootstrap 消息通知插件
+- [bootstrap-markdown](https://github.com/toopay/bootstrap-markdown ):bootstrap markdown 编辑器
+- [bootstrap-tokenfield](https://github.com/sliptree/bootstrap-tokenfield ):bootstrap 标签插件
+- [scrollfix](https://github.com/kujian/scrollfix):jquery插件：滚动到某个位置固定起来
+- [PhotoSwipe](https://github.com/dimsemenov/PhotoSwipe ):图片浏览插件
+- [viewerjs](https://github.com/fengyuanchen/viewerjs ):又一个图片浏览插件
+- [cropbox](https://github.com/hongkhanh/cropbox ):base64图像裁剪插件
+- [echarts](https://github.com/ecomfe/echarts ):百度echarts
+- [highlight](https://github.com/isagalaev/highlight.js ):语法高亮
+- [emojify](https://github.com/Ranks/emojify.js):emojify 表情包
+- [nprogress](https://github.com/rstacruz/nprogress ):jquery 进度条 
+- [animate.css](https://github.com/daneden/animate.css ):css 动画
+- [webuploader](https://github.com/fex-team/webuploader ):百度文件上传插件
