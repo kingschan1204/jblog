@@ -5,12 +5,10 @@
 <title>资源列表</title>
 <#include "/admin/include/bootstrap.ftl">
 <script src="${webroot}/www/blog/js/pub/blog-alert.js"></script>
-
-	<link href="//cdn.bootcss.com/dropzone/4.3.0/min/dropzone.min.css" rel="stylesheet">
-
-	<link href="//cdn.bootcss.com/fancybox/2.1.6/css/jquery.fancybox.min.css" rel="stylesheet">
-	<script src="//cdn.bootcss.com/fancybox/2.1.6/js/jquery.fancybox.min.js"></script>
-	<script src="//cdn.bootcss.com/zeroclipboard/2.3.0/ZeroClipboard.min.js"></script>
+<link href="//cdn.bootcss.com/dropzone/4.3.0/min/dropzone.min.css" rel="stylesheet">
+<link href="//cdn.bootcss.com/fancybox/2.1.6/css/jquery.fancybox.min.css" rel="stylesheet">
+<script src="//cdn.bootcss.com/fancybox/2.1.6/js/jquery.fancybox.min.js"></script>
+<script src="//cdn.bootcss.com/zeroclipboard/2.3.0/ZeroClipboard.min.js"></script>
 	<style>
 		#dropzone {
 			margin-bottom: 3rem;    height: 200px;
@@ -65,7 +63,7 @@
 							<input name="file" type="file" multiple="multiple">
 						</div>
 						<div class="dz-message">
-							<p>将文件拖至此处或点击上传.${attach_url}</p>
+							<p>将文件拖至此处或点击上传.</p>
 							<p>
 								<span style="font-size: 16px; color: #d0d0d0;">一次最多可以上传10个文件</span>
 							</p>
@@ -117,17 +115,9 @@
 <script src="//cdn.bootcss.com/dropzone/4.3.0/min/dropzone.min.js"></script>
 <script type="text/javascript">
 	blogControlPanel.activePanelByText("文件管理");
-	/*$('.file-head img').each(function(){
-		if(!$(this).hasClass("emoji")){
-			$(this).attr({"title":"点我放大图片"});
-			$(this).click(function(){$(this).zoomify('zoom');});
-		}
-	});*/
 	var client = new ZeroClipboard( $('.copy-btn') );
-
 	client.on( 'ready', function(event) {
 		// console.log( 'movie is loaded' );
-
 		client.on( 'copy', function(event) {
 			var imghref=$(event.target).parent().parent().find("a[class='fancybox']").attr("href");
 			event.clipboardData.setData('text/plain', imghref);
@@ -137,26 +127,19 @@
 			console.log('Copied text to clipboard: ' + event.data['text/plain']);
 			blogAlert.notify("复制成功","success");
 		} );
-	} );
+		client.on( 'error', function(event) {
+			ZeroClipboard.destroy();
+		} );
+	});
 
-	client.on( 'error', function(event) {
-		// console.log( 'ZeroClipboard error of type "' + event.name + '": ' + event.message );
-		ZeroClipboard.destroy();
-	} );
+
 $(function () {
 	$("[data-toggle='tooltip']").tooltip();
 	bootbox.setLocale("zh_CN"); 
 		//$('.file-head img').viewer();
 		$(".fancybox").fancybox({titlePosition:'outside',transitionIn:'elastic',transitionOut:'elastic'});
 	});
-function allchk(obj){
-	var chk=obj.checked;
-	if(chk){
-		$("input[name='res_chk']").prop("checked",true);
-	}else{
-		$("input[name='res_chk']").prop("checked",false); 
-	}
-}
+
 function fundel(){
 	var chks=getCheckItems();
 	if(chks.length==0){blogAlert.alert("请选择要删除的资源","red");return;}
@@ -189,20 +172,7 @@ function delfile(chks){
 
 }
 
-function filecheck(obj){
-	if($(obj).hasClass('thumbnail_checked')){
-		$(obj).removeClass("thumbnail_checked");
-	}else{
-		$(obj).addClass("thumbnail_checked");
-	}
-}
-function getCheckItems(){
-	var ids=new Array;
-	$(".thumbnail_checked").each(function(index,dom){
-		ids.push($(dom).attr("pk"));
-	});
-	return ids;
-}
+
 function rename(obj,id){
 	var name=$(obj).parent().parent().find('.file-name').text();
 	bootbox.prompt({
@@ -230,32 +200,35 @@ function rename(obj,id){
 	}); 
 }
 
-
-
+	Dropzone.autoDiscover = false;
 	$("#dropzone").dropzone({
-		url: "${webroot}/admin/article_uploadImg.do?action=uploadfile",
-		filesizeBase:1024,//定义字节算法 默认1000
-		maxFiles: 10,//最大文件数量
-		maxFilesize: '50', //MB
-		fallback:function(){
-			blogAlert.notify("暂不支持您的浏览器上传","danger");
-		},
-		acceptedFiles: ".jpg,.gif,.png,.pdf,.doc", //上传的类型
-		uploadMultiple: true,
-		dictFileTooBig:'您的文件超过50MB!',
-		dictInvalidInputType:'不支持您上传的类型',
-		dictMaxFilesExceeded:'您的文件超过10个!',
-		init: function() {
-			this.on('queuecomplete', function (files) {
-				//blogAlert.notify("上传成功","success");
-//				setTimeout(function(){$("#sform").submit()},1000);
+		url: "${webroot}/admin/article_uploadImg.do?action=uploadfile", //必须填写
+		method:"post",  //也可用put
+		paramName:"file", //默认为file
+		maxFiles:10,//一次性上传的文件数量上限
+		maxFilesize: 20, //MB
+		acceptedFiles: ".jpg,.gif,.png", //上传的类型
+		//previewsContainer:"#adds", //显示的容器
+		parallelUploads: 3,
+		dictMaxFilesExceeded: "您最多只能上传10个文件！",
+		dictResponseError: '文件上传失败!',
+		dictInvalidFileType: "你不能上传该类型文件,文件类型只能是*.jpg,*.gif,*.png。",
+		dictFallbackMessage:"浏览器不受支持",
+		dictFileTooBig:"文件过大上传文件最大支持.",
+		//previewTemplate: document.querySelector('#preview-template').innerHTML,//设置显示模板
+		init:function(){
+			$(this.element).addClass("dropzone");
+			this.on("addedfile", function(file) {
+				//上传文件时触发的事件
+				console.info("addedfile"+file);
 			});
-			this.on('error', function (a, errorMessage, result) {
-				blogAlert.notify(errorMessage,"danger");
+			this.on("queuecomplete",function(file) {
+				//上传完成后触发的方法
+				console.info("queuecomplete"+file);
 			});
-			this.on('maxfilesreached', function () {
-				this.removeAllFiles(true);
-				blogAlert.notify("文件数量超出限制","danger");
+			this.on("removedfile",function(file){
+				//删除文件时触发的方法
+				console.info("removedfile"+file);
 			});
 		}
 	});
