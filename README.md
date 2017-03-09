@@ -50,10 +50,12 @@ A multi-user blog system implemented with Spring /MVC+ Hibernate + MySQL + Boots
 ![登录](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/login.png )
 
 文章列表
-![文章列表](https://raw.githubusercontent.com/kingschan1204/jblog/f69a0b4e0e973f42e053fa8b4a09f7d901ab0fc9/git-res/admin_article_list.png )
+![文章列表](https://raw.githubusercontent.com/kingschan1204/jblog/1aa8b0b1739aecf526f69c278f99e648606b957b/git-res/admin_article_list.png )
+文章发布
+![文章发布](https://raw.githubusercontent.com/kingschan1204/jblog/fecdf33aa234a1f2a13a823ce6bd4c61ed3e02ce/git-res/admin_article_edit.png )
 
-文件上传
-![文件上传](https://raw.githubusercontent.com/kingschan1204/jblog/f69a0b4e0e973f42e053fa8b4a09f7d901ab0fc9/git-res/admin_res_list.png )
+文件管理
+![文件管理](https://raw.githubusercontent.com/kingschan1204/jblog/1aa8b0b1739aecf526f69c278f99e648606b957b/git-res/admin_res_list.png )
 
 后台首页
 ![后台首页](https://raw.githubusercontent.com/kingschan1204/jblog/f69a0b4e0e973f42e053fa8b4a09f7d901ab0fc9/git-res/admin_home.png )
