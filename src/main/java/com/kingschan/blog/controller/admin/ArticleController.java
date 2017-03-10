@@ -106,7 +106,7 @@ public class ArticleController {
      * @return
      */
     @RequestMapping("/save_article.do")
-    public String save(@ModelAttribute("avo") ArticleVo avo,@NotEmpty String type,HttpServletRequest req){
+    public String save(@ModelAttribute("avo") ArticleVo avo,String type,HttpServletRequest req){
         String id=null;
         BlogUtil userutil=new BlogUtil(req);
         try {

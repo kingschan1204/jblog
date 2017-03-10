@@ -12,7 +12,8 @@
 	<link rel="stylesheet" type="text/css" href="${webroot}/www/fancybox/jquery.fancybox.css" media="screen" />
 	<link href="${webroot}/www/bootstrap/bootstrap-tokenfield/bootstrap-tokenfield.min.css" rel="stylesheet">
     <script type="text/javascript" src="${webroot}/www/bootstrap/bootstrap-tokenfield/bootstrap-tokenfield.min.js"></script>
-
+	<link href="//cdn.bootcss.com/bootstrap-switch/3.3.4/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet">
+	<script src="//cdn.bootcss.com/bootstrap-switch/3.3.4/js/bootstrap-switch.min.js"></script>
 	<link rel="stylesheet" href="http://cdn.bootcss.com/highlight.js/8.0/styles/monokai_sublime.min.css">
 	<script src="http://cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>
 	<script src="//cdn.bootcss.com/marked/0.3.6/marked.min.js"></script>
@@ -24,6 +25,8 @@
 	<script type="text/javascript" charset="utf-8" src="${webroot}/www/admin/js/edit_article.js"></script>
     <style type="text/css">
     .emoji { width: 1.5em; height: 1.5em; display: inline-block; margin-bottom: -.25em; background-size: 1.5em; }
+	body{height:100%; overflow:hidden; margin:0px; padding:0px;}
+	.box {height:90%; position:absolute; width:86%;}
     </style>
   </head>
   <body >
@@ -40,7 +43,7 @@
 			  <a href="${admin_blogprefix}/${AdminWebSite.websiteName}/entry/${article.id}.html" target="_blank" class="btn btn-primary" >预览</a>
 		  </#if>
 		  <button type="button" class="btn btn-default" onclick="Article.AdvancedMode(this);">高级</button>
-		  <button type="submit" class="btn btn-success" >保存</button>
+		  <button type="button" class="btn btn-success" onclick="submitFun();">保存</button>
 	  </div>
 	  <div class="form-group">
 	    <div class="col-sm-12">
@@ -70,49 +73,27 @@
 			 <input type="text" class="form-control" name="articleLableStr" id="lables" placeholder="标签 (最多4个,已逗号分隔)"   />
 	    </div>
     </div>
-  	<div class="form-group">
-	    <div class="col-sm-12">
-	     	<textarea id="target-editor-twitter" name="articleContent" style="height: 600px;width: 100%;" ><#if article.articleEditor=="markdown">${article.articleContent?html}<#else>${article.articleContent!}</#if></textarea>
-	    </div>
-	</div>
-	<div class="form-group" id="div_password"  style="display: none;">
-	    <div class="col-sm-4">
-	    	<input type="text" class="form-control" name="articlePassword" maxlength="10" placeholder="查看密码,私密博文下无效" value="${article.articlePassword!}">
-	    </div>
-	</div>
-	<div class="form-group"  id="div_private"  style="display: none;">
-	    <div class="col-sm-5">
-		    <div class="radio">
-			  <label><input type="radio" name="articlePrivate" value="true" checked="checked">私有文章</label>
-			  &nbsp;&nbsp;&nbsp;
-			  <label><input type="radio" name="articlePrivate" value="false" <#if article??&&!article.articlePrivate>checked="checked"</#if> >普通文章</label>
-			  <strong style="color:red;">私有文章仅自己可见</strong>
-			</div>
-	    </div>
-	</div>
-	<div class="form-group" id="div_discuss"  style="display: none;">
-	    <div class="col-sm-4">
-		    <div class="radio">
-			  <label><input type="radio" name="articleAllowcomments" value="true" checked="checked">允许评论</label>
-			  &nbsp;&nbsp;&nbsp;
-			  <label><input type="radio" name="articleAllowcomments" value="false" <#if !article.articleAllowcomments>checked="checked"</#if> >禁止评论</label>
-			</div>
-	    </div>
-	</div>
-	<div class="form-group" id="div_post_type"  style="display: none;">
-	    <div class="col-sm-4">
-		    <div class="radio">
-			  <label><input type="radio" name="type" value="update" checked="checked">更新(只更新内容)</label>
-			  &nbsp;&nbsp;&nbsp;
-			  <label><input type="radio" name="type" value="release">发布(排在最前)</label>
-			</div>
-	    </div>
+	<div class="box">
+		<input type="hidden" name="articleContent" id="ar_content"/>
+		<textarea id="target-editor-twitter" name="articleContent" style="width: 100%;" ><#if article.articleEditor=="markdown">${article.articleContent?html}<#else>${article.articleContent!}</#if></textarea>
+		<p></p>
+		<div style="float: left;">
+			<strong>允许评论：</strong> <input type="checkbox" name="articleAllowcomments" value="true" <#if article.articleAllowcomments>checked</#if> />
+			<strong>私密文章：</strong><input type="checkbox" name="articlePrivate" value="true" <#if article??&&article.articlePrivate>checked</#if> />
+			<strong>是否发布：</strong><input type="checkbox" name="type" value="release"/>
+		</div>
+		<div style="float: left;padding-left: 20px;">
+			<input type="text" class="form-control" name="articlePassword" style="width: 200px;" maxlength="10" placeholder="查看密码,私密博文下无效" value="${article.articlePassword!}">
+		</div>
 	</div>
 	  </form>
 	  <#include "/admin/include/dashboard-end.ftl">
   </body>
   <script type="text/javascript">
 	  blogControlPanel.activePanelByText("发布文章");
+	  var height=parseInt($(".box").height())-200;
+	  $("#target-editor-twitter").css("height",height);
+	  $(":checkbox").bootstrapSwitch({size:'small',onColor:'success',offColor:'danger',onText:'开启',offText:'关闭'});
   (function(){
 	    // 关闭窗口时弹出确认提示
 	    $(window).bind('beforeunload', function(){
@@ -139,36 +120,7 @@
 
 
  
- $('#ar_editform').bootstrapValidator({
-//   live: 'disabled',
-   message: 'This value is not valid',
-   feedbackIcons: {
-       valid: 'glyphicon glyphicon-ok',
-       invalid: 'glyphicon glyphicon-remove',
-       validating: 'glyphicon glyphicon-refresh'
-   },
-   fields: {
-	   articleTitle: {
-           validators: {
-               notEmpty: {
-                   message: '文章标题不能为空!'
-               },
-               stringLength: {
-                   min: 3,
-                   max: 30,
-                   message: '标题长度最小为3最长为30'
-               }
-           }
-       }
-       ,articlePubtime: {
-           validators: {
-               date: {
-                   format: 'YYYY-MM-DD hh:ii:ss',
-                   message: '发布时间不合法'
-               }
-           }
-       }
-   }});
+
  window.onload=function(){
 	 $('#lables').tokenfield({limit:4})
 	  .on('tokenfield:removedtoken', function (e) {
@@ -341,6 +293,16 @@
 			$("#target-editor-twitter").focus();
 		}
 		$("#target-editor-twitter").focus();
+	  function submitFun(){
+		  var title=$("input[name='articleTitle']").val().trim();
+		  if(title==""||title.length<5){
+			  blogAlert.error("","文章标题不能为空，并且不得少于5个字符！");
+		  }else if($("#target-editor-twitter").val().length<50){
+			  blogAlert.error("","文章内容不能为空，并且不得少于50个字符！");
+		  }else{
+			  $("#ar_editform").submit();
+		  }
+	  }
 </script> 
 <script >hljs.initHighlightingOnLoad();</script>  
 </html>

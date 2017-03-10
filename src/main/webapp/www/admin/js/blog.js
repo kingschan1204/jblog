@@ -127,7 +127,7 @@ var blog={
 			blog.nofify("您还未登录,请先登录!","danger");
 			return;
 		}
-			blogAlert.confirm('你确定要删除选中记录吗？',"gray", function(result){
+			blogAlert.confirm('你确定要删除选中记录吗？', function(result){
 				if(result){
 					blogAlert.showLoading("正在处理...");
 					$.ajax({

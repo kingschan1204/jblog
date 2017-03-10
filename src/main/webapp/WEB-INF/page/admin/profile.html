@@ -214,7 +214,7 @@ $('#userinfoForm').bootstrapValidator({
         		return;
         	}
             var img = cropper.getDataURL();
-			blogAlert.confirm("是否上传图像？","blue", function(result){
+			blogAlert.confirm("是否上传图像？", function(result){
 				if(result){
 					blogAlert.showLoading("正在处理请稍后...");
 		            $.ajax({

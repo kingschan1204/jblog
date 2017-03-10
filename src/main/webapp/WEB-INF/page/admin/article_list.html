@@ -5,7 +5,6 @@
 <title>日志列表</title>
 <#include "/admin/include/bootstrap.ftl">
 <#include "/admin/include/fancybox.ftl">
-<script src="${webroot}/www/blog/js/pub/blog-alert.js"></script>
 </head>
 <body>
 <#include "/admin/include/dashboard-start.ftl">
@@ -146,7 +145,7 @@ function fundel(id){
 			lis.push(chks[i].value);
 		}
 	}
-	blogAlert.confirm("你确定要删除选中记录吗？","black",function(result){
+	blogAlert.confirm("你确定要删除选中记录吗？",function(result){
 		if(result){
 			blogAlert.showLoading("正在处理请稍后...");
 			$.ajax({
@@ -169,7 +168,7 @@ function fundel(id){
 function updateCategory(){
 	var chks=$("input[name='ar_chk']:checked");
 	if(chks.length==0){blogAlert.alert("请选择要更改类型的文章","red");return;}
-	blogAlert.confirm("是否继续？","blue", function(result){
+	blogAlert.confirm("是否继续？", function(result){
 		if(result){
 			blogAlert.showLoading("正在处理,请稍后.");
 			var lis=new Array();
@@ -242,7 +241,6 @@ function setcover(){
 function dellable(labid){
 	blogAlert.confirm(
 	     "是否删除此标签?",
-	    "red",
 	    function (result) {
 	        if(result){
 	        	 $.ajax({

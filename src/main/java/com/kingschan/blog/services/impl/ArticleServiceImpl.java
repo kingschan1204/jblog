@@ -166,15 +166,15 @@ public class ArticleServiceImpl extends CommonServiceImpl  implements ArticleSer
             a=article_dao.getArticleByID(vo.getId());
 			at=a.getArticleText();
             //如果是发布就设置更新时间
-            if (type.equalsIgnoreCase("release")) {
+            if (null!=type&&type.equalsIgnoreCase("release")) {
             	 a.setArticleUpdatetime(TimeStampUtil.getCurrentDate());
 			}
         }
         a.setArticleCover(vo.getArticleCover());
-        a.setArticleAllowcomments(vo.getArticleAllowcomments());
+        a.setArticleAllowcomments(null==vo.getArticleAllowcomments()?false:vo.getArticleAllowcomments());
         a.setArticleTitle(Jsoup.parse(vo.getArticleTitle()).text());
         a.setCategory(category_dao.getObj(vo.getCategory().getId()));
-        a.setArticlePrivate(vo.getArticlePrivate());
+        a.setArticlePrivate(null==vo.getArticlePrivate()?false:vo.getArticlePrivate());
         a.setArticleLinkurl(null==vo.getArticleLinkurl()?"":vo.getArticleLinkurl());
         a.setArticlePassword(vo.getArticlePassword());
         a.setArticleEditor(vo.getArticleEditor());

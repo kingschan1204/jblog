@@ -84,28 +84,26 @@
 $(function () { $("[data-toggle='tooltip']").tooltip(); });
 function fundel(){
 	var chks=$("input[name='categroy_radio']:checked");
-	if(chks.length==0){alert("请选择要删除的类型");return;}
-	bootbox.confirm('你确定要删除选中记录吗？', function(result){
-		if(result){
+	if(chks.length==0){blogAlert.alert("请选择要删除的类型");return;}
+	blogAlert.confirm('你确定要删除选中记录吗？', function(){
 			var lis=new Array();
 			for(var i=0;i<chks.length;i++){
 				lis.push(chks[i].value);
 			}
 			$.ajax({
-				   type: "post",
-				   url: "${admin_blogprefix}/admin/category_del.do",
-				   data: {ids:lis},
-				   dataType:'json',
-				   success: function(data){
-					   if(data.success){
-						   location.reload();
-					   }else{
-					   		bootbox.alert(data.msg);
-					   }
-				     
-				   }
-				});
-		}
+				type: "post",
+				url: "${admin_blogprefix}/admin/category_del.do",
+				data: {ids:lis},
+				dataType:'json',
+				success: function(data){
+					if(data.success){
+						location.reload();
+					}else{
+						bootbox.alert(data.msg);
+					}
+
+				}
+			});
 	});
 }
 function rowclick(row){
@@ -175,7 +173,7 @@ function addcategory(){
 }
 function editcategory(){
 	if($("input[name='categroy_radio']:checked").length==0){
-		bootbox.alert("请选择要编辑的类型!");
+		blogAlert.alert("请选择要编辑的类型!");
 	}else{
 	 	$('#categoryModal').modal('show');
 	}

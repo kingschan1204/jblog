@@ -4,7 +4,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>资源列表</title>
 <#include "/admin/include/bootstrap.ftl">
-<script src="${webroot}/www/blog/js/pub/blog-alert.js"></script>
 <link href="//cdn.bootcss.com/dropzone/4.3.0/min/dropzone.min.css" rel="stylesheet">
 <link href="//cdn.bootcss.com/fancybox/2.1.6/css/jquery.fancybox.min.css" rel="stylesheet">
 <script src="//cdn.bootcss.com/fancybox/2.1.6/js/jquery.fancybox.min.js"></script>
@@ -87,7 +86,7 @@
 		</form>
 	</div>
 <@BlogRes page="${page!}"  resname="${resname!}"  websiteid="${AdminWebSite.id}"  limit="10">
- 	<#list blogres_lis as res> 
+ 	<#list blogres_lis as res>
 		<div class="file-box" id="${res.resKey}">
 			<div class="file-head">
 				<#if res.resType?contains("image")>
@@ -135,7 +134,7 @@
 
 $(function () {
 	$("[data-toggle='tooltip']").tooltip();
-	bootbox.setLocale("zh_CN"); 
+	bootbox.setLocale("zh_CN");
 		//$('.file-head img').viewer();
 		$(".fancybox").fancybox({titlePosition:'outside',transitionIn:'elastic',transitionOut:'elastic'});
 	});
@@ -153,16 +152,14 @@ function delfile(chks){
 		ids=new Array();
 		ids.push(chks);
 	}
-	blogAlert.confirm('你确定要删除选中记录吗？',"black", function(result){
+	blogAlert.confirm('你确定要删除选中记录吗？', function(result){
 		if(result){
-			$('body').showLoading();
 			$.ajax({
 				type: "post",
 				url: "${admin_blogprefix}/admin/del_blogres.do",
 				data: {keys:ids},
 				dataType:'json',
 				success: function(data){
-					$('body').hideLoading();
 					blogAlert.notify("成功删除："+data.affected+"条","success");
 					$('#'+ids[0]).remove();
 				}
@@ -175,29 +172,24 @@ function delfile(chks){
 
 function rename(obj,id){
 	var name=$(obj).parent().parent().find('.file-name').text();
-	bootbox.prompt({
-	    title: "重命名",
-	    value: name,
-	    callback: function(result) {
-	    	if(null==result)return;
-	    	$('body').showLoading();
-	    	$.ajax({
-				   type: "post",
-				   url: "${admin_blogprefix}/admin/res_rename.do",
-				   data: {id:id,name:result},
-				   //dataType:'json',
-				   success: function(data){
-					   $('body').hideLoading();
-					  if(data=="success"){
-						  blogAlert.notify("操作成功！","success");
-						  $(obj).parent().parent().find('.file-name').text(result)
-					  }else{
-						  bootbox.alert("操作失败！"+data);
-					  }
-				   }
-				});
-	    }
-	}); 
+	blogAlert.prompt("重命名","text",name,function(result){
+		if(null==result)return;
+		$.ajax({
+			type: "post",
+			url: "${admin_blogprefix}/admin/res_rename.do",
+			data: {id:id,name:result},
+			//dataType:'json',
+			success: function(data){
+				$('body').hideLoading();
+				if(data=="success"){
+					blogAlert.notify("操作成功！","success");
+					$(obj).parent().parent().find('.file-name').text(result)
+				}else{
+					blogAlert.error("操作失败..",data);
+				}
+			}
+		});
+	});
 }
 
 	Dropzone.autoDiscover = false;
