@@ -126,10 +126,8 @@ function reply(aid,userid){
 //成功删除
 function fundel(){
 	var chks=$("input[name='ar_chk']:checked");
-	if(chks.length==0){bootbox.alert("请选择要删除的评论！");return;}
-	bootbox.confirm('你确定要删除选中记录吗？', function(result){
-		if(result){
-			$('body').showLoading();
+	if(chks.length==0){blogAlert.alert("请选择要删除的评论！");return;}
+	blogAlert.confirm('你确定要删除选中记录吗？', function(result){
 			var lis=new Array();
 			for(var i=0;i<chks.length;i++){
 				lis.push(chks[i].value);
@@ -139,7 +137,6 @@ function fundel(){
 				   url: "${admin_blogprefix}/admin/delArticleComments.do",
 				   data: {ids:lis},
 				   success: function(msg){
-					   $('body').hideLoading();
 					   bootbox.alert(msg);
 					   if(msg.indexOf("成功")!=-1){
 						   $("#sform").submit();
@@ -147,8 +144,7 @@ function fundel(){
 				     
 				   }
 				});
-		}
-	});	
+	});
 }
 var renderer_zai30 = new marked.Renderer();
 marked.setOptions({

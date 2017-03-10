@@ -33,7 +33,7 @@
 				  	 <button type="submit" class="btn btn-default" data-toggle="tooltip" title="根据您输入的关键字进行查询" data-placement="bottom">
 				  	 <span class="glyphicon glyphicon-search"></span>&nbsp;查询</button>
 					  <button type="button" class="btn btn-default" data-toggle="modal" data-target="#update_type_modal" ><span class="glyphicon glyphicon-folder-open"></span>&nbsp;分类</button>
-					  <button type="button" class="btn btn-default" onclick="setcover();" data-toggle="tooltip" title="设置文章封面图" data-placement="bottom"><span class="glyphicon glyphicon-picture"></span>&nbsp;封面</button>
+					  <!--<button type="button" class="btn btn-default" onclick="setcover();" data-toggle="tooltip" title="设置文章封面图" data-placement="bottom"><span class="glyphicon glyphicon-picture"></span>&nbsp;封面</button>-->
 					  <!--update_articletype.do-->
 					  <button type="button" class="btn btn-default" onclick="fundel('');" data-toggle="tooltip" title="删除您选中的文章" data-placement="bottom">
 					  <span class="glyphicon glyphicon-remove"></span>&nbsp;删除</button>
@@ -233,11 +233,12 @@ function canclefixedTop(id){
 		   }
 		});
 }
+/*
 function setcover(){
 	var chks=$("input[name='ar_chk']:checked");
 	if(chks.length==0){blogAlert.alert("请选择要设置封面的文章","red");return;}
 	fancyopen('${admin_blogprefix}/admin/blogres_dialog.do?&callback=converCallback&multiSelect=false');
-}
+}*/
 function dellable(labid){
 	blogAlert.confirm(
 	     "是否删除此标签?",
@@ -259,6 +260,7 @@ function dellable(labid){
 	    }
 	);
 }
+	/*
 function fancyopen(url){
 	 $.fancybox.open({
         href: url,
@@ -295,7 +297,7 @@ function converCallback(reskey){
 		     
 		   }
 		});
-}
+}*/
 function rowclick(row){
 	var checked=$(row.cells[0]).children(":checkbox").prop("checked");
 	$(row.cells[0]).children(":checkbox").prop("checked",checked?false:true);
