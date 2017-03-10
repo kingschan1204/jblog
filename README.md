@@ -47,7 +47,7 @@ A multi-user blog system implemented with Spring /MVC+ Hibernate + MySQL + Boots
 
 ## 界面截图
 登录界面：
-![登录](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/login.png )
+![登录](https://raw.githubusercontent.com/kingschan1204/jblog/f75356d181547441ebdbbcd5908b247d6dfef568/git-res/login.png )
 
 文章列表
 ![文章列表](https://raw.githubusercontent.com/kingschan1204/jblog/1aa8b0b1739aecf526f69c278f99e648606b957b/git-res/admin_article_list.png )
@@ -82,12 +82,6 @@ A multi-user blog system implemented with Spring /MVC+ Hibernate + MySQL + Boots
 ![](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/article-info-comment1.png )
 ![](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/article-info-comment.png )
 
-文章归档
-![](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/font-article-list.png )
-首页
-![](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/font-index.png)
-标签墙
-![](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/font-lable.png)
 
 ## 记事 [更新图文介绍](http://about.51so.info/)
 - 2015-11-11 诞生
