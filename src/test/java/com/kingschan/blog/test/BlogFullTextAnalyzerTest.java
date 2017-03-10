@@ -1,20 +1,30 @@
 package com.kingschan.blog.test;
 
 import com.hankcs.hanlp.HanLP;
+import com.hankcs.lucene.HanLPIndexAnalyzer;
 import com.kingschan.blog.dao.HibernateBaseDao;
 import com.kingschan.blog.dao.Pagination;
 import com.kingschan.blog.dao.impl.ArticleDaoImpl;
 import com.kingschan.blog.model.vo.ArticleVo;
+import com.kingschan.blog.model.vo.CategoryVo;
+import com.kingschan.blog.model.vo.UserVo;
 import com.kingschan.blog.po.Article;
 import com.kingschan.blog.po.ArticleText;
+import com.kingschan.blog.po.Category;
+import com.kingschan.blog.util.TimeStampUtil;
+import org.apache.lucene.search.highlight.*;
+import org.hibernate.search.FullTextQuery;
+import org.hibernate.search.query.dsl.QueryBuilder;
 import org.jsoup.Jsoup;
 import org.junit.Test;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,7 +49,7 @@ public class BlogFullTextAnalyzerTest extends AbstractTransactionalJUnit4SpringC
     private HibernateBaseDao baseDao;
 
     @Transactional
-    @Test
+//    @Test
     public void getArticleDateQuantityTest() throws Exception {
 //        int val= articleDao.getArticleDateQuantity("3c2ec7b28db9416cafc488660c603bb4","201602");
 //        System.out.println(val);
@@ -64,4 +74,5 @@ public class BlogFullTextAnalyzerTest extends AbstractTransactionalJUnit4SpringC
         }
     }*/
     }
+
 }
