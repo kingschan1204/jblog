@@ -183,6 +183,7 @@ public class IndexController {
         		if (null!=h&&h.size()>0) {
         			for (int i = 0; i < h.size(); i++) {
     					Element ele= h.get(i);
+                        if (ele.text().trim().isEmpty())continue;
     					if (article.getArticleEditor().equals("markdown")) {
     						nav_title.add(String.format("<a href=\"#%s\" class=\"article-nav\" %s >%s</a>", ele.child(0).attr("name"),ele.tagName(),ele.text()));
     					}else{
