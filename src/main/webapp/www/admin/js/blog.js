@@ -97,26 +97,9 @@ var blog={
 			window.location='https://51so.info/pub/login.do?url='+ window.location;
 		},
 		userLogout:function(){
-			bootbox.confirm({
-			    message: "<b style='color:red;'>是否退出系统?</b>",
-			    size: 'small',
-			    buttons: {
-			        confirm: {
-			            label: '是',
-			            className: 'btn-success'
-			        },
-			        cancel: {
-			            label: '否',
-			            className: 'btn-danger'
-			        }
-			    },
-			    callback: function (result) {
-			        if(result){
-			        	window.location='http://51so.info/font/logout.do';
-			        }
-			    }
+			blogAlert.confirm("是否退出系统?",function(){
+				window.location='http://51so.info/font/logout.do';
 			});
-			
 		},
 	/**
 	 * 删除自己的评论
