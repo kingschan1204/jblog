@@ -10,6 +10,8 @@ import com.kingschan.blog.po.BlogArticleLikes;
 import com.kingschan.blog.po.User;
 import com.kingschan.blog.po.WebSite;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * 
 *  <pre>    
@@ -295,5 +297,13 @@ public interface ArticleService {
       * @throws Exception
       */
      BlogArticleLikes getArticleLike(String userid, String articleId)throws Exception;
+
+    /**
+     * 将文章里面的图片外部链接转换成自已CDN加速网站
+     * @param articleId
+     * @param req
+     * @throws Exception
+     */
+    void downloadArticleImg(String articleId, HttpServletRequest req)throws Exception;
 
 }

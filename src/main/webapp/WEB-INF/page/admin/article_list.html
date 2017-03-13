@@ -5,6 +5,7 @@
 <title>日志列表</title>
 <#include "/admin/include/bootstrap.ftl">
 <#include "/admin/include/fancybox.ftl">
+<script src="/www/admin/js/article.js${version}"></script>
 </head>
 <body>
 <#include "/admin/include/dashboard-start.ftl">
@@ -15,7 +16,7 @@
 				    <input type="text" value="${title!}" name="title" class="form-control" id="keyword_txt" placeholder="全文检索">
 				  </div>
 				  <div class="form-group">
-				    <label for="ar_type_sel">类型</label>
+				    <label>类型</label>
 				    <select class="form-control" name="category">
 				    		<option value=""></option>
 							  <@Category website_id="${AdminWebSite.id}">
@@ -32,14 +33,12 @@
 				  <div class="btn-group">
 				  	 <button type="submit" class="btn btn-default" data-toggle="tooltip" title="根据您输入的关键字进行查询" data-placement="bottom">
 				  	 <span class="glyphicon glyphicon-search"></span>&nbsp;查询</button>
-					  <button type="button" class="btn btn-default" data-toggle="modal" data-target="#update_type_modal" ><span class="glyphicon glyphicon-folder-open"></span>&nbsp;分类</button>
+					  <button type="button" class="btn btn-default" onclick="article.updateCategory(data);" ><span class="glyphicon glyphicon-folder-open"></span>&nbsp;分类</button>
 					  <!--<button type="button" class="btn btn-default" onclick="setcover();" data-toggle="tooltip" title="设置文章封面图" data-placement="bottom"><span class="glyphicon glyphicon-picture"></span>&nbsp;封面</button>-->
 					  <!--update_articletype.do-->
-					  <button type="button" class="btn btn-default" onclick="fundel('');" data-toggle="tooltip" title="删除您选中的文章" data-placement="bottom">
+					  <button type="button" class="btn btn-default" onclick="article.delArticle('');" data-toggle="tooltip" title="删除您选中的文章" data-placement="bottom">
 					  <span class="glyphicon glyphicon-remove"></span>&nbsp;删除</button>
 				  </div>
-				  
-				  
 			</form>
 	</div>
 	
@@ -71,15 +70,14 @@
 						<td><#list ar.lables as lable><span class="label label-default" onclick="dellable('${lable.id}');">${lable.lableName}</span><#if lable_has_next> </#if></#list></td>
 						<td>
 							<#if (ar.articleSort>0)>
-								<a class="sbtn sbtn-yellow" href="javascript:canclefixedTop('${ar.id}');"  data-toggle="tooltip" title="取消置顶"><span class="glyphicon glyphicon-repeat"></span></a>
+								<a class="sbtn sbtn-yellow" href="javascript:article.canclefixedTop('${ar.id}');"  data-toggle="tooltip" title="取消置顶"><span class="glyphicon glyphicon-repeat"></span></a>
 								<#else>
-									<a class="sbtn sbtn-yellow" onclick="fixedTop('${ar.id}');" target="_blank" data-toggle="tooltip" title="预览"><span class="glyphicon glyphicon-pushpin"></span> </a>
+									<a class="sbtn sbtn-yellow" onclick="article.fixedTop('${ar.id}');" target="_blank" data-toggle="tooltip" title="预览"><span class="glyphicon glyphicon-pushpin"></span> </a>
 							</#if>
-
-							<a class="sbtn sbtn-green" href="http://${host}/${AdminWebSite.websiteName}/entry/${ar.id}.html" target="_blank" data-toggle="tooltip" title="预览"><span class="glyphicon glyphicon-eye-open"></span> </a>
+							<a class="sbtn sbtn-green" onclick="article.crawImg('${ar.id}');"  data-toggle="tooltip" title="抓取外部图片保存到我的文件夹里"><span class="glyphicon glyphicon-paperclip"></span> </a>
 							<a class="sbtn sbtn-purple" href="${admin_blogprefix}/admin/edit_article.do?id=${ar.id}" target="_blank" data-toggle="tooltip" title="编辑"><span class="glyphicon glyphicon-pencil"></span> </a>
-							<button type="button" class="sbtn sbtn-red" onclick="fundel('${ar.id}');"  data-toggle="tooltip" title="删除"><span class="glyphicon glyphicon-remove"></span></button>
-
+							<a class="sbtn sbtn-red" onclick="article.delArticle('${ar.id}');"  data-toggle="tooltip" title="删除"><span class="glyphicon glyphicon-remove"></span></a>
+							<a class="sbtn sbtn-green" href="http://${host}/${AdminWebSite.websiteName}/entry/${ar.id}.html" target="_blank" data-toggle="tooltip" title="预览"><span class="glyphicon glyphicon-eye-open"></span> </a>
 						</td>
 					</tr>
 		    	</#list>
@@ -88,219 +86,16 @@
     <#assign url="${admin_blogprefix}/admin/article_list.do?category=${categoryName!}&title=${title!}&">
     <#include "/admin/include/page.ftl">
 	<#include "/admin/include/dashboard-end.ftl">
-	<div id="article_info"></div>
-     <!-- 模态框（Modal） -->
-<div class="modal fade" id="update_type_modal" tabindex="-1" role="dialog" aria-labelledby="modallab" aria-hidden="true">
-   <div class="modal-dialog">
-      <div class="modal-content">
-         <div class="modal-header">
-            <button type="button" class="close"  data-dismiss="modal" aria-hidden="true">&times;</button>	
-            <h4 class="modal-title" id="modallab">修改类型</h4>
-         </div>
-         <div class="modal-body">
-            	<form class="form-horizontal" method="post" action="${admin_blogprefix}/admin/update_articletype.do" id="editpswform">
-					  <div class="form-group">
-					    <label  class="col-sm-2 control-label">新类型</label>
-					    <div class="col-sm-8">
-					      <select class="form-control" name="category" id="uc_category">
-								  <@Category website_id="${AdminWebSite.id}">
-									  <#list category_lis as category>
-										<option value="${category.id}" >${category.categoryName}</option>
-									</#list>
-								</@Category> 
-						</select>
-					    </div>
-					  </div>
-				</form>
-         </div>
-         <div class="modal-footer">
-            <button type="button" class="btn btn-default"  data-dismiss="modal">关闭</button>
-            <button type="button" class="btn btn-primary" onclick="updateCategory();"> 提交</button>
-         </div>
-      </div><!-- /.modal-content -->
-</div><!-- /.modal -->
-</div><!-- 模态框（Modal） -->
 
 </body>
 <script type="text/javascript">
-	blogControlPanel.activePanelByText("文章管理");
+blogControlPanel.activePanelByText("文章管理");
 $(function () { $("[data-toggle='tooltip']").tooltip();  });
-function allchk(obj){
-	var chk=obj.checked;
-	if(chk){
-		$("input[name='ar_chk']").prop("checked",true);
-	}else{
-		$("input[name='ar_chk']").prop("checked",false); 
-	}
-}
-function fundel(id){
-	var lis=new Array();
-	if(id!=''&&id.length==32){
-		lis.push(id);
-	}else{
-		//选择模式
-		var chks=$("input[name='ar_chk']:checked");
-		if(chks.length==0){blogAlert.alert("请选择要删除的文章","red");return;}
-		for(var i=0;i<chks.length;i++){
-			lis.push(chks[i].value);
-		}
-	}
-	blogAlert.confirm("你确定要删除选中记录吗？",function(result){
-		if(result){
-			blogAlert.showLoading("正在处理请稍后...");
-			$.ajax({
-				   type: "post",
-				   url: "${admin_blogprefix}/admin/del_article.do",
-				   data: {ids:lis},
-				   success: function(msg){
-					   $('body').hideLoading();
-					   bootbox.alert(msg);
-					   if(msg.indexOf("成功")!=-1){
-						   $("#sform").submit();
-					   }
-				     
-				   }
-				});
-		}
-	});
-}
-
-function updateCategory(){
-	var chks=$("input[name='ar_chk']:checked");
-	if(chks.length==0){blogAlert.alert("请选择要更改类型的文章","red");return;}
-	blogAlert.confirm("是否继续？", function(result){
-		if(result){
-			blogAlert.showLoading("正在处理,请稍后.");
-			var lis=new Array();
-			for(var i=0;i<chks.length;i++){
-				lis.push(chks[i].value);
-			}
-			$.ajax({
-				   type: "post",
-				   url: "${admin_blogprefix}/admin/update_articletype.do",
-				   data: {ids:lis,category:$("#uc_category").val()},
-				   success: function(msg){
-					   $('body').hideLoading();
-					   if(msg=="success"){
-						   location.reload();
-					   }else{
-						   blogAlert.alert(msg,"blue");
-					   }
-				     
-				   }
-				});
-		}
-		
-	});	
-}
-
-function fixedTop(id){
-	blogAlert.showLoading("正中处理");
-	var array= new Array();
-	array.push(id);
-	$.ajax({
-		   type: "post",
-		   url: "${admin_blogprefix}/admin/fixedTop.do",
-		   data: {ids:array},
-		   success: function(msg){
-			   blogAlert.closeLoading();
-			   if(msg=="success"){
-				   location.reload();
-			   }else{
-				   bootbox.alert(msg);
-			   }
-		     
-		   }
-		});
-}
-
-function canclefixedTop(id){
-	blogAlert.showLoading("正中处理");
-	var array= new Array();
-	array.push(id);
-	$.ajax({
-		   type: "post",
-		   url: "${admin_blogprefix}/admin/cancleFixedTop.do",
-		   data: {ids:array},
-		   success: function(msg){
-			   blogAlert.closeLoading();
-			   if(msg=="success"){
-				   location.reload();
-			   }else{
-				   bootbox.alert(msg);
-			   }
-		     
-		   }
-		});
-}
-/*
-function setcover(){
-	var chks=$("input[name='ar_chk']:checked");
-	if(chks.length==0){blogAlert.alert("请选择要设置封面的文章","red");return;}
-	fancyopen('${admin_blogprefix}/admin/blogres_dialog.do?&callback=converCallback&multiSelect=false');
-}*/
-function dellable(labid){
-	blogAlert.confirm(
-	     "是否删除此标签?",
-	    function (result) {
-	        if(result){
-	        	 $.ajax({
-					   type: "get",
-					   url: "${admin_blogprefix}/admin/del_article_lable.do",
-					   data: {id:labid},
-					   success: function(msg){
-						   if(msg=="success"){
-							   location.reload();
-						   }else{
-							   alert( msg);
-						   }
-					   }
-					});
-	        }
-	    }
-	);
-}
-	/*
-function fancyopen(url){
-	 $.fancybox.open({
-        href: url,
-        type: 'iframe',
-        padding: 10,
-        scrolling: 'no',
-        fitToView: true,
-        width: 1000,
-        height: 640,
-        autoSize: false,
-        closeClick: false
-    });
-}
-
-function converCallback(reskey){
-	var key=reskey;
-	$('body').showLoading();
-	var chks=$("input[name='ar_chk']:checked");
-	var lis=new Array();
-	for(var i=0;i<chks.length;i++){
-		lis.push(chks[i].value);
-	}
-	$.ajax({
-		   type: "post",
-		   url: "${admin_blogprefix}/admin/setCover.do?resKey="+key,
-		   data: {ids:lis},
-		   success: function(msg){
-			   $('body').hideLoading();
-			   if(msg=="success"){
-				   blog.nofify("操作成功!","success");
-			   }else{
-				   bootbox.alert(msg);
-			   }
-		     
-		   }
-		});
-}*/
-function rowclick(row){
-	var checked=$(row.cells[0]).children(":checkbox").prop("checked");
-	$(row.cells[0]).children(":checkbox").prop("checked",checked?false:true);
-}
+	var data={
+<@Category website_id="${AdminWebSite.id}">
+		<#list category_lis as category>
+		'${category.id}':'${category.categoryName}'<#if category_has_next>,</#if>
+		</#list>
+	</@Category>};
 </script>
 </html>

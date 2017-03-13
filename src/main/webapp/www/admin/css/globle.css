@@ -1,4 +1,4 @@
-/**·ÖÒ³×ÏÉ«**/
+/**ï¿½ï¿½Ò³ï¿½ï¿½É«**/
 .pagination>.active>a{
 	background-color:#6f5499;
     border-color:#6f5499;
@@ -7,19 +7,19 @@
 	background-color:#6f5499;
     border-color:#6f5499;
 }
-/**±í¸ñÊó±êhoverÑùÊ½**/
+/**ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½hoverï¿½ï¿½Ê½**/
 .table tr:HOVER,.table tr a:HOVER{
 	color:#330099;
 }
 .table>tbody>tr>td{
-	font-family: Î¢ÈíÑÅºÚ;
+	font-family:å¾®è½¯é›…é»‘;
 }
 .table>tbody>tr:HOVER{background-color: #FFFFCC;}
-.table>tbody>tr>td>a{color: #6f5499;font-family: Î¢ÈíÑÅºÚ;}
+.table>tbody>tr>td>a{color: #6f5499;font-family: å¾®è½¯é›…é»‘;}
 .btn-default:HOVER {
 	color:#330066;
 }
-.btn{font-family: Î¢ÈíÑÅºÚ;}
+.btn{font-family:å¾®è½¯é›…é»‘;}
 .label:HOVER {
 	cursor: pointer;
 	color:#330099;

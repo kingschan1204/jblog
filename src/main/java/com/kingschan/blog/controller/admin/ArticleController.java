@@ -3,6 +3,8 @@ package com.kingschan.blog.controller.admin;
 import javax.servlet.http.HttpServletRequest;
 
 import org.hibernate.validator.constraints.NotEmpty;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -20,6 +22,8 @@ import com.kingschan.blog.util.BlogUtil;
 @Controller
 @RequestMapping("/admin")
 public class ArticleController {
+
+    private Logger log = LoggerFactory.getLogger(ArticleController.class);
 
     @Autowired
     private ArticleService article_serv;
@@ -244,6 +248,26 @@ public class ArticleController {
             e.printStackTrace();
             msg=e.getMessage();
         }
+        return msg;
+    }
+
+    /**
+     * 外键图片资源转换
+     * @param id
+     * @param req
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/outsideImgResTransformation.do")
+    public String outsideImgResTransformation(String id,HttpServletRequest req){
+        String msg="success";
+       try {
+           article_serv.downloadArticleImg(id,req);
+       }catch (Exception  ex){
+           log.error("outsideImgResTransformation",ex);
+           ex.printStackTrace();
+           msg="error";
+       }
         return msg;
     }
 }

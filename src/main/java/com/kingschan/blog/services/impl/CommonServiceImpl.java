@@ -34,13 +34,26 @@ public class CommonServiceImpl implements CommonService {
 	@Autowired
 	private HibernateBaseDao baseDao;
 	@Value("${app.debug}")
-    protected boolean debug;//是否开发模式 
+    protected boolean debug;//是否开发模式
+	/**
+	 * 部署域名
+	 */
 	@Value("${app.host}")
 	protected String host;
-	@Value("${app.file.temp.folder}")
+
+	public String getCdnhost() {
+		return cdnhost;
+	}
+
+	/**
+	 * CDN文件加速域名
+	 */
+	@Value("${app.cdn.host}")
+	protected String cdnhost;
 	/**
 	 * 文件上传处理临时目录
 	 */
+	@Value("${app.file.temp.folder}")
 	protected String fileTempFolder;
 	
 	public boolean isDebug() {
