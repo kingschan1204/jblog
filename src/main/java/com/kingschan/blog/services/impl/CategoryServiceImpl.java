@@ -65,7 +65,9 @@ public class CategoryServiceImpl implements CategoryService {
 		List<Map<String, Object>> lis= category_dao.countCategory(websiteid);
 		List<CategoryVo> list = new ArrayList<CategoryVo>();
 		for (Map<String, Object> row : lis) {
-			list.add(new CategoryVo(row.get("id").toString(), row.get("name").toString(), Integer.valueOf(row.get("total").toString())));
+			CategoryVo vo=new CategoryVo(row.get("id").toString(), row.get("name").toString(), Integer.valueOf(row.get("total").toString()));
+			vo.setCategoryRemark(row.get("remark").toString());
+			list.add(vo);
 		}
 		return list;
 	}

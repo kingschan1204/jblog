@@ -107,7 +107,7 @@ public class CategoryDaoImpl extends HibernateBaseDao implements CategoryDao {
 
 	@Override
 	public  List<Map<String,Object>> countCategory(String websiteid) throws Exception {
-		String hql ="select a.category.id as id,a.category.categoryName as name,count(*) as total from Article a where a.websiteid=? and a.articleStatus=1 group by a.category order by a.category.categoryPosition ";
+		String hql ="select a.category.id as id,a.category.categoryName as name,a.category.categoryRemark as remark,count(1) as total from Article a where a.websiteid=? and a.articleStatus=1 group by a.category order by a.category.categoryPosition ";
 		List<Map<String,Object>> lis= (List<Map<String, Object>>) queryForListByHql(hql, false,true,websiteid);
 		return lis;
 	}

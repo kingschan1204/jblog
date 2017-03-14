@@ -20,6 +20,11 @@ var blogAlert = {
             title, text, 'error'
         )
     },
+    success:function(title,text){
+        swal(
+            title, text, 'success'
+        )
+    },
     /**
      *
      * @param title

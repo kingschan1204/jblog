@@ -163,7 +163,7 @@ var article = {
             success: function (msg) {
                 blogAlert.closeLoading();
                 if (msg == "success") {
-                    blogAlert.alert("操作成功");
+                    blogAlert.success("操作成功");
                 } else {
                     blogAlert.error(msg);
                 }

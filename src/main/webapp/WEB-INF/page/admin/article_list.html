@@ -1,4 +1,5 @@
-<!DOCTYPE HTML> 
+<#compress>
+<!DOCTYPE HTML>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -74,10 +75,9 @@
 								<#else>
 									<a class="sbtn sbtn-yellow" onclick="article.fixedTop('${ar.id}');" target="_blank" data-toggle="tooltip" title="预览"><span class="glyphicon glyphicon-pushpin"></span> </a>
 							</#if>
-							<a class="sbtn sbtn-green" onclick="article.crawImg('${ar.id}');"  data-toggle="tooltip" title="抓取外部图片保存到我的文件夹里"><span class="glyphicon glyphicon-paperclip"></span> </a>
-							<a class="sbtn sbtn-purple" href="${admin_blogprefix}/admin/edit_article.do?id=${ar.id}" target="_blank" data-toggle="tooltip" title="编辑"><span class="glyphicon glyphicon-pencil"></span> </a>
+							<a class="sbtn sbtn-purple" onclick="article.crawImg('${ar.id}');"  data-toggle="tooltip" title="抓取外部图片保存到我的文件夹里"><span class="glyphicon glyphicon-paperclip"></span> </a>
+							<a class="sbtn sbtn-green" href="http://${host}/${AdminWebSite.websiteName}/entry/${ar.id}.html" target="_blank" data-toggle="tooltip" title="预览"><span class="glyphicon glyphicon-search"></span> </a>
 							<a class="sbtn sbtn-red" onclick="article.delArticle('${ar.id}');"  data-toggle="tooltip" title="删除"><span class="glyphicon glyphicon-remove"></span></a>
-							<a class="sbtn sbtn-green" href="http://${host}/${AdminWebSite.websiteName}/entry/${ar.id}.html" target="_blank" data-toggle="tooltip" title="预览"><span class="glyphicon glyphicon-eye-open"></span> </a>
 						</td>
 					</tr>
 		    	</#list>
@@ -99,3 +99,4 @@ $(function () { $("[data-toggle='tooltip']").tooltip();  });
 	</@Category>};
 </script>
 </html>
+</#compress>

@@ -33,7 +33,7 @@
                   	</ul>
                 </li>
 	              <#else>
-	              	<li><a href="javascript:window.location='https://51so.info/pub/login.do?url='+ window.location"><span class="glyphicon glyphicon-user"></span>&nbsp;<b>登录</b></a></li>
+	              	<li><a href="javascript:window.location='http://51so.info/pub/login.do?url='+ window.location"><span class="glyphicon glyphicon-user"></span>&nbsp;<b>登录</b></a></li>
           </#if>
           </ul>
         </div><!--/.nav-collapse -->
