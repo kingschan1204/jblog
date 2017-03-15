@@ -83,7 +83,8 @@ public class DownLoadImgUtil {
         connection = (HttpURLConnection) url.openConnection();
         connection.setInstanceFollowRedirects(true);
         connection.setUseCaches(true);
-
+        //不设置这个有些网站会返回403
+        connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36 TheWorld 6");
         if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
             log.error("http status error :{}", url);
             return null;
