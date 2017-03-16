@@ -163,7 +163,9 @@
 													<ul class="msgboard_reply_list">
 														<#list page.map[comment.id] as reply>
 															<li>
-																<div><a>${reply.CUser.userScreenName}</a>:
+																<div>
+																	<div class="user_img"><img src="${reply.CUser.userProfileImg}<#if reply.CUser.userProfileImg?index_of("res.51so.info")!=-1>_profile.40X40</#if>"/></div>
+																	<a>${reply.CUser.userScreenName}</a>:
 																	<#if reply.CTosomeone??&&reply.CTosomeone.id !=comment.CUser.id>
 																		&nbsp;回复&nbsp;<a>${reply.CTosomeone.userScreenName}</a>
 																	</#if>
