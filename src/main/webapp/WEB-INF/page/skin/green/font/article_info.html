@@ -61,10 +61,10 @@
 		    			</div>
 		    			<div id="article-content-div">${article.articleContent!}</div>
 						<div class="row" style="text-align: center;margin-top: 30px;">
-							<button id="btn_like" data-like="${like}" type="button" class="btn btn-default btn-lg" style="border-radius: 20px;"
+							<button id="btn_like" data-like="${like}" type="button" class="btn btn-default btn-lg" style="border-radius: 80px;"
 								onclick='blog.articleSupport("${article.id!}",this);'
 								data-toggle="tooltip" data-placement="top" title="喜欢">
-							  <span class="glyphicon glyphicon-heart"></span>&nbsp;${article.articleLikes!}
+							  <span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;${article.articleLikes!}
 							</button>
 						</div>
 						<div>
@@ -207,7 +207,7 @@
 						</ol>
 					</div>
 					</#if>
-					<@SimilarArticles limit="12" website="${website.id}" keyword="${article.articleLableStr!} ${article.articleTitle!}">
+					<@SimilarArticles limit="6" website="${website.id}" keyword="${article.articleLableStr!} ${article.articleTitle!}">
 							<#if (SimilarArticles?size>1)>
 				    			<div >
 									<div>
@@ -233,9 +233,9 @@
 	    		<div class="article-nav-box">
 					<div class="article-nav-box-footer">
 						<ul>
-							<li onclick="$('body,html').animate({scrollTop:0},500);"><span class="glyphicon glyphicon-chevron-up"></span>&nbsp;顶部</li>
-							<li onclick="javascript:$('body,html').animate({scrollTop:$('#btn_like').offset().top + 'px'},500);"><span class="glyphicon glyphicon-comment"></span>&nbsp;留言</a></li>
-							<li style="border: none;margin-bottom: 0px;" onclick='blog.articleSupport("${article.id!}",null);'><span class="glyphicon glyphicon-thumbs-up"></span>&nbsp;点赞</li>
+							<li onclick="$('body,html').animate({scrollTop:0},500);"><span class="glyphicon glyphicon-chevron-up"></span>顶部</li>
+							<li onclick="javascript:$('body,html').animate({scrollTop:$('#btn_like').offset().top + 'px'},500);"><span class="glyphicon glyphicon-comment"></span>留言</a></li>
+							<li style="border: none;margin-bottom: 0px;" onclick='blog.articleSupport("${article.id!}",null);'><span class="glyphicon glyphicon-thumbs-up"></span>点赞</li>
 						</ul>
 					</div>
 				</div>

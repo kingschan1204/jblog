@@ -13,7 +13,6 @@
           </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li><a href="${webroot}" title="前往51so首页" data-toggle="tooltip" data-placement="bottom"><span class="glyphicon glyphicon-cloud"></span>&nbsp;51so</a></li>
                 <li id="menu_home" ><a href="${blogprefix}"><span class="glyphicon glyphicon-home"></span>&nbsp;主页</a></li>
                 <li id="menu_article_timeline"><a href="${blogprefix}/article_timeline"><span class="glyphicon glyphicon-file"></span>&nbsp;归档</a></li>
                 <li id="menu_lable_article_lis"><a href="${blogprefix}/lable_lis"><span class="glyphicon glyphicon-tags"></span>&nbsp;标签</a></li>
@@ -24,11 +23,11 @@
                     <a href="#" class="dropdown-toggle userdrop" data-toggle="dropdown" role="button" aria-expanded="false" title="${BLOG_CURRENT_USER.userScreenName}">
                         <span class="glyphicon glyphicon-user"></span>&nbsp;${BLOG_CURRENT_USER.userScreenName}<span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
-						<#if BLOG_CURRENT_USER.userLevel=="admin">
+                        <#if BLOG_CURRENT_USER.userLevel=="admin">
                             <li><a href="${webroot}/admin/edit_article.do" target="_blank"><span class="glyphicon glyphicon-plus"></span>&nbsp;写文章</a></li>
-                            <li><a href="http://${host}/admin/main.do" target="_blank"><span class="glyphicon glyphicon-cloud"></span>&nbsp;管理</a></li>
-                            <li><a href="${webroot}/admin/website_info.do" target="_blank"><span class="glyphicon glyphicon-cog"></span>&nbsp;博客信息设置</a></li>
-						</#if>
+                            <li><a href="http://${host}/admin/article_list.do" target="_blank"><span class="glyphicon glyphicon-th-large"></span>&nbsp;文章管理</a></li>
+                            <li><a href="${webroot}/admin/website_info.do" target="_blank"><span class="glyphicon glyphicon-cog"></span>&nbsp;博客设置</a></li>
+                        </#if>
                         <li><a href="http://${host}/font/logout.do" style="color:red;"><span class="glyphicon glyphicon-remove"></span>&nbsp;退出</a></li>
                     </ul>
                 </li>
