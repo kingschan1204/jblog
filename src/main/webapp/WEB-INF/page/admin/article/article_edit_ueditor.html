@@ -82,7 +82,9 @@
 			  <div style="float: left;">
 				  <strong>允许评论：</strong> <input type="checkbox" name="articleAllowcomments" value="true" <#if article.articleAllowcomments>checked</#if> />
 				  <strong>私密文章：</strong><input type="checkbox" name="articlePrivate" value="true" <#if article??&&article.articlePrivate>checked</#if> />
-				  <strong>是否发布：</strong><input type="checkbox" name="type" value="release"/>
+				  <#if article??&&article.id??>
+					  <strong>是否发布：</strong><input type="checkbox" name="type" value="release"/>
+				  </#if>
 			  </div>
 			  <div style="float: left;padding-left: 20px;">
 				  <input type="text" class="form-control" name="articlePassword" style="width: 200px;" maxlength="10" placeholder="查看密码,私密博文下无效" value="${article.articlePassword!}">
