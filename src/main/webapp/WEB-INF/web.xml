@@ -12,7 +12,7 @@
     <init-param>
       <param-name>contextConfigLocation</param-name>
       <param-value>
-        classpath*:dispatch-servlet.xml
+        classpath:applicationContext.xml
       </param-value>
     </init-param>
     <load-on-startup>1</load-on-startup>
