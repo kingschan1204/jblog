@@ -153,16 +153,16 @@
 				u.user_lastlogin as lastLoginDateTime,
 				article.total as articleTotal,
 				category.ctotal as categoryTotal,
-				lable.ltotal as lableTotal,
-				comments.comtotal as commentTotal,
+				IFNULL(lable.ltotal ,0) lableTotal,
+				IFNULL(comments.comtotal ,0) commentTotal,
         request.reqTotal
 			from blog_website site
 				inner join blog_user u on u.id=site.webiste_creator
-				inner join( select websiteid,count(1) total from blog_article  group by websiteid ) article on article.websiteid=site.id
-				inner join (select count(1) ctotal,category_websiteid from blog_category  group by category_websiteid)category on category.category_websiteid=site.id
-				inner join (select count(1) ltotal,websiteid from (select websiteid,lable_name from blog_label  group by lable_name) x group by websiteid ) lable on lable.websiteid=site.id
-				inner JOIN (select count(1) comtotal,c_website_id from blog_article_comment where c_isdel='√'  group by c_website_id ) comments on comments.c_website_id=site.id
-			  inner join (select req_blog,count(1) reqTotal from blog_request_log a left join base_agent b on a.req_agent=b.agent_key  where  agent_device <> 'Unknown' and agent_os <> 'Unknown' and agent_browser_name<>'Robot/Spider' group by req_blog)
+				left join( select websiteid,count(1) total from blog_article  group by websiteid ) article on article.websiteid=site.id
+				left join (select count(1) ctotal,category_websiteid from blog_category  group by category_websiteid)category on category.category_websiteid=site.id
+				left join (select count(1) ltotal,websiteid from (select websiteid,lable_name from blog_label  group by lable_name) x group by websiteid ) lable on lable.websiteid=site.id
+				left JOIN (select count(1) comtotal,c_website_id from blog_article_comment where c_isdel='√'  group by c_website_id ) comments on comments.c_website_id=site.id
+			  left join (select req_blog,count(1) reqTotal from blog_request_log a left join base_agent b on a.req_agent=b.agent_key  where  agent_device <> 'Unknown' and agent_os <> 'Unknown' and agent_browser_name<>'Robot/Spider' group by req_blog)
         request on request.req_blog=site.website_name
 	 	]]>
 	</sql>
