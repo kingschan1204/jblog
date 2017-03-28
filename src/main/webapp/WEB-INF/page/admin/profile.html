@@ -116,7 +116,9 @@
   </div>
   <div class="form-group">
     <div class="col-sm-offset-1 col-sm-10">
-      <button type="submit" class="btn btn-success">保存</button>
+      <button type="submit" class="btn btn-success"><i class="glyphicon glyphicon-ok"></i>&nbsp;保存</button>
+      <button type="button" onclick="$('#myModal').modal('show');" class="btn btn-default">
+         <span class="glyphicon glyphicon-lock"></span> 修改密码</button>
     </div>
   </div>
 </form>
@@ -126,6 +128,45 @@
 		<script type="text/javascript"> blogAlert.alert('${msg}',"red");</script>
 	</#if>
 <#include "/admin/include/dashboard-end.ftl">
+
+    <!--start Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close"  data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">修改密码</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" method="post" action="admin/modify_psw.do" id="editpswform">
+                        <div class="form-group">
+                            <label  class="col-sm-2 control-label">旧密码</label>
+                            <div class="col-sm-8">
+                                <input type="password" class="form-control" name="oldpsw" id="oldpsw" placeholder="请输入旧密码" maxlength="20">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label  class="col-sm-2 control-label">新密码</label>
+                            <div class="col-sm-8">
+                                <input type="password" class="form-control" name="newpsw" id="newpsw" placeholder="请输入新密码" maxlength="20">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">确认密码</label>
+                            <div class="col-sm-8">
+                                <input type="password" class="form-control" name="cnewpsw"  placeholder="请输入新密码" maxlength="20">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default"  data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" onclick="mofifypsw();"> 提交</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div><!-- end Modal -->
+
 </body>
 <script type="text/javascript">
 $('#userinfoForm').bootstrapValidator({
@@ -162,9 +203,9 @@ $('#userinfoForm').bootstrapValidator({
               }
           }
       }
-      
+
   }});
- 
+
  function sendmail(){
 	 bootbox.confirm('是否发送验证邮件？', function(result){
 			if(result){
@@ -244,5 +285,70 @@ $('#userinfoForm').bootstrapValidator({
             cropper.zoomOut();
         })
     };
+
+    $('#editpswform').bootstrapValidator({
+        message: 'This value is not valid',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            oldpsw: {
+                message: '密码不合规则!',
+                validators: {
+                    notEmpty: {
+                        message: '请输入旧密码！'
+                    }
+                }
+            },
+            newpsw: {
+                validators: {
+                    notEmpty: {
+                        message: '请输入新密码！'
+                    },stringLength: {
+                        min: 6,
+                        max: 30,
+                        message: '密码长度为6至20'
+                    }
+                }
+            },
+            cnewpsw: {
+                validators: {
+                    notEmpty: {
+                        message: '请再一次输入新密码'
+                    },identical: {
+                        field: 'newpsw',
+                        message: '两次输入新密码不一致!'
+                    }
+                }
+            }
+        }
+    });
+
+
+    function mofifypsw(){
+        var result=$('#editpswform').data('bootstrapValidator').isValid();
+        if(result){
+            $.ajax({
+                type: "post",
+                url: "${webroot}/admin/modify_psw.do",
+                data: {newpsw:$('#newpsw').val(),oldpsw:$('#oldpsw').val()},
+                success: function(msg){
+                    if(msg=="success"){
+                        $('#myModal').modal('hide');
+                        blogAlert.success("",'密码修改成功!');
+                        $('#editpswform')[0].reset();
+                        $('#editpswform').data('bootstrapValidator').resetForm();
+
+                    }else{
+                        blogAlert.alert(msg);
+                    }
+                }
+            });
+        }else{
+            blogAlert.error("",'请按要求填写表单信息!');
+        }
+    }
 </script>
 </html>
