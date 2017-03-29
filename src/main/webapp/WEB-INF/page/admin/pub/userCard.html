@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>${sname!""}</title>
+</head>
+<body>
+<#if img??>
+<div style="float: left">
+    <img src="${img}" style="width: 100px;height: 100px;">
+</div>
+<div style="padding: 5px 0px 0px 110px;">
+    <a href="${url}" target="_blank">${sname}</a><br>
+    <b style="display: inline-block;white-space: nowrap;text-overflow: ellipsis; width: 150px;color: rgb(236, 97, 73);overflow: hidden;">${tagline}</b>
+    <ul style="padding: 0; margin: 0;list-style: none;font-size: 13px;">
+        <li>文章:&nbsp;${article}</li>
+        <li>人气:&nbsp;${req}</li>
+        <li>上次登录:&nbsp;${lastlogin}</li>
+    </ul>
+</div>
+    <#else>
+        <p style="color: rgb(236, 97, 73);">用户不存在!</p>
+</#if>
+</body>
+</html>

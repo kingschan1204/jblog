@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import javax.servlet.http.Cookie;
@@ -344,9 +345,9 @@ public class PubController {
 		 * @param username
 		 * @return
 		 */
-		@ResponseBody
 		@RequestMapping("/uinfo_card")
-		public String getUserInfo(String username,HttpServletRequest req,HttpServletResponse rep){
+		public ModelAndView getUserInfo(String username,HttpServletRequest req,HttpServletResponse rep){
+			ModelAndView ma = new ModelAndView("/admin/pub/userCard");
 			try {
 				String refer=req.getHeader("referer");
 				if (StringUtils.isEmpty(refer)
@@ -354,14 +355,14 @@ public class PubController {
 						||!refer.matches("^http://(\\w+\\.)?51so.info/.*")
 						||(null!=username&&!username.matches("\\w+"))) {
 					rep.sendError(403);
-					return "";
+					return null;
 				}
-			  JSONObject json=user_serv.getUserInfoCard(username);
-			  return json.toString();
+				Map<String, Object> data=user_serv.getUserInfoCard(username);
+				ma.addAllObjects(data);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			return "{}";
+			return ma;
 		}
 		/**
 		 * 加载回复内容

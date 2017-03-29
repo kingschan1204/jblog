@@ -281,3 +281,4 @@ h1, h2, h3, h4, h5, h6 {
 
  #discuss_div blockquote{font-size: 12px;padding: 8px 12px;margin: 0px;}
  #discuss_div code{background: none;}
+.atlink{cursor: pointer;}

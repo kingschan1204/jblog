@@ -5,7 +5,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>日志列表</title>
 <#include "/admin/include/bootstrap.ftl">
-<#include "/admin/include/fancybox.ftl">
 <script src="/www/admin/js/article.js${version}"></script>
 </head>
 <body>
@@ -18,11 +17,11 @@
 				  </div>
 				  <div class="form-group">
 				    <label>类型</label>
-				    <select class="form-control" name="category">
+				    <select class="form-control" name="category" id="category">
 				    		<option value=""></option>
 							  <@Category website_id="${AdminWebSite.id}">
 								  <#list category_lis as category>
-									<option value="${category.categoryName}" 
+									<option value="${category.categoryName}" pk="${category.id}"
 									<#if categoryName==category.categoryName>
 											selected="selected"
 										</#if>
@@ -34,7 +33,7 @@
 				  <div class="btn-group">
 				  	 <button type="submit" class="btn btn-default" data-toggle="tooltip" title="根据您输入的关键字进行查询" data-placement="bottom">
 				  	 <span class="glyphicon glyphicon-search"></span>&nbsp;查询</button>
-					  <button type="button" class="btn btn-default" onclick="article.updateCategory(data);" ><span class="glyphicon glyphicon-folder-open"></span>&nbsp;分类</button>
+					  <button type="button" class="btn btn-default" onclick="article.updateCategory(data);" ><span class="glyphicon glyphicon-th-large"></span>&nbsp;分类</button>
 					  <!--<button type="button" class="btn btn-default" onclick="setcover();" data-toggle="tooltip" title="设置文章封面图" data-placement="bottom"><span class="glyphicon glyphicon-picture"></span>&nbsp;封面</button>-->
 					  <!--update_articletype.do-->
 					  <button type="button" class="btn btn-default" onclick="article.delArticle('');" data-toggle="tooltip" title="删除您选中的文章" data-placement="bottom">
@@ -69,7 +68,7 @@
 						<td>${ar.articleViewcount}</td>
 						<td>${ar.articleUpdatetime}</td>
 						<td>
-							<#list ar.lables as lable><span class="label label-default" onclick="dellable('${lable.id}');">${lable.lableName}</span><#if lable_has_next> </#if></#list>
+							<#list ar.lables as lable><span class="label label-default" onclick="article.dellable('${lable.id}');">${lable.lableName}</span><#if lable_has_next> </#if></#list>
 						</td>
 						<td>
 							<#if (ar.articleSort>0)>
@@ -93,12 +92,18 @@
 <script type="text/javascript">
 blogControlPanel.activePanelByText("文章管理");
 $(function () { $("[data-toggle='tooltip']").tooltip();  });
-	var data={
-<@Category website_id="${AdminWebSite.id}">
-		<#list category_lis as category>
-		'${category.id}':'${category.categoryName}'<#if category_has_next>,</#if>
-		</#list>
-	</@Category>};
+var str="({";
+var size=$('#category option').length;
+$('#category option').each(function(i){
+	var txt=$(this).text();
+	var pk=$(this).attr("pk");
+	if(txt!=""){
+		str+="'"+pk+"':'"+txt+"'";
+		if(i<size-1)str+=",";
+	}
+});
+str+="})";
+var data=eval(str);
 </script>
 </html>
 </#compress>

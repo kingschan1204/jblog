@@ -11,7 +11,6 @@ marked.setOptions({
     smartypants: false
 });
 $(function () { 
-	bootbox.setLocale("zh_CN"); 
 	emojify.run();
 	$(".atlink").each(function(){
 		$(this).attr({
@@ -21,30 +20,22 @@ $(function () {
 			"data-trigger":"click",
 			"data-title":$(this).text()
 		});
+		$(this).mouseover(function(){
+			this.click();
+		});
 		$(this).on('shown.bs.popover', function () {
 			if($(this).attr("load")=="true"){return;}
 			var u=$(this).text().replace("@","");
 			var tip =this;
 			$.ajax({
-				   type: "post",
+				   type: "get",
 				   url: bloghost+"/pub/uinfo_card.do",
 				   data: {username:u},
-				   dataType:"json",
+				   dataType:"html",
 				   success: function(result){
-					 if("url" in result){
-					 var html="<img src='"+result.img+(result.img.indexOf("res.51so.info")!=-1?"_profile.50X50":"")+"' width='50' height='50' />";
-					 if(result.tagline){ html+="<p>"+result.tagline+"</p>";}					
-					 html+="<p>用户级别："+(result.lv.trim()=="admin"?"<code>博主</code>":"游客")+"</p>";
-					 html+="<p>上次登录："+result.lastlogin+"</p>";
-					 html+="<p>开通时间："+result.datetime+"</p>";
-					 html+="<p><a href='"+result.url+"' target='_blank'>"+result.url+"</a></p>";
-					 }else{
-						 result.sname="用户不存在";
-						 html="<code>用户不存在<code>";
-					 }
 					 $(tip).attr({
-							"data-original-title":result.sname,
-							"data-content":html,
+							"data-original-title":u,
+							"data-content":result,
 							"load":true
 						});
 					 $(tip).popover('show');

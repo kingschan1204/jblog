@@ -117,7 +117,8 @@
   <div class="form-group">
     <div class="col-sm-offset-1 col-sm-10">
       <button type="submit" class="btn btn-success"><i class="glyphicon glyphicon-ok"></i>&nbsp;保存</button>
-      <button type="button" onclick="$('#myModal').modal('show');" class="btn btn-default">
+        <!--//删除class值为modal-backdrop的标签，可去除阴影-->
+      <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">
          <span class="glyphicon glyphicon-lock"></span> 修改密码</button>
     </div>
   </div>
@@ -130,6 +131,7 @@
 <#include "/admin/include/dashboard-end.ftl">
 
     <!--start Modal -->
+    <!--data-backdrop="false"不锁定背景-->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -160,8 +162,8 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default"  data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary" onclick="mofifypsw();"> 提交</button>
+                    <button type="button" class="btn btn-danger"  data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-success" onclick="mofifypsw();"> 提交</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal -->

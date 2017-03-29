@@ -85,11 +85,17 @@
 				DATE_FORMAT(
 					site.website_datetime,
 					'%Y.%m.%d'
-				) datetime
+				) datetime,
+				c.w_article_quantity article,
+				c.w_category_quantity category,
+				c.w_lable_quantity lables,
+				c.w_discuss_quantity discuss,
+				c.w_request_quantity req
 			FROM
 				blog_user
 			LEFT JOIN blog_website site ON site.webiste_creator = blog_user.id
-      		LEFT JOIN view_users_url vu on vu.id=blog_user.id
+			LEFT JOIN view_users_url vu ON vu.id = blog_user.id
+			LEFT JOIN blog_statistical_site c ON site.id = c.id
 			WHERE user_name = ?
 	 	]]>
 	 </sql>

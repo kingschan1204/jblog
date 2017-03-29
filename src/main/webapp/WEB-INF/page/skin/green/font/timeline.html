@@ -55,46 +55,38 @@
   emojify.setConfig({emojify_tag_type:'div', img_dir: '${webroot}/www/emojify/images/emoji'});
   emojify.run();
   $(function () {
-  $(".atlink").each(function(){
-		$(this).attr({
-			"data-toggle":"popover" ,
-			"data-placement":"top",
-			"data-html":"true",
-			"data-trigger":"click",
-			"data-title":$(this).text()
-		});
-		$(this).on('shown.bs.popover', function () {
-			if($(this).attr("load")=="true"){return;}
-			var u=$(this).text().replace("@","");
-			var tip =this;
-			$.ajax({
-				   type: "post",
-				   url: "${blogprefix}/pub/uinfo_card.do",
-				   data: {username:u},
-				   dataType:"json",
-				   success: function(result){
-					 if("url" in result){
-					 var html="<img src='"+result.img+(result.img.indexOf("res.51so.info")!=-1?"_profile.50X50":"")+"' width='50' height='50' />";
-					 if(result.tagline){ html+="<p>"+result.tagline+"</p>";}					
-					 html+="<p>用户级别："+(result.lv.trim()=="admin"?"<code>博主</code>":"游客")+"</p>";
-					 html+="<p>上次登录："+result.lastlogin+"</p>";
-					 html+="<p>开通时间："+result.datetime+"</p>";
-					 html+="<p><a href='"+result.url+"' target='_blank'>"+result.url+"</a></p>";
-					 }else{
-						 result.sname="用户不存在";
-						 html="<code>用户不存在<code>";
-					 }
-					 $(tip).attr({
-							"data-original-title":result.sname,
-							"data-content":html,
-							"load":true
-						});
-					 $(tip).popover('show');
-				   }
-				});
-		});
-	});
-  $("[data-toggle='popover']").popover(); 
+	  $(".atlink").each(function(){
+		  $(this).attr({
+			  "data-toggle":"popover" ,
+			  "data-placement":"top",
+			  "data-html":"true",
+			  "data-trigger":"click",
+			  "data-title":$(this).text()
+		  });
+		  $(this).mouseover(function(){
+			  this.click();
+		  });
+		  $(this).on('shown.bs.popover', function () {
+			  if($(this).attr("load")=="true"){return;}
+			  var u=$(this).text().replace("@","");
+			  var tip =this;
+			  $.ajax({
+				  type: "get",
+				  url: "/pub/uinfo_card.do",
+				  data: {username:u},
+				  dataType:"html",
+				  success: function(result){
+					  $(tip).attr({
+						  "data-original-title":u,
+						  "data-content":result,
+						  "load":true
+					  });
+					  $(tip).popover('show');
+				  }
+			  });
+		  });
+	  });
+  $("[data-toggle='popover']").popover();
   });
   </script>
 </html>

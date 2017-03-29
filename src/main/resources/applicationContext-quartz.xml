@@ -15,9 +15,9 @@
         <property name="jobDetail">
             <ref bean="jobTask"/>
         </property>
-        <!-- cron表达式 -->
+        <!-- cron表达式 5分钟执行一次 -->
         <property name="cronExpression">
-            <value>0 0/1 * * * ?</value>
+            <value>0 0/5 * * * ?</value>
         </property>
     </bean>
     <!-- 总管理类 如果将lazy-init='false'那么容器启动就会执行调度程序 -->

@@ -1,11 +1,11 @@
 package com.kingschan.blog.services;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.sf.json.JSONObject;
 
 import weibo4j.http.AccessToken;
 
@@ -27,7 +27,7 @@ public interface UserService {
      * @return
      * @throws Exception
      */
-    JSONObject getUserInfoCard(String username)throws Exception;
+    Map<String, Object> getUserInfoCard(String username)throws Exception;
     /**
      * 得到用户信息
      * @param keyword

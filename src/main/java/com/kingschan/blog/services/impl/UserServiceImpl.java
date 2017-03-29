@@ -266,10 +266,10 @@ public class UserServiceImpl extends CommonServiceImpl implements UserService {
 	}
 
 	@Override
-	public JSONObject getUserInfoCard(String username) throws Exception {
+	public Map<String, Object> getUserInfoCard(String username) throws Exception {
 		//user_info_card
 		Map<String, Object> data= user_dao.getUserInfoCard(username);
-		return null==data?new JSONObject():JSONObject.fromObject(data);
+		return data;
 	}
 
 	@Override
