@@ -1,121 +1,140 @@
 <!DOCTYPE web-app PUBLIC
- "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
- "http://java.sun.com/dtd/web-app_2_3.dtd" >
+        "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+        "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
-  <display-name>Archetype Created Web Application</display-name>
+    <display-name>Archetype Created Web Application</display-name>
+    <!--
+       由于org.springframework.web.context.ContextLoaderListener和org.springframework.web.servlet.DispatcherServlet都能够加载applicationContext*.xml（“*”是通配符，表示所有以“applicationContext”开头的xml文件）。而两个类殊途同归，最终都将这些配置文件交给了Spring框架的Ioc容器进行实例化。因此每个类都会被实例化两次。
+       -->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>/WEB-INF/classes/applicationContext.xml</param-value>
+    </context-param>
+    <servlet>
+        <servlet-name>dispatcherServlet</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>
+                /WEB-INF/classes/applicationContext-servlet.xml
+            </param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>dispatcherServlet</servlet-name>
+        <url-pattern>*.*</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcherServlet</servlet-name>
+        <url-pattern>*.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>dispatcherServlet</servlet-name>
+        <url-pattern>/*</url-pattern>
+    </servlet-mapping>
+    <filter>
+        <filter-name>hibernateFilter</filter-name>
+        <filter-class>
+            org.springframework.orm.hibernate5.support.OpenSessionInViewFilter
+        </filter-class>
+        <init-param>
+            <param-name>sessionFactoryBeanName</param-name>
+            <param-value>blog_sessionfactory</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>hibernateFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <listener>
+        <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+    </listener>
+
+    <listener>
+        <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+    </listener>
+    <filter>
+        <filter-name>encodingFilter</filter-name>
+        <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>encoding</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>forceEncoding</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>encodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <filter>
+        <filter-name>BlogFilter</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>BlogFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <servlet>
+        <servlet-name>UploadImgServlet</servlet-name>
+        <servlet-class>org.springframework.web.context.support.HttpRequestHandlerServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UploadImgServlet</servlet-name>
+        <url-pattern>/admin/article_uploadImg.do</url-pattern>
+    </servlet-mapping>
 
 
-  <servlet>
-    <servlet-name>dispatcherServlet</servlet-name>
-    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-    <init-param>
-      <param-name>contextConfigLocation</param-name>
-      <param-value>
-        /WEB-INF/classes/applicationContext-mvc.xml
-      </param-value>
-    </init-param>
-    <load-on-startup>1</load-on-startup>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>dispatcherServlet</servlet-name>
-    <url-pattern>*.*</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>dispatcherServlet</servlet-name>
-    <url-pattern>*.do</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>dispatcherServlet</servlet-name>
-    <url-pattern>/*</url-pattern>
-  </servlet-mapping>
-  <filter>
-    <filter-name>hibernateFilter</filter-name>
-    <filter-class>
-      org.springframework.orm.hibernate5.support.OpenSessionInViewFilter
-    </filter-class>
-    <init-param>
-      <param-name>sessionFactoryBeanName</param-name>
-      <param-value>blog_sessionfactory</param-value>
-    </init-param>
-  </filter>
-  <filter-mapping>
-    <filter-name>hibernateFilter</filter-name>
-    <url-pattern>/*</url-pattern>
-  </filter-mapping>
-  <listener>
-    <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
-  </listener>
- <!--
- 由于org.springframework.web.context.ContextLoaderListener和org.springframework.web.servlet.DispatcherServlet都能够加载applicationContext*.xml（“*”是通配符，表示所有以“applicationContext”开头的xml文件）。而两个类殊途同归，最终都将这些配置文件交给了Spring框架的Ioc容器进行实例化。因此每个类都会被实例化两次。
- -->
-  <listener>
-    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
-  </listener>
-  <context-param>
-    <param-name>contextConfigLocation</param-name>
-    <param-value>/WEB-INF/classes/applicationContext.xml</param-value>
-  </context-param>
+    <listener>
+        <listener-class>com.kingschan.blog.web.listener.DomainSessionListener</listener-class>
+    </listener>
 
-  <listener>
-    <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
-  </listener>
-  <filter>
-    <filter-name>encodingFilter</filter-name>
-    <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
-    <init-param>
-      <param-name>encoding</param-name>
-      <param-value>UTF-8</param-value>
-    </init-param>
-    <init-param>
-      <param-name>forceEncoding</param-name>
-      <param-value>true</param-value>
-    </init-param>
-  </filter>
-  <filter-mapping>
-    <filter-name>encodingFilter</filter-name>
-    <url-pattern>/*</url-pattern>
-  </filter-mapping>
-  <servlet>
-    <servlet-name>DruidStatView</servlet-name>
-    <servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>DruidStatView</servlet-name>
-    <url-pattern>/druid/*</url-pattern>
-  </servlet-mapping>
-  <filter>
-    <filter-name>BlogFilter</filter-name>
-    <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
-  </filter>
-  <filter-mapping>
-    <filter-name>BlogFilter</filter-name>
-    <url-pattern>/*</url-pattern>
-  </filter-mapping>
-  <servlet>
-    <servlet-name>UploadImgServlet</servlet-name>
-    <servlet-class> org.springframework.web.context.support.HttpRequestHandlerServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>UploadImgServlet</servlet-name>
-    <url-pattern>/admin/article_uploadImg.do</url-pattern>
-  </servlet-mapping>
+    <!-- start druid 监控-->
+    <filter>
+        <filter-name>DruidWebStatFilter</filter-name>
+        <filter-class>com.alibaba.druid.support.http.WebStatFilter</filter-class>
+        <async-supported>true</async-supported>
+        <init-param>
+            <param-name>exclusions</param-name>
+            <param-value>/static/*,*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*</param-value>
+        </init-param>
+        <init-param>
+            <param-name>principalSessionName</param-name>
+            <param-value>username</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>DruidWebStatFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 
 
-  <listener>
-    <listener-class>com.kingschan.blog.web.listener.DomainSessionListener</listener-class>
-  </listener>
+    <servlet>
+        <servlet-name>DruidStatView</servlet-name>
+        <servlet-class>com.alibaba.druid.support.http.StatViewServlet</servlet-class>
+        <async-supported>true</async-supported>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DruidStatView</servlet-name>
+        <url-pattern>/druid/*</url-pattern>
+    </servlet-mapping>
+    <!-- end druid监控 -->
 
-
-
-  <error-page>
-    <error-code>404</error-code>
-    <location>/WEB-INF/page/system/404.html</location>
-  </error-page>
-  <error-page>
-    <error-code>403</error-code>
-    <location>/WEB-INF/page/system/403.html</location>
-  </error-page>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/page/system/404.html</location>
+    </error-page>
+    <error-page>
+        <error-code>403</error-code>
+        <location>/WEB-INF/page/system/403.html</location>
+    </error-page>
 
 
 </web-app>
