@@ -1,0 +1,11 @@
+body,.article_content,.article-nav{ background-color: #3f3f3f;color: #b1b1b1;}
+blockquote{
+    border-color: #222;
+    background-color: #383838;
+    border-left: 6px solid #b4b4b4;
+}
+.article-nav li a{color: #b1b1b1;}
+#menu{background-color: #3f3f3f;border-bottom: solid #2f2f2f 1px;}
+#menu li a,.similar-articles li a {color: #b1b1b1;}
+.article-nav-box-footer{background-color: #3f3f3f;}
+.article-nav-box-footer li a {color: #b1b1b1;}

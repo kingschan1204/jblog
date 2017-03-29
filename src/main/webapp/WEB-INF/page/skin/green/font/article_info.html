@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="${webroot}/www/skin/green/css/article_info.css${version}">
     <#if article.articleAllowcomments>
     <!-- github.min.css googlecode.min.css xcode.min.css vs.min.css  foundation.min.css dark.min.css monokai.min.css-->
-	<link rel="stylesheet" href="http://cdn.bootcss.com/highlight.js/8.0/styles/foundation.min.css">
+	<link rel="stylesheet" id="codecss" href="http://cdn.bootcss.com/highlight.js/8.0/styles/foundation.min.css">
 	</#if>
 	<script src="http://cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>
 	<script src="http://${host}/www/emojify/js/emojify.min.js"></script>
@@ -234,7 +234,8 @@
 					<div class="article-nav-box-footer">
 						<ul>
 							<li onclick="$('body,html').animate({scrollTop:0},500);"><span class="glyphicon glyphicon-chevron-up"></span>顶部</li>
-							<li onclick="javascript:$('body,html').animate({scrollTop:$('#btn_like').offset().top + 'px'},500);"><span class="glyphicon glyphicon-comment"></span>留言</a></li>
+							<li onclick="night(this);">关灯</li>
+							<li onclick="$('body,html').animate({scrollTop:$('#btn_like').offset().top + 'px'},500);"><span class="glyphicon glyphicon-comment"></span>留言</a></li>
 							<li style="border: none;margin-bottom: 0px;" onclick='blog.articleSupport("${article.id!}",null);'><span class="glyphicon glyphicon-thumbs-up"></span>点赞</li>
 						</ul>
 					</div>
@@ -308,6 +309,18 @@
 <script  src="http://${host}/www/skin/green/js/article_info.js${version}"></script>
 </html>
 <script >
+function night(obj){
+	if($(obj).text()=="关灯"){
+		$("body").append(" <link rel='stylesheet' id='nightcss' href='${webroot}/www/skin/green/css/article-info-night.css${version}'>");
+		$("#codecss").attr("href","http://cdn.bootcss.com/highlight.js/8.0/styles/monokai.min.css");
+		$(obj).text("开灯");
+	}else{
+		$("#nightcss").remove();
+		$("#codecss").attr("href","http://cdn.bootcss.com/highlight.js/8.0/styles/foundation.min.css");
+		$(obj).text("关灯");
+	}
+
+}
 hljs.initHighlightingOnLoad();
 var _hmt = _hmt || [];
 (function() {
