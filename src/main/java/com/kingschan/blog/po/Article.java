@@ -269,7 +269,7 @@ public class Article  implements java.io.Serializable,BeanConvert {
     public void setArticleLinkurl(String articleLinkurl) {
         this.articleLinkurl = articleLinkurl;
     }
-    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, mappedBy="article")
+    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, mappedBy="article")
     //缓存子对象
     @Cache(usage=CacheConcurrencyStrategy.READ_WRITE)
     public Set<Lable> getLables() {

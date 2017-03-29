@@ -12,7 +12,7 @@
     <init-param>
       <param-name>contextConfigLocation</param-name>
       <param-value>
-        classpath:applicationContext.xml
+        /WEB-INF/classes/applicationContext-mvc.xml
       </param-value>
     </init-param>
     <load-on-startup>1</load-on-startup>
@@ -46,6 +46,9 @@
   <listener>
     <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
   </listener>
+ <!--
+ 由于org.springframework.web.context.ContextLoaderListener和org.springframework.web.servlet.DispatcherServlet都能够加载applicationContext*.xml（“*”是通配符，表示所有以“applicationContext”开头的xml文件）。而两个类殊途同归，最终都将这些配置文件交给了Spring框架的Ioc容器进行实例化。因此每个类都会被实例化两次。
+ -->
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
@@ -53,6 +56,7 @@
     <param-name>contextConfigLocation</param-name>
     <param-value>/WEB-INF/classes/applicationContext.xml</param-value>
   </context-param>
+
   <listener>
     <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
   </listener>
