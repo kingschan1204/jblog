@@ -51,9 +51,13 @@ a:hover{text-decoration: none;}
 .nav-folder-item:HOVER{background-color: black;text-decoration: none;}
 .nav-active{background-color: #CC9999;}
 .page-content{
-	padding-top:20px;
-    margin-left:260px;
+    padding:20px;
     z-index: 1;
+    position: absolute;
+    left: 240px;
+    top: 0px;
+    width: 87%;
+    height: 100%;
 }
 
 .sbtn{

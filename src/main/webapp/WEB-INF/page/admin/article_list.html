@@ -68,7 +68,9 @@
 						<td>${ar.category.categoryName}</td>
 						<td>${ar.articleViewcount}</td>
 						<td>${ar.articleUpdatetime}</td>
-						<td><#list ar.lables as lable><span class="label label-default" onclick="dellable('${lable.id}');">${lable.lableName}</span><#if lable_has_next> </#if></#list></td>
+						<td>
+							<#list ar.lables as lable><span class="label label-default" onclick="dellable('${lable.id}');">${lable.lableName}</span><#if lable_has_next> </#if></#list>
+						</td>
 						<td>
 							<#if (ar.articleSort>0)>
 								<a class="sbtn sbtn-yellow" href="javascript:article.canclefixedTop('${ar.id}');"  data-toggle="tooltip" title="取消置顶"><span class="glyphicon glyphicon-repeat"></span></a>
