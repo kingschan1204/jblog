@@ -8,6 +8,7 @@
     <script src="//cdn.bootcss.com/echarts/3.4.0/echarts.min.js"></script>
     <script src="${webroot}/www/admin/js/controlPanel.js"></script>
     <script src="${webroot}/www/blog/js/pub/blog-alert.js"></script>
+    <script src="http://echarts.baidu.com/asset/theme/roma.js"></script>
         <style>
 
             .indexbox{
@@ -20,11 +21,12 @@
             .oneBox{
                 margin-top: 0px;
                 float: left;
-                background: #18b5f8;
+                background: #996699;
                 width: 45%;
                 height: 120px;
                 /*margin-left: 30px;*/
                 font-size:16px;
+                box-shadow: 0px 0px 4px #868282;
 
             }
             .twoBox{
@@ -34,22 +36,25 @@
                 width: 45%;
                 height: 120px;
                 margin-left: 15px;
+                box-shadow: 0px 0px 4px #868282;
             }
             .threeBox{
-                background:#28ba69;
+                background:#99CC99;
                 margin-top: 15px;
                 float: left;
                 width: 45%;
                 height: 120px;
+                box-shadow: 0px 0px 4px #868282;
                 /*margin-left: 30px;*/
             }
             .foruBox{
-                background:#6d8ad8;
+                background:#9999CC;
                 margin-top: 15px;
                 float: left;
                 width: 45%;
                 height: 120px;
                 margin-left: 15px;
+                box-shadow: 0px 0px 4px #868282;
             }
             .imagebox{
                 margin-top:35px;
@@ -80,7 +85,7 @@
             <div class="imagebox"><i class="glyphicon glyphicon-th-large"></i> </div>
             <div class="fontbox">
                 文章总数<br/>
-                <span style="font-size:18px;font-weight:bold;">${WebSiteCountInfoVo.WArticleQuantity}</span>
+                <span style="font-size:28px;font-weight:bold;">${WebSiteCountInfoVo.WArticleQuantity}</span>
 
             </div>
         </div>
@@ -88,7 +93,7 @@
             <div class="imagebox"><i class="glyphicon glyphicon-tags"></i></div>
             <div class="fontbox">
                 分类标签<br/>
-                <span style="font-size:18px;font-weight:bold;">${WebSiteCountInfoVo.WLableQuantity}</span>
+                <span style="font-size:28px;font-weight:bold;">${WebSiteCountInfoVo.WLableQuantity}</span>
 
             </div>
         </div>
@@ -96,7 +101,7 @@
             <div class="imagebox"><i class="glyphicon glyphicon-comment"></i></div>
             <div class="fontbox">
                 收到评论<br/>
-                <span style="font-size:18px;font-weight:bold;">${WebSiteCountInfoVo.WDiscussQuantity}</span>
+                <span style="font-size:28px;font-weight:bold;">${WebSiteCountInfoVo.WDiscussQuantity}</span>
 
             </div>
         </div>
@@ -104,7 +109,7 @@
             <div class="imagebox"><i class="glyphicon glyphicon-fire"></i></div>
             <div class="fontbox">
                 访问人气<br/>
-                <span style="font-size:18px;font-weight:bold;">${WebSiteCountInfoVo.WRequestQuantity}</span>
+                <span style="font-size:28px;font-weight:bold;">${WebSiteCountInfoVo.WRequestQuantity}</span>
 
             </div>
         </div>
@@ -121,7 +126,7 @@
     var myChart ;
     // 使用// 使用柱状图就加载bar模块，按需加载
     // 基于准备好的dom，初始化echarts图表
-    myChart = echarts.init(document.getElementById('main'),'infographic');
+    myChart = echarts.init(document.getElementById('main'),'roma');
     /*  myChart.on('click', function (params) {
      if(params.seriesIndex==0){
      console.info(params.name+"|"+params.value);

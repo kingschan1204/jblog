@@ -62,7 +62,7 @@ a:hover {
 }
 
 .nav-folder:HOVER {
-    background-color: black;
+    background-color: #996699;
 }
 
 .nav-folder-item {
@@ -84,7 +84,7 @@ a:hover {
 }
 
 .nav-active {
-    background-color: #CC9999;
+    background-color: #996699;
 }
 
 .page-content {
