@@ -63,7 +63,8 @@ public class ReportController {
 	public String dayHttpReq(Integer limit,HttpServletRequest req){
 		JSONArray jsons=null;
 		try {
-			List<Map<String, Object>> lis = reportServ.dayHttpReq(limit, null);
+			BlogUtil bu = new BlogUtil(req);
+			List<Map<String, Object>> lis = reportServ.dayHttpReq(limit, bu.getCurrentAdminWebSite().getWebsiteName());
 			jsons =JSONArray.fromObject(lis);
 		} catch (Exception e) {
 			e.printStackTrace();

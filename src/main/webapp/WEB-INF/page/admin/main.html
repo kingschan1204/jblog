@@ -2,127 +2,179 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>日志列表</title>
+    <title>后台管理</title>
     <#include "/admin/include/bootstrap.ftl">
-    <#include "/admin/include/fancybox.ftl">
-    <script src="${webroot}/www/echarts/echarts.min.js"></script><!--
-    <script src="${webroot}/www/echarts/theme/macarons.js"></script>
-    <script src="${webroot}/www/echarts/theme/infographic.js"></script>-->
-    <script src="${webroot}/www/echarts/theme/vintage.js"></script>
+    <!--<script src="${webroot}/www/echarts/echarts.min.js"></script>-->
+    <script src="//cdn.bootcss.com/echarts/3.4.0/echarts.min.js"></script>
+    <script src="${webroot}/www/admin/js/controlPanel.js"></script>
     <script src="${webroot}/www/blog/js/pub/blog-alert.js"></script>
+        <style>
+
+            .indexbox{
+                /*height:20%;
+                width:100%;
+                margin-top:20px;*/
+                padding-left: 10px;
+            }
+            .indexbox i{font-size: 30px;}
+            .oneBox{
+                margin-top: 0px;
+                float: left;
+                background: #18b5f8;
+                width: 45%;
+                height: 120px;
+                /*margin-left: 30px;*/
+                font-size:16px;
+
+            }
+            .twoBox{
+                background:#7e53c6;
+                margin-top: 0px;
+                float: left;
+                width: 45%;
+                height: 120px;
+                margin-left: 15px;
+            }
+            .threeBox{
+                background:#28ba69;
+                margin-top: 15px;
+                float: left;
+                width: 45%;
+                height: 120px;
+                /*margin-left: 30px;*/
+            }
+            .foruBox{
+                background:#6d8ad8;
+                margin-top: 15px;
+                float: left;
+                width: 45%;
+                height: 120px;
+                margin-left: 15px;
+            }
+            .imagebox{
+                margin-top:35px;
+                margin-left:30px;
+                margin-bottom:50px;
+                float:left;
+                color:white;
+            }
+            .fontbox{
+                margin-top:30px;
+                float:right;
+                margin-right:20px;
+                color:white;
+                font-size:16px;
+                text-align:center;
+
+            }
+
+        </style>
     </head>
 <body>
 <!-- 左边导航 -->
 <#include "/admin/include/dashboard-start.ftl">
-    <div class="row">
-        <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
-        <div id="main" class="col-md-12" style="min-height: 450px;"></div>
-    </div>
-    <div class="row">
-    </div>
-    <!-- ECharts单文件引入 -->
-    <script type="text/javascript">
-        var dom = document.getElementById("main");
-        var myChart = echarts.init(dom,"vintage");
-        var rows=[];
-        $.ajax({
-            type: "GET",
-            url: "${admin_blogprefix}/admin/report/dayOfArticleQuantity.do",
-            data: {limit:40},
-            dataType:'json',
-            success: function(result){
-                rows=result;
-                var days=new Array();
-                var quantitys=new Array();
-                for(var i=0;i<rows.length;i++){
-                    days.push(rows[i].days);
-                    quantitys.push(rows[i].total);
-                }
-                // 指定图表的配置项和数据
-                var option = {
-                    tooltip: {
-                        trigger: 'axis',
-                        position: function (pt) {
-                            return [pt[0], '10%'];
-                        }
-                    },
-                    title: {
-                        left: 'center',
-                        text: '最近文章发布情况',
-                    },
-                    legend: {
-                        top: 'bottom',
-                        data:['意向']
-                    },
-                    toolbox: {
-                        feature: {
-                            dataZoom: {
-                                yAxisIndex: 'none'
-                            },
-                            restore: {},
-                            saveAsImage: {}
-                        }
-                    },
-                    xAxis: {
-                        type: 'category',
-                        boundaryGap: false,
-                        data: days
-                    },
-                    yAxis: {
-                        type: 'value',
-                        boundaryGap: [0, '100%']
-                    },
-                    dataZoom: [{
-                        type: 'inside',
-                        start: 0,
-                        end: 30
-                    } , {
-                        start: 0,
-                        end: 10,
-                        handleIcon: 'M10.7,11.9v-1.3H9.3v1.3c-4.9,0.3-8.8,4.4-8.8,9.4c0,5,3.9,9.1,8.8,9.4v1.3h1.3v-1.3c4.9-0.3,8.8-4.4,8.8-9.4C19.5,16.3,15.6,12.2,10.7,11.9z M13.3,24.4H6.7V23h6.6V24.4z M13.3,19.6H6.7v-1.4h6.6V19.6z',
-                        handleSize: '80%',
-                        handleStyle: {
-                            color: '#fff',
-                            shadowBlur: 3,
-                            shadowColor: 'rgba(0, 0, 0, 0.6)',
-                            shadowOffsetX: 2,
-                            shadowOffsetY: 2
-                        }
-                    }],
-                    series: [
-                        {
-                            name:'篇数',
-                            type:'line',
-                            smooth:true,
-                            symbol: 'none',
-                            sampling: 'average',
-                            itemStyle: {
-                                normal: {
-                                    color: 'rgb(255, 70, 131)'
-                                }
-                            },
-                            areaStyle: {
-                                normal: {
-                                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                                        offset: 0,
-                                        color: 'rgb(255, 158, 68)'
-                                    }, {
-                                        offset: 1,
-                                        color: 'rgb(255, 70, 131)'
-                                    }])
-                                }
-                            },
-                            data: quantitys
-                        }
-                    ]
-                };
-                myChart.setOption(option);
-                myChart.hideLoading();
+<div class="row">
+    <@WebSiteCountInfo siteid="${AdminWebSite.id}">
+    <div class="indexbox">
+        <div class="oneBox">
+            <div class="imagebox"><i class="glyphicon glyphicon-th-large"></i> </div>
+            <div class="fontbox">
+                文章总数<br/>
+                <span style="font-size:18px;font-weight:bold;">${WebSiteCountInfoVo.WArticleQuantity}</span>
 
+            </div>
+        </div>
+        <div class="twoBox">
+            <div class="imagebox"><i class="glyphicon glyphicon-tags"></i></div>
+            <div class="fontbox">
+                分类标签<br/>
+                <span style="font-size:18px;font-weight:bold;">${WebSiteCountInfoVo.WLableQuantity}</span>
+
+            </div>
+        </div>
+        <div class="threeBox">
+            <div class="imagebox"><i class="glyphicon glyphicon-comment"></i></div>
+            <div class="fontbox">
+                收到评论<br/>
+                <span style="font-size:18px;font-weight:bold;">${WebSiteCountInfoVo.WDiscussQuantity}</span>
+
+            </div>
+        </div>
+        <div class="foruBox">
+            <div class="imagebox"><i class="glyphicon glyphicon-fire"></i></div>
+            <div class="fontbox">
+                访问人气<br/>
+                <span style="font-size:18px;font-weight:bold;">${WebSiteCountInfoVo.WRequestQuantity}</span>
+
+            </div>
+        </div>
+    </div>
+</@WebSiteCountInfo>
+</div>
+<div class="row" style="margin-top: 20px;">
+    <h2 class="center-block" style="text-align: center;">博客访问情况</h2>
+    <div id="main" style="height:400px"></div>
+</div>
+<script>
+    blogControlPanel.activePanelByText("管理首页");
+    var echarts;
+    var myChart ;
+    // 使用// 使用柱状图就加载bar模块，按需加载
+    // 基于准备好的dom，初始化echarts图表
+    myChart = echarts.init(document.getElementById('main'),'infographic');
+    /*  myChart.on('click', function (params) {
+     if(params.seriesIndex==0){
+     console.info(params.name+"|"+params.value);
+     }
+     }); */
+    var rows=[];
+    $.ajax({
+        type: "GET",
+        url: "${admin_blogprefix}/admin/report/dayHttpReq.do",
+        data: {limit:60},
+        dataType:'json',
+        success: function(result){
+            rows=result;
+            var title=new Array();
+            var quantity=new Array();
+            var ip=new Array();
+            for(var i=0;i<rows.length;i++){
+                title.push(rows[i].days);
+                quantity.push(rows[i].total);
+                ip.push(rows[i].ip);
             }
-        });
-    </script>
-
-<#include "/admin/include/dashboard-end.ftl">
+            // 指定图表的配置项和数据
+            var option = {
+                title: {
+                    text: ''
+                },
+                tooltip: {},
+                legend: {
+                    data:['PV','IP']
+                },
+                xAxis: {
+                    data:title
+                },
+                yAxis: {},
+                series: [{
+                    name: 'PV',
+                    type: 'bar',
+                    data:quantity
+                },
+                    {
+                        name: 'IP',
+                        type: 'bar',
+                        data:ip
+                    }
+                ]
+            };
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+            myChart.hideLoading();
+// 				        myChart.setTheme('infographic');
+        }
+    });
+</script>
+    <#include "/admin/include/dashboard-end.ftl">
 </body>
 </html>

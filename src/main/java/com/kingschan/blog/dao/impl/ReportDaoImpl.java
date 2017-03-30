@@ -24,7 +24,7 @@ public class ReportDaoImpl extends HibernateBaseDao implements ReportDao {
 		if (null!=limit&&limit>0) {
 			sb.append(String.format(" limit %d ", limit));
 		}
-		 return (List<Map<String, Object>>) queryForListMapBySql(sql.toString(), false);
+		 return (List<Map<String, Object>>) queryForListMapBySql(sb.toString(), false,website,website);
 	}
 
 	@Override

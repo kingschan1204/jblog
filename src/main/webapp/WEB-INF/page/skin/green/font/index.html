@@ -20,7 +20,7 @@
 	      			<@Article page="${page!}" category="${category!}" tag="${tag!}" website_id="${website.id}" date="${date!}" limit="12" fulltext="${keyword!}" orderby="a.articleUpdatetime desc" model="font">
 						<#list article_lis as article>
 							<div class="index-article-list">
-								<h3><a href="${blogprefix}/entry/${article.id}.html" target="_blank">${article.articleTitle}</a></h3>
+								<h3><a href="${blogprefix}/entry/${article.id}" target="_blank">${article.articleTitle}</a></h3>
 								<div class="index-article-list-text">${article.articleSummary}</div>
 								<div>
 									<#list article.lables as lable>
@@ -78,7 +78,7 @@
 			  			<ul>
 				   		<#list article_lis as article> 
 				   			<li>
-				    		<a href="${blogprefix}/entry/${article.id}.html#comments" target="_blank"  title="${article.articleTitle}-(${article.articleViewcount})" >
+				    		<a href="${blogprefix}/entry/${article.id}" target="_blank"  title="${article.articleTitle}-(${article.articleViewcount})" >
 				    			${article.articleTitle}
 				    		</a>
 				    		</li>
@@ -95,7 +95,7 @@
 				  		<ul>
 				   		<#list article_lis as article> 
 				   			<li>
-				    		<a href="${blogprefix}/entry/${article.id}.html#comments" target="_blank" title="${article.articleTitle}-(${article.articleTotalComment})" >
+				    		<a href="${blogprefix}/entry/${article.id}#comments" target="_blank" title="${article.articleTitle}-(${article.articleTotalComment})" >
 				    			${article.articleTitle}
 				    		</a>
 				    		</li>
@@ -127,7 +127,6 @@
     <script type="text/javascript">
   $("#menu_home").addClass("active");
   $("[data-toggle='tooltip']").tooltip();
-  $("[data-toggle='popover']").popover();
   $("#readSort ul li:last").css({"border":"none"});
   $("#commentSort ul li:last").css({"border":"none"});
   $("#pushSort ul li:last").css({"border":"none"});

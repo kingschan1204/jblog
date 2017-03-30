@@ -3,10 +3,10 @@
 	<!-- 每日pv和ip统计 -->
 	<sql id="dayReport" >
 		<![CDATA[
-			SELECT a.days, a.total, b.ip FROM ( SELECT DATE_FORMAT(req_datetime, '%Y-%m-%d') days, count(*) total FROM blog_request_log GROUP BY days ORDER BY days DESC ) a LEFT JOIN ( SELECT days, count(*) ip FROM ( SELECT DATE_FORMAT(req_datetime, '%Y-%m-%d') days, req_ip FROM blog_request_log GROUP BY days, req_ip ) x GROUP BY days ) b ON a.days = b.days
+			SELECT a.days, a.total, b.ip FROM ( SELECT DATE_FORMAT(req_datetime, '%Y-%m-%d') days, count(1) total FROM blog_request_log WHERE req_blog = ? GROUP BY days ORDER BY days DESC ) a LEFT JOIN ( SELECT days, count(1) ip FROM ( SELECT DATE_FORMAT(req_datetime, '%Y-%m-%d') days, req_ip FROM blog_request_log WHERE req_blog = ? GROUP BY days, req_ip ) x GROUP BY days ) b ON a.days = b.days
 		]]>
 	</sql>
-	
+
 	<!-- 博客访问占比情况 -->
 	<sql id="sumBlogAccess" >
 		<![CDATA[
@@ -19,14 +19,14 @@
 			SELECT b.agent_browser_name name, count(*) value FROM blog_request_log a inner JOIN base_agent b ON a.req_agent = b.agent_key GROUP BY b.agent_browser_name
 		]]>
 	</sql>
-	
+
 	<!-- 日志发表日统计 -->
 	<sql id="dayOfArticleQuantity" >
 		<![CDATA[
 				select DATE_FORMAT(article_pubtime,'%Y-%m-%d') days,count(*) total from blog_article <#if websiteid??> where websiteid=? </#if> GROUP BY days order by days desc
 		]]>
 	</sql>
-	
+
 	<!-- 网站访问情况 -->
 	<sql id="accessLog" >
 		<![CDATA[
@@ -51,13 +51,13 @@
 			and( b.agent_device='Computer' or b.agent_device='Mobile' or b.agent_device='Tablet')
 		]]>
 	</sql>
-	<!-- 
+	<!--
 	当日pv详情
 	select a.req_agent,a.req_ip,a.req_blog,b.agent_name,b.agent_terminal from blog_request_log a
 	left join base_agent b on a.req_agent=b.agent_key
 	 where  DATE_FORMAT(req_datetime,'%Y-%m-%d')='2016-10-09'
-	
-	
+
+
 	查pv情况
 	select b.agent_key,count(*) total from blog_request_log a
 	left join base_agent b on a.req_agent=b.agent_key
@@ -107,15 +107,15 @@
 			where  b.agent_device <> 'Unknown' group by req_blog
 	 	]]>
 	 </sql>
-	 
-	 
+
+
 	  <!-- 查文章浏览次数 -->
 	 <sql id="article_req_count">
 	 	<![CDATA[
 		 	select LEFT(REPLACE(req_url,'/entry/',''),32) url,count(*) total from blog_request_log where req_url REGEXP '^/entry/[a-z0-9]{32}' group by req_url,req_ip order by total desc
 	 	]]>
 	 </sql>
-	 
+
 	 <!-- 效正文章实际访问次数去掉重复Ip -->
 	 <sql id="article_req_count">
 	 	<![CDATA[
@@ -126,7 +126,7 @@
 				set a.article_viewcount=b.total
 	 	]]>
 	 </sql>
-	 
+
 	 <!-- 博客动态 -->
 	  <sql id="blog_timeline">
 	 	<![CDATA[
