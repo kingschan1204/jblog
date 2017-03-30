@@ -6,7 +6,7 @@ A multi-user blog system implemented with Spring /MVC+ Hibernate + MySQL + Boots
 > Now deployed in http://51so.info and my blog home is http://kingschan.51so.info 
 
 
-### 部署方法及二次开发的步骤正在整理中，不日我将整理好公布 ~ 
+### 部署方法及二次开发的步骤正在整理中，即将整理好公布 ~ 
 
 
 
@@ -49,6 +49,9 @@ A multi-user blog system implemented with Spring /MVC+ Hibernate + MySQL + Boots
 登录界面：
 ![登录](https://raw.githubusercontent.com/kingschan1204/jblog/f75356d181547441ebdbbcd5908b247d6dfef568/git-res/login.png )
 
+后台首页
+![后台首页](https://raw.githubusercontent.com/kingschan1204/jblog/7fb25f7b03bd0a9c4cbbb1dfe58c5aeec28ca206/git-res/admin_home.png )
+
 文章列表
 ![文章列表](https://raw.githubusercontent.com/kingschan1204/jblog/1aa8b0b1739aecf526f69c278f99e648606b957b/git-res/admin_article_list.png )
 文章发布
@@ -56,9 +59,6 @@ A multi-user blog system implemented with Spring /MVC+ Hibernate + MySQL + Boots
 
 文件管理
 ![文件管理](https://raw.githubusercontent.com/kingschan1204/jblog/1aa8b0b1739aecf526f69c278f99e648606b957b/git-res/admin_res_list.png )
-
-后台首页
-![后台首页](https://raw.githubusercontent.com/kingschan1204/jblog/f69a0b4e0e973f42e053fa8b4a09f7d901ab0fc9/git-res/admin_home.png )
 
 博客信息设置
 ![](https://raw.githubusercontent.com/kingschan1204/jblog/f69a0b4e0e973f42e053fa8b4a09f7d901ab0fc9/git-res/admin_site_info.png )
@@ -78,7 +78,8 @@ A multi-user blog system implemented with Spring /MVC+ Hibernate + MySQL + Boots
 ![](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/font-article-info.png )
 
 ### 评论
-
+emojify表情支持
+![](https://raw.githubusercontent.com/kingschan1204/jblog/7fb25f7b03bd0a9c4cbbb1dfe58c5aeec28ca206/git-res/facebox.png )
 ![](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/article-info-comment1.png )
 ![](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/article-info-comment.png )
 
