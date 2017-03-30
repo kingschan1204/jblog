@@ -72,13 +72,13 @@
 						</td>
 						<td>
 							<#if (ar.articleSort>0)>
-								<a class="sbtn sbtn-yellow" href="javascript:article.canclefixedTop('${ar.id}');"  data-toggle="tooltip" title="取消置顶"><span class="glyphicon glyphicon-repeat"></span></a>
+								<button class="sbtn sbtn-yellow" onclick="article.canclefixedTop('${ar.id}');"  data-toggle="tooltip" title="取消置顶"><span class="glyphicon glyphicon-repeat"></span></button>
 								<#else>
-									<a class="sbtn sbtn-yellow" onclick="article.fixedTop('${ar.id}');" target="_blank" data-toggle="tooltip" title="预览"><span class="glyphicon glyphicon-pushpin"></span> </a>
+									<button class="sbtn sbtn-yellow" onclick="article.fixedTop('${ar.id}');"  data-toggle="tooltip" title="预览"><span class="glyphicon glyphicon-pushpin"></span> </button>
 							</#if>
-							<a class="sbtn sbtn-purple" onclick="article.crawImg('${ar.id}');"  data-toggle="tooltip" title="抓取外部图片保存到我的文件夹里"><span class="glyphicon glyphicon-paperclip"></span> </a>
-							<a class="sbtn sbtn-green" href="http://${host}/${AdminWebSite.websiteName}/entry/${ar.id}.html" target="_blank" data-toggle="tooltip" title="预览"><span class="glyphicon glyphicon-search"></span> </a>
-							<a class="sbtn sbtn-red" onclick="article.delArticle('${ar.id}');"  data-toggle="tooltip" title="删除"><span class="glyphicon glyphicon-remove"></span></a>
+							<button class="sbtn sbtn-purple" onclick="article.crawImg('${ar.id}');"  data-toggle="tooltip" title="抓取外部图片保存到我的文件夹里"><span class="glyphicon glyphicon-paperclip"></span> </button>
+							<button class="sbtn sbtn-green" onclick="window.open('http://${host}/${AdminWebSite.websiteName}/entry/${ar.id}.html');"  data-toggle="tooltip" title="预览"><span class="glyphicon glyphicon-search"></span> </button>
+							<button class="sbtn sbtn-red" onclick="article.delArticle('${ar.id}');"  data-toggle="tooltip" title="删除"><span class="glyphicon glyphicon-remove"></span></button>
 						</td>
 					</tr>
 		    	</#list>

@@ -16,7 +16,7 @@
              		<li><a href="http://${host}/admin/main.do"><span class="glyphicon glyphicon-user"></span>&nbsp;${BLOG_CURRENT_USER.userScreenName}</a></li>
 	                <li><a href="http://${host}/font/logout.do" style="color:red;"><span class="glyphicon glyphicon-remove"></span>&nbsp;退出</a></li>
 	              <#else>
-	               <li><a href="javascript:window.location='https://51so.info/pub/login.do?url='+ window.location"><span class="glyphicon glyphicon-user"></span>&nbsp;<b>登录</b></a> </li>
+	               <li><a href="javascript:window.location='http://51so.info/pub/login.do?url='+ window.location"><span class="glyphicon glyphicon-user"></span>&nbsp;<b>登录</b></a> </li>
 	           </#if>
             
             <li>

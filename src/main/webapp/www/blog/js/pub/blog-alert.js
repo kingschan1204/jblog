@@ -47,15 +47,25 @@ var blogAlert = {
             allowOutsideClick: false
         }).then(callback);
     }, showLoading: function (msg) {
-        blogAlert.dialog = bootbox.dialog({
+        swal({
+            title: '',
+            text: msg,
+            width:'300px',
+            imageUrl: '/www/showloading/loading.gif',
+            showConfirmButton:false,
+            showLoaderOnConfirm:true,
+            allowOutsideClick:false
+        })
+       /* blogAlert.dialog = bootbox.dialog({
             message: '<p class="text-center"><img src="/www/showloading/loading.gif"/>&nbsp;' + msg + '</p>',
             size: 'small',
             closeButton: false
-        });
+        });*/
     },
     closeLoading: function () {
-        if (null == blogAlert.dialog)return;
-        blogAlert.dialog.modal('hide');
+       /* if (null == blogAlert.dialog)return;
+        blogAlert.dialog.modal('hide');*/
+        swal.close();
     },
     /**
      *
