@@ -136,7 +136,7 @@
     $.ajax({
         type: "GET",
         url: "${admin_blogprefix}/admin/report/dayHttpReq.do",
-        data: {limit:60},
+        data: {limit:40},
         dataType:'json',
         success: function(result){
             rows=result;
