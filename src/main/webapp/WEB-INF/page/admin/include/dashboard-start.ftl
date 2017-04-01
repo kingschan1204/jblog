@@ -8,7 +8,7 @@
 			</div>
             <a href="${webroot}/admin/main.do" >
                 <div class="nav-folder" style="margin-top: 40px;" >
-                    <span class="glyphicon glyphicon-stop"></span>管理首页
+                    <span class="glyphicon glyphicon-dashboard"></span>仪表盘
                 </div>
             </a>
             <a href="${webroot}/admin/edit_article.do" >

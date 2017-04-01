@@ -25,6 +25,15 @@ var blogAlert = {
             title, text, 'success'
         )
     },
+    success:function(title,text,funcallback){
+        swal({
+            title: title,
+            text: text,
+            type: 'success'
+        }).then(
+            funcallback
+        )
+    },
     /**
      *
      * @param title

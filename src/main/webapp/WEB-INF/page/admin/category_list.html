@@ -21,20 +21,21 @@
 					    <label  class="col-sm-2 control-label">名称</label>
 					    <div class="col-sm-8">
 					     <input id="categoryid" type="hidden"/>
-					      <input type="text"  name="categoryName" id="categoryName" class="form-control"  placeholder="名称">
+					      <input type="text"  name="categoryName" id="categoryName" class="form-control"  placeholder="名称" maxlength="12">
 					    </div>
 					 </div>
 					 <div class="form-group">
 					    <label  class="col-sm-2 control-label">排序</label>
 					    <div class="col-sm-8">
-					      <input type="text"  name="categoryPosition" id="categoryPosition" class="form-control"  placeholder="排序">
+					      <input type="text"  name="categoryPosition" id="categoryPosition" class="form-control"  placeholder="排序" maxlength="3">
 					    </div>
 					 </div>
 					<div class="form-group">
 					    <label  class="col-sm-2 control-label">备注</label>
 					    <div class="col-sm-8">
-					      <input type="text"  name="categoryRemark" id="categoryRemark" class="form-control"  placeholder="备注">
-					    </div>
+							<textarea class="form-control"  name="categoryRemark" id="categoryRemark"   placeholder="备注" maxlength="50" rows="3"></textarea>
+
+						</div>
 					 </div>
 				</form>
          </div>
@@ -47,11 +48,11 @@
 </div>
 <!-- 模态框（Modal） -->
  <div class="btn-group">
-	<button type="button" class="btn btn-default" onclick="addcategory();"  data-toggle="tooltip" title="新增一个分类" data-placement="bottom">
+	<button type="button" class="sbtn sbtn-green" onclick="addcategory();"  data-toggle="tooltip" title="新增一个分类" data-placement="bottom">
 	<span class="glyphicon glyphicon-plus"></span>&nbsp;新增</button>
-	<button type="button" class="btn btn-default" onclick="editcategory();"  data-toggle="tooltip" title="保存修改内容" data-placement="bottom">
+	<button type="button" class="sbtn sbtn-yellow" onclick="editcategory();"  data-toggle="tooltip" title="保存修改内容" data-placement="bottom">
 	<span class="glyphicon glyphicon-edit"></span>&nbsp;编辑</button>
-	<button type="button" class="btn btn-default" onclick="fundel();" data-toggle="tooltip" title="删除一个分类" data-placement="bottom">
+	<button type="button" class="sbtn sbtn-red" onclick="fundel();" data-toggle="tooltip" title="删除一个分类" data-placement="bottom">
 	<span class="glyphicon glyphicon-remove"></span>&nbsp;删除</button>
 </div>
 	<p></p>
@@ -90,16 +91,18 @@ function fundel(){
 			for(var i=0;i<chks.length;i++){
 				lis.push(chks[i].value);
 			}
+		blogAlert.showLoading('正在处理请稍后...');
 			$.ajax({
 				type: "post",
 				url: "${admin_blogprefix}/admin/category_del.do",
 				data: {ids:lis},
 				dataType:'json',
 				success: function(data){
+					blogAlert.closeLoading();
 					if(data.success){
 						location.reload();
 					}else{
-						bootbox.alert(data.msg);
+						blogAlert.error('',data.msg);
 					}
 
 				}
@@ -182,6 +185,7 @@ function subcategory(){
 	$('#categoryform').data('bootstrapValidator').validate();
 	var result=$('#categoryform').data('bootstrapValidator').isValid(); 
 	   if(result){
+		   blogAlert.showLoading('正在处理请稍后...');
 		   $.ajax({
 			   type: "post",
 			   url: "${admin_blogprefix}/admin/category_save.do",
@@ -192,20 +196,22 @@ function subcategory(){
 				   },
 			   dataType:'json',
 			   success: function(data){
+				   blogAlert.closeLoading();
 				   if(data.success){
 					   location.reload();
+
 					   /* $('#categoryModal').modal('hide');
 					   bootbox.alert("<b style='color:blue;'>操作成功!</b>");
 					   $('#categoryform')[0].reset();
 					   $('#categoryform').data('bootstrapValidator').resetForm(); */
 
 				   }else{
-				   		bootbox.alert(data.msg);
+					   blogAlert.error('',data.msg);
 				   }
 			   }
 			});
 	   }else{
-		   blogAlert.error('请按要求填写表单信息!');
+		   blogAlert.alert('请按要求填写表单信息!');
 	   }
 }
 </script>

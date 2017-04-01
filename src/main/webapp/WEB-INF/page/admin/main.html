@@ -121,17 +121,17 @@
     <div id="main" style="height:400px"></div>
 </div>
 <script>
-    blogControlPanel.activePanelByText("管理首页");
+    blogControlPanel.activePanelByText("仪表盘");
     var echarts;
     var myChart ;
     // 使用// 使用柱状图就加载bar模块，按需加载
     // 基于准备好的dom，初始化echarts图表
     myChart = echarts.init(document.getElementById('main'),'roma');
-    /*  myChart.on('click', function (params) {
+      myChart.on('click', function (params) {
      if(params.seriesIndex==0){
      console.info(params.name+"|"+params.value);
      }
-     }); */
+     });
     var rows=[];
     $.ajax({
         type: "GET",

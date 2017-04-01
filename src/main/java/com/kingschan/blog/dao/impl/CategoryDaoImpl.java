@@ -86,7 +86,7 @@ public class CategoryDaoImpl extends HibernateBaseDao implements CategoryDao {
 		String del_hql="delete from Category c where c.id in(:ids) and c.categoryWebsiteid=:webid";
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("ids", ids);
-		Object val=uniqueQueryByHQL(total_hql, true, map);
+		Object val=uniqueQueryByHQL(total_hql, false, map);
 		if (Integer.valueOf(val.toString())>0) {
 			throw new Exception("要删除的类型中还有文章，操作失败!");
 		}
