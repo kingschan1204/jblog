@@ -226,7 +226,11 @@ public class ArticleServiceImpl extends CommonServiceImpl implements ArticleServ
         a.setArticleMd5(CommomEncrypt.MD5(at.getArticleContent()));
         a.setLables(labes);
         if (a.getArticleEditor().equals("html")) {
-            String _html = Jsoup.clean(at.getArticleContent(), Whitelist.relaxed());
+            String _html = Jsoup.clean(at.getArticleContent(),
+                    Whitelist.relaxed()
+                    .addAttributes("a","target")
+                    .addAttributes("tr","class")
+            );
             at.setArticleContent(_html);
         }
         if (add) {
