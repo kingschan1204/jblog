@@ -30,7 +30,7 @@ var article = {
                     url: "/admin/del_article.do",
                     data: {ids: lis},
                     success: function (msg) {
-                        $('body').hideLoading();
+                        blogAlert.closeLoading();
                         bootbox.alert(msg);
                         if (msg.indexOf("成功") != -1) {
                             $("#sform").submit();
