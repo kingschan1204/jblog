@@ -24,7 +24,7 @@ A multi-user blog system implemented with Spring /MVC+ Hibernate + MySQL + Boots
 ## 想法
 > 致力打造属于更合适用户使用的博文平台，集百家之长。
 
-![51so.info](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/blog.png )
+![51so.info](https://kingschan1204.github.io/jblog/git-res/blog.png )
 
 ## 现状
 目前平台已上线了第一版，个人博客功能基本完成。目前内测阶段。暂未开放注册。[平台主页](http://51so.info),[登录](http://51so.info/pub/login.do)，[我的博客](http://kingschan.51so.info)
@@ -47,41 +47,41 @@ A multi-user blog system implemented with Spring /MVC+ Hibernate + MySQL + Boots
 
 ## 界面截图
 登录界面：
-![登录](https://raw.githubusercontent.com/kingschan1204/jblog/f75356d181547441ebdbbcd5908b247d6dfef568/git-res/login.png )
+![登录](https://kingschan1204.github.io/jblog/git-res/login.png )
 
 后台首页
-![后台首页](https://raw.githubusercontent.com/kingschan1204/jblog/7fb25f7b03bd0a9c4cbbb1dfe58c5aeec28ca206/git-res/admin_home.png )
+![后台首页](https://kingschan1204.github.io/jblog/git-res/admin_home.png )
 
 文章列表
-![文章列表](https://raw.githubusercontent.com/kingschan1204/jblog/ad4738caf523ad68bcf2885a4f64e16b20cf933c/git-res/admin_article_list.png )
+![文章列表](https://kingschan1204.github.io/jblog/git-res/admin_article_list.png )
 文章发布
-![文章发布](https://raw.githubusercontent.com/kingschan1204/jblog/fecdf33aa234a1f2a13a823ce6bd4c61ed3e02ce/git-res/admin_article_edit.png )
+![文章发布](https://kingschan1204.github.io/jblog/git-res/admin_article_edit.png )
 
 文件管理
-![文件管理](https://raw.githubusercontent.com/kingschan1204/jblog/1aa8b0b1739aecf526f69c278f99e648606b957b/git-res/admin_res_list.png )
+![文件管理](https://kingschan1204.github.io/jblog/git-res/admin_res_list.png )
 
 博客信息设置
-![](https://raw.githubusercontent.com/kingschan1204/jblog/f69a0b4e0e973f42e053fa8b4a09f7d901ab0fc9/git-res/admin_site_info.png )
+![](https://kingschan1204.github.io/jblog/git-res/admin_site_info.png )
 
 ### 手机访问效果
 
-![](https://raw.githubusercontent.com/kingschan1204/jblog/f69a0b4e0e973f42e053fa8b4a09f7d901ab0fc9/git-res/mobile-article-info.PNG )
+![](https://kingschan1204.github.io/jblog/git-res/mobile-article-info.PNG )
 
-![](https://raw.githubusercontent.com/kingschan1204/jblog/f69a0b4e0e973f42e053fa8b4a09f7d901ab0fc9/git-res/mobile-home.PNG )
+![](https://kingschan1204.github.io/jblog/git-res/mobile-home.PNG )
 
-![](https://raw.githubusercontent.com/kingschan1204/jblog/f69a0b4e0e973f42e053fa8b4a09f7d901ab0fc9/git-res/mobile-list.PNG )
+![](https://kingschan1204.github.io/jblog/git-res/mobile-list.PNG )
 
-![](https://raw.githubusercontent.com/kingschan1204/jblog/f69a0b4e0e973f42e053fa8b4a09f7d901ab0fc9/git-res/mobile.PNG )
+![](https://kingschan1204.github.io/jblog/git-res/mobile.PNG )
 
 ### 文章详情
 
-![](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/font-article-info.png )
+![](https://kingschan1204.github.io/jblog/git-res/font-article-info.png )
 
 ### 评论
 emojify表情支持
-![](https://raw.githubusercontent.com/kingschan1204/jblog/7fb25f7b03bd0a9c4cbbb1dfe58c5aeec28ca206/git-res/facebox.png )
-![](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/article-info-comment1.png )
-![](https://raw.githubusercontent.com/kingschan1204/jblog/master/git-res/article-info-comment.png )
+![](https://kingschan1204.github.io/jblog/git-res/facebox.png )
+![](https://kingschan1204.github.io/jblog/git-res/article-info-comment1.png )
+![](https://kingschan1204.github.io/jblog/git-res/article-info-comment.png )
 
 
 ## 立项功能待开发
