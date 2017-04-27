@@ -42,6 +42,7 @@ public class User implements java.io.Serializable, BeanConvert {
 	private String sinaProfileUrl;
 	private String userLevel;
 	private String userProfileImg;
+	private String userUrl;
 	private Set<Category> categories = new HashSet<Category>(0);
 	private Set<Article> articles = new HashSet<Article>(0);
 	private Set<WebSite> webSites = new HashSet<WebSite>(0);
@@ -269,4 +270,12 @@ public class User implements java.io.Serializable, BeanConvert {
 		this.userProfileImg = userProfileImg;
 	}
 
+	@Column(name = "user_url", length = 50)
+	public String getUserUrl() {
+		return userUrl;
+	}
+
+	public void setUserUrl(String userUrl) {
+		this.userUrl = userUrl;
+	}
 }

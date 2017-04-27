@@ -118,7 +118,7 @@ var article = {
                 url: "/admin/update_articletype.do",
                 data: {ids: lis, category: result},
                 success: function (msg) {
-                    $('body').hideLoading();
+                    blogAlert.closeLoading();
                     if (msg == "success") {
                         location.reload();
                     } else {

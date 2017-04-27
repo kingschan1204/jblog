@@ -80,7 +80,7 @@
 				DATE_FORMAT(user_lastlogin, '%Y.%m.%d') lastlogin,
 				user_level lv,
 				user_screen_name sname,
-				vu.url url,
+				user_url url,
 				site.website_tagline tagline,
 				DATE_FORMAT(
 					site.website_datetime,
@@ -94,7 +94,6 @@
 			FROM
 				blog_user
 			LEFT JOIN blog_website site ON site.webiste_creator = blog_user.id
-			LEFT JOIN view_users_url vu ON vu.id = blog_user.id
 			LEFT JOIN blog_statistical_site c ON site.id = c.id
 			WHERE user_name = ?
 	 	]]>
