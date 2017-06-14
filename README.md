@@ -26,7 +26,7 @@ A multi-user blog system implemented with Spring /MVC+ Hibernate +Hibernate-sear
 - 新浪微薄登录
 - **多编辑器支持html,markdown风格编写博文**
 
-> 部署方法及二次开发的步骤正在整理中，即将整理好公布 ~ 
+> 部署方法及二次开发的步骤正在整理中： [二次开发相关说明](https://github.com/kingschan1204/jblog/wiki)
 
 ## 背景
 本人程序员一枚，从事web开发时常要学习各种新技术，总结遇到的各种问题，已便下次遇到些类问题时能快速搞定，并将此分享帮助有需要的人。<br>最好的记性也抵不过岁月的冲击。常言道，时光能冲淡一切！把重要的东西写下来保存是个很不错的选择。
