@@ -1,6 +1,8 @@
 package com.kingschan.blog.util;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Map;
 
 import org.dom4j.Node;
@@ -17,14 +19,23 @@ public class SqlUtil {
 	 */
 	public static String getSql(String fileName,String id){
 		String sql=null;
+		FileInputStream fis = null;
 		try {
 			String path=ReportDaoImpl.class.getClassLoader().getResource("").getPath().toString().concat(String.format("%s.xml", fileName));
-			File f = new File(path);
-			XmlOperation xml = new XmlOperation(f);
+			fis = new FileInputStream(path);
+			XmlOperation xml = new XmlOperation(fis);
 			Node node= xml.getNodeByExpression(String.format("/body/sql[@id='%s']", id));
 			sql=node.getText().trim().replaceAll("\\s", " ");
 		} catch (Exception e) {
 			e.printStackTrace();
+		}finally {
+			if (null!=fis){
+				try {
+					fis.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 		return sql;
 	}

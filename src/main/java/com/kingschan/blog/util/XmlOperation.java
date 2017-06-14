@@ -1,6 +1,7 @@
 package com.kingschan.blog.util;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
@@ -34,11 +35,12 @@ public class XmlOperation {
 	}
 	/**
 	 * 解析一个xml文件
-	 * @param xmlFile
+	 * @param fis
 	 * @throws DocumentException
 	 */
-	public XmlOperation(File xmlFile) throws DocumentException {
-		this.doc = getDoc(xmlFile);
+	public XmlOperation(FileInputStream fis ) throws DocumentException {
+		SAXReader reader = new SAXReader();
+		this.doc =  reader.read(fis);
 	}
 	/**
 	 * 建立一个文档实例 
